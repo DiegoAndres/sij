@@ -1,0 +1,447 @@
+/*colores
+rgb(0,218,157)
+rgb(0,155,111)
+rgb(0,78,56)
+rgb(0,91,65)
+rgb(0,53,38)
+*/
+.popover{
+    z-index: 2000;
+}
+
+body{
+    background-color: rgb(245,245,245);
+    font-size: 15px;
+    font-family: "Roboto", Arial, sans-serif;
+}
+
+a{
+	color: rgb(0, 170, 160);;
+}
+
+a:hover{
+	color: rgb(0, 125, 118);
+}
+
+
+.navbar{
+	background-color: rgb(220,220,220);
+	min-height: 70px;
+}
+
+.navbar-default .navbar-brand{
+	padding-top: 5px;
+	padding-left: 0px;
+	padding-right: 0px;
+	color: rgb(175,175,175);
+	font-size: 15px;
+	max-width: 300px;
+	min-height: 70px;
+}
+
+.navbar-default .navbar-nav > .open > a:focus {
+    background-color: rgb(20, 170, 160);
+ }
+
+.navbar-default .navbar-nav > .active > a, .navbar-default .navbar-nav > .active > a:hover, .navbar-default .navbar-nav > .active > a:focus {
+    background-color: rgb(0,180,155);
+}
+
+.navbar-default .navbar-nav > li > a {
+    color: rgb(0,0,0);
+}
+
+.navbar-default .navbar-nav > li #nombre:hover, .navbar-default .navbar-nav > li #nombre:focus {
+	cursor: default;
+	color: rgb(0,0,0);
+}
+
+.navbar-fixed-top .navbar-collapse, .navbar-static-top .navbar-collapse, .navbar-fixed-bottom .navbar-collapse {    
+    padding-top: 10px;
+}
+
+/* agregando cosas para enchular el style */
+
+/*.nav-tabs {
+    border-bottom: 3px solid rgb(60, 160, 160);
+}
+
+.nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
+	background-color: rgb(60,160,160);
+    border-top: 3px solid rgb(60, 160, 160);
+    border-left: 3px solid rgb(60, 160, 160);
+    border-right: 3px solid rgb(60, 160, 160);
+    border-bottom: 2px solid rgba(0,0,0,0.0);
+    color: black;
+}
+
+.nav-tabs > li > a{
+	background-color: rgb(60,160,160);
+	margin-bottom: -1px;
+	color: black;
+}
+
+.nav-tabs > li.active {
+    margin-bottom: -2px;
+}
+
+.nav-tabs > li.active > a{
+    background-color: rgb(220,220,220);
+}
+
+.nav-tabs > li > a {
+	-webkit-border-top-left-radius: 15px;
+	-webkit-border-top-right-radius: 15px;
+	-moz-border-radius-topleft: 15px;
+	-moz-border-radius-topright: 15px;
+	border-top-left-radius: 15px;
+	border-top-right-radius: 15px;
+}
+
+.gray-content{
+	background-color: rgb(220, 220, 220);
+	border-bottom: 3px solid rgb(60, 160, 160);
+	border-left: 3px solid rgb(60, 160, 160);
+	border-right: 3px solid rgb(60, 160, 160);
+	padding: 10px;
+
+}
+*/
+/*tema*/
+
+h3, .h3 {
+    margin-top: 5px;
+}
+
+.pagination{
+    margin: 10px 10px ;
+}
+
+.pagination > .active > a, .pagination > .active > span, .pagination > .active > a:hover, .pagination > .active > span:hover, .pagination > .active > a:focus, .pagination > .active > span:focus {
+    background-color: rgb(20, 170, 160);
+    border-color: rgb(20, 170, 160);
+}
+
+.panel-primary {
+    border-color: rgb(4, 112, 112);
+}
+
+.panel-primary > .panel-heading {
+    color: rgb(255, 255, 255);
+    background-color: rgb(4, 112, 112);
+    border-color: rgb(4, 112, 112);
+}
+
+
+.modal-content {
+    position: relative;
+    background-color: rgb(255, 255, 255);
+    border-radius: 7px 7px 6px 6px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    box-shadow: 0px 3px 9px rgba(0, 0, 0, 0.5);
+    background-clip: padding-box;
+    outline: 0px none;
+}
+
+.modal-header {
+    padding: 15px;
+    border-bottom: 1px solid rgb(229, 229, 229);
+    min-height: 16.4286px;
+    background-color: rgb(20, 170,160);
+    border-radius: 6px 6px 0 0;
+}
+
+/*esto no es de bootstrap*/
+.btn-action {
+	color: rgb(0,0,0);
+    padding: 8px 10px;
+    font-size: 18px;
+    font-weight: normal;
+
+}
+
+.btn-primary {
+    color: rgb(255, 255, 255);
+    background-color: rgb(0, 170, 160);
+    border-color: rgb(0, 156, 146);
+}
+
+.btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open .dropdown-toggle.btn-primary {
+    color: rgb(255,255,255);
+    background-color: rgb(0, 125, 118);
+    border-color: rgb(0, 156, 146);
+}
+
+.btn-warning{
+    color: rgb(255,255,255);
+}
+
+.btn-warning:hover, .btn-warning:focus, .btn-warning:active, .btn-warning.active, .open .dropdown-toggle.btn-warning {
+    color: rgb(255,255,255);
+    /*background-color: rgb(0, 125, 118);
+    border-color: rgb(0, 156, 146);*/
+}
+
+.btn-danger{
+    color: rgb(255,255,255);
+}
+
+.btn-danger:hover, .btn-danger:focus, .btn-danger:active, .btn-danger.active, .open .dropdown-toggle.btn-danger {
+    color: rgb(255,255,255);
+    /*background-color: rgb(0, 125, 118);
+    border-color: rgb(0, 156, 146);*/
+}
+
+.btn-info{
+    color: rgb(255,255,255);
+}
+
+.btn-info:hover, .btn-info:focus, .btn-info:active, .btn-info.active, .open .dropdown-toggle.btn-info {
+    color: rgb(255,255,255);
+    /*background-color: rgb(0, 125, 118);
+    border-color: rgb(0, 156, 146);*/
+}
+
+.form-control:focus {
+    border-color: rgb(60, 160, 160);
+    outline: 0px none;
+    box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.075) inset, 0px 0px 8px rgba(60, 160, 160, 0.6);
+}
+
+ul[role=menu]{
+    min-width: 200px;
+    font-size: 16px;
+}
+
+
+/* django */
+
+div > #id_rol{
+	list-style-type: none;
+}
+
+#id_estado{
+	list-style-type: none;
+}
+
+
+/*juez*/
+
+.subnavbar{
+    margin-top: 71px;
+    margin-bottom: 20px;
+    background-color: rgb(200,200,200);
+}
+
+.subnavbar .container > ul{
+    padding: 0px;
+    margin: 0px;
+    display: inline-block;
+    min-height: 60px;
+
+}
+
+.subnavbar .container > ul > li{
+    height: 60px;
+    padding-top: 7px;
+    list-style: none outside none;    
+    float: left;
+    margin-right: 10px;
+}
+
+.subnavbar .container > ul > li > a {
+    display: block;
+    height: 100%;
+    padding: 10px 10px;
+    font-size: 18px;
+    font-weight: bold;
+    color: rgb(20,20,20);
+}
+
+/*Panel tabs*/
+.panel-tabs {
+    position: relative;
+    bottom: 30px;
+    clear:both;
+    border-bottom: 1px solid transparent;
+}
+
+.panel-tabs > li {
+    float: left;
+    margin-bottom: -1px;
+}
+
+.panel-tabs > li > a {
+    margin-right: 2px;
+    margin-top: 4px;
+    line-height: .85;
+    border: 1px solid transparent;
+    border-radius: 4px 4px 0 0;
+    color: #ffffff;
+}
+
+.panel-tabs > li > a:hover {
+    border-color: transparent;
+    color: #ffffff;
+    background-color: transparent;
+}
+
+.panel-tabs > li.active > a,
+.panel-tabs > li.active > a:hover,
+.panel-tabs > li.active > a:focus {
+    color: #fff;
+    cursor: default;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+    background-color: rgba(255,255,255, .23);
+    border-bottom-color: transparent;
+}
+
+.tab-content > div.active{
+    padding: 0px;
+    min-height: 0px;
+}
+
+/*iconos redondos*/
+.circle {
+    width: 70px;
+    height: 70px;
+    text-align: center;
+    padding-top: 22px;
+    font-size: 24px;
+    line-height: 1.33;
+    border-radius: 35px;
+    color: white;
+}
+
+.circle-success{
+    background-color: #5cb85c;
+}
+
+.circle-warning{
+    background-color: #f0ad4e;
+}
+
+.container .jumbotron-thin {    
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+
+.jumbotron-thin{
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+
+.search-group{
+    max-width: 350px;
+}
+
+@media (max-width: 800px) {
+  .table-responsive {
+    width: 100%;
+    margin-bottom: 15px;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    -ms-overflow-style: -ms-autohiding-scrollbar;
+    border: 1px solid #ddd;
+  }
+  .table-responsive > .table {
+    margin-bottom: 0;
+  }
+
+  .table-responsive > .table > thead > tr > th,
+  .table-responsive > .table > tbody > tr > th,
+  .table-responsive > .table > tfoot > tr > th,
+  .table-responsive > .table > thead > tr > td,
+  .table-responsive > .table > tbody > tr > td,
+  .table-responsive > .table > tfoot > tr > td {
+    white-space: nowrap;
+  }
+  .table-responsive > .table-bordered {
+    border: 0;
+  }
+  .table-responsive > .table-bordered > thead > tr > th:first-child,
+  .table-responsive > .table-bordered > tbody > tr > th:first-child,
+  .table-responsive > .table-bordered > tfoot > tr > th:first-child,
+  .table-responsive > .table-bordered > thead > tr > td:first-child,
+  .table-responsive > .table-bordered > tbody > tr > td:first-child,
+  .table-responsive > .table-bordered > tfoot > tr > td:first-child {
+    border-left: 0;
+  }
+  .table-responsive > .table-bordered > thead > tr > th:last-child,
+  .table-responsive > .table-bordered > tbody > tr > th:last-child,
+  .table-responsive > .table-bordered > tfoot > tr > th:last-child,
+  .table-responsive > .table-bordered > thead > tr > td:last-child,
+  .table-responsive > .table-bordered > tbody > tr > td:last-child,
+  .table-responsive > .table-bordered > tfoot > tr > td:last-child {
+    border-right: 0;
+  }
+  .table-responsive > .table-bordered > tbody > tr:last-child > th,
+  .table-responsive > .table-bordered > tfoot > tr:last-child > th,
+  .table-responsive > .table-bordered > tbody > tr:last-child > td,
+  .table-responsive > .table-bordered > tfoot > tr:last-child > td {
+    border-bottom: 0;
+  }
+}
+
+
+/*thumb carousel*/
+
+/* carousel */
+.media-carousel 
+{
+  margin-bottom: 0;
+  padding: 0 40px 10px 40px;
+  margin-top: 30px;
+}
+/* Previous button  */
+.media-carousel .carousel-control.left 
+{
+  left: -12px;
+  background-image: none;
+  background: none repeat scroll 0 0 #222222;
+  border: 4px solid #FFFFFF;
+  border-radius: 23px 23px 23px 23px;
+  height: 40px;
+  width : 40px;
+  margin-top: 30px
+}
+/* Next button  */
+.media-carousel .carousel-control.right 
+{
+  right: -12px !important;
+  background-image: none;
+  background: none repeat scroll 0 0 #222222;
+  border: 4px solid #FFFFFF;
+  border-radius: 23px 23px 23px 23px;
+  height: 40px;
+  width : 40px;
+  margin-top: 30px
+}
+/* Changes the position of the indicators */
+.media-carousel .carousel-indicators 
+{
+  right: 50%;
+  top: auto;
+  bottom: 0px;
+  margin-right: -19px;
+}
+/* Changes the colour of the indicators */
+.media-carousel .carousel-indicators li 
+{
+  background: #c0c0c0;
+}
+.media-carousel .carousel-indicators .active 
+{
+  background: #333333;
+}
+.media-carousel img
+{
+  /*width: 250px;*/
+  height: 100px
+}
+/* End carousel */

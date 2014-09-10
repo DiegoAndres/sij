@@ -1,0 +1,31 @@
+<div id="tabla">
+	<table class="table table-condensed table-striped">
+		<thead>
+			<tr>
+				<th></th>
+				<th class="col-xs-6">Nombre</th>
+				<th class="col-xs-5">Direcci&oacute;n</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for  row in tribunales %}
+			<tr id="{{row.id}}">
+				<td><span style="cursor: pointer;" class="glyphicon glyphicon-trash eliminar"></span></td>
+				<td>{{row.nombretribunal}}</td>
+				<td>{{row.direccion}}</td>
+			</tr>
+			{%empty%}
+			<tr><td>No existen tribunales asociados.</td></tr>
+			{%endfor%}
+		</tbody>
+	</table>
+</div>
+<script>
+	jQuery(document).ready(function($) {
+		$(".eliminar").click(function(event){
+			var tribunal = this.parentNode.parentNode.id;
+			var url = '/receptor/tribunales/eliminar/'+tribunal;
+			$("#tabla").load(url);
+		});
+	});
+</script>

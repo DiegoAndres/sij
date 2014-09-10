@@ -1,0 +1,408 @@
+<div class="filtros">
+	{{error}}
+	<div class="row">    
+		<div class="hidden-xs hidden-sm col-md-5">
+			<h4>Listado de causas</h4>
+		</div>
+		<div class="col-md-2 col-sm-4 hidden-xs">
+			<div class="pull-right">
+				<div class="btn-group filter-panel">
+				    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+				    	{% if form.estado.value == 'pendiente'%}
+				    		Pendientes
+				    	{%elif form.estado.value == 'en ruta'%}
+				    		En ruta
+				    	{%elif form.estado.value == 'diligenciada'%}
+				    		Diligenciadas
+				    	{%elif form.estado.value == ''%}
+				    		Todas
+				    	{%elif form.estado.value == 'incompleta'%}
+				    		Incompletas
+				    	{%else %}
+				    		Filtro
+				    	{%endif%}
+
+				    	<span class="caret"></span>
+				    </button>
+				    <ul class="dropdown-menu" role="menu">
+				    	<li><a id="incompletas" href="">Incompletas</a></li>
+				    	<li class="divider"></li>
+				    	<li><a id="pendientes" href="">Pendientes</a></li>
+				    	<li><a id="en ruta" href="">En ruta</a></li>
+				    	<li><a id="diligenciadas" href="">Diligenciadas</a></li>
+				    	<li class="divider"></li>
+				    	<li><a id="todas" href="">Todas</a></li>
+				    </ul>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-5 col-sm-8">
+			<div class="btn-group">
+				<div class="input-group">
+      				<div class="input-group-btn search-panel">
+        				<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+        					<span id="search_concept">
+        						{% if form.searchtype.value == 'fechaingreso'%}
+        							Fecha
+        						{%else%}
+        							N° Causa
+								{%endif%}
+        					</span> <span class="caret"></span>
+        				</button>	
+						<ul class="dropdown-menu" role="menu">
+							<li><a href="">N° Causa</a></li>
+							<li><a href="">Fecha</a></li>
+						</ul>
+  					</div>
+		            <input type="text" class="form-control datepicker" name="search_field" value="{{form.search.value| default:''}}">
+            		<span class="input-group-btn">
+                		<button name="buscar" class="btn btn-default btn-bg" type="button">Buscar</button>
+            		</span>
+				</div>
+			</div>
+		</div>
+		<form action="" method="GET" role="form" name="filtro_estado" class="form-horizontal">
+			{{form.estado}}
+			{{form.sort}}
+			{{form.page}}
+			{{form.searchtype}}
+			{{form.search}}		           
+			{{form.startdate}}
+			{{form.enddate}}
+		</form>
+	</div>
+	<div class="row visible-xs">
+		<div class="col-xs-12">
+			<div class="btn-group filter-panel">
+			    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+			    	{% if form.estado.value == 'pendiente'%}
+			    		Pendientes
+			    	{%elif form.estado.value == 'en ruta'%}
+			    		En ruta
+			    	{%elif form.estado.value == 'diligenciada'%}
+			    		Diligenciadas
+			    	{%elif form.estado.value == ''%}
+			    		Todas
+			    	{%elif form.estado.value == 'incompleta'%}
+			    		Incompletas
+			    	{%else %}
+			    		Filtro
+			    	{%endif%}
+			    	<span class="caret"></span>
+			    </button>
+			    <ul class="dropdown-menu" role="menu">
+			    	<li><a id="incompletas" href="">Incompletas</a></li>
+			    	<li class="divider"></li>
+			    	<li><a id="pendientes" href="">Pendientes</a></li>
+			    	<li><a id="en ruta" href="">En ruta</a></li>
+			    	<li><a id="diligenciadas" href="">Diligenciadas</a></li>
+			    	<li class="divider"></li>
+			    	<li><a id="todas" href="">Todas</a></li>
+			    </ul>
+			</div>
+		</div>
+	</div>
+</div>
+
+	<div class="table-responsive">
+		<table class="table table-hover table-striped">
+			<thead>
+				<tr>
+					<th class="col-xs-2 col-sm-2 col-md-2"><a id="dias" href="">Días <span class="hidden-xs">Pendientes</span></a></th>
+					<th class="col-xs-2 col-sm-2 col-md-2"><a id="fecha" href="">Solicitud</a></th>
+					<th class="col-xs-2 col-sm-2 col-md-2"><a id="ncausa" href="">N° Causa</a></th>
+					<th class="col-xs-1 col-sm-1 col-md-1"><a id="estado" href="">Estado</a></th>
+					<th class="col-xs-2 col-sm-2 col-md-2 hidden-xs"><a id="tipodiligencia" href="">Tipo de Diligencia</a></th>
+					<th class="col-xs-3 col-sm-3 col-md-3 hidden-xs">Observación</th>
+					<th class="col-xs-1 col-sm-1 col-md-2 hidden-xs"></th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for row in causas %}
+				<tr onclick="javascript:mostrarDetalle('{{row.ncausa}}','{{row.id}}');">
+					{% if row.diaspendiente != None %}
+						{%if row.diaspendiente >= 6 %}
+							<td class = "danger">
+								{{row.diaspendiente}}
+							</td>
+						{%endif%}
+						{%if row.diaspendiente >= 3 and row.diaspendiente < 6  %}
+							<td class = "warning">
+								{{row.diaspendiente}}
+							</td>
+						{%endif%}
+						{%if row.diaspendiente < 3  %}
+							<td class = "success">
+								{{row.diaspendiente}}
+							</td>
+						{%endif%}
+					{%else%}
+						<td>
+							-
+						</td>
+					{%endif%}
+	
+					<td>{{row.fechaingreso.day}}/{{row.fechaingreso.month}}/{{row.fechaingreso.year}}</td>
+					<td>{{row.ncausa}}</td>
+					<td>{{row.estado}}</td>
+					<td class="hidden-xs">{{row.tipodiligencia.detallediligencia}}</td>
+					<td class="hidden-xs">{{row.observacion|default:'Sin observaciones'}}</td>
+					<td class="text-center hidden-xs" id="opciones">
+						<a data-toggle="modal" href='#modal-id' onclick="javascript:detalleCausa('{{row.ncausa}}','{{row.id}}');">
+							<span class="glyphicon glyphicon-plus" style="cursor: pointer;"></span>
+						</a>
+					</td>
+				</tr>
+				{%empty%}
+				<tr>
+					<td class="col-md-12">No existen registros.</td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+				{%endfor%}
+			</tbody>
+		</table>
+	</div>
+</div>
+
+{% if causas.paginator.num_pages > 1%}
+	<ul class="pagination pull-right">
+		<li><a onclick="pagina(1)">&laquo;</a></li>
+
+        {% for p in causas.paginator.page_range%}
+        <li {%if p = causas.number%}class="active"{%endif%}>
+        	<a onclick="pagina({{p}})">{{p}}</a>
+        </li>
+        {%endfor%}
+
+		<li>
+			<a onclick="pagina({{causas.paginator.num_pages}})">&raquo;</a>
+		</li>
+	</ul>
+{%endif%}
+
+<div class="modal fade" id="modal-id">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title" id="titulo_causa"></h4>
+			</div>
+			<div class="modal-body" id="detalle_causa">
+			</div>
+			<div class="modal-footer" id="opciones_causa">
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+<script type="text/javascript">
+
+	function pagina(pag){
+		$("input[name='page']").val(pag);
+		$("form[name='filtro_estado']").submit();
+	}
+
+	function detalleCausa(ncausa, id){
+		$("#titulo_causa").html('Causa N° '+ncausa);
+		$("#detalle_causa").html('');
+
+		url = '/causa/'+id+'/detalle/';
+		$("#detalle_causa").load(url);
+
+		{% if user.usuario.tipo != 2%}
+			url = '/causa/'+id+'/opciones/receptor';
+			$("#opciones_causa").load(url);
+			$("#opciones_causa").show();
+		{%endif%}
+	}
+
+	function mostrarDetalle(ncausa, id){
+		if ($(window).width() < 768) {
+			detalleCausa(ncausa, id);
+			$('#modal-id').modal('toggle');
+		}	
+	}
+
+	function loadDatePicker(){
+		if($("input[name='searchtype']").val() == 'fechaingreso'){
+			$('.datepicker').daterangepicker(
+		        		{ 
+						    format: 'DD-MM-YYYY',
+						    minDate: '01-04-2014',
+						    showDropdowns: true,
+						    locale: {
+						    	applyLabel: 'Guardar',
+		                        cancelLabel: 'Limpiar',
+		                        fromLabel: 'Desde',
+		                        toLabel: 'Hasta',
+		                        customRangeLabel: 'Personalizado',
+		                        daysOfWeek: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi','Sa'],
+		                        monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+		                        firstDay: 1
+		                    	},
+						    opens: 'left',
+						    ranges: {
+                       			'Ayer': [moment().subtract('days', 1), moment().subtract('days', 1)],
+                       			'Últimos 7 días': [moment().subtract('days', 6), moment()],
+                       			'Últimos 30 días': [moment().subtract('days', 29), moment()],
+						    },
+						}
+			        	, function(start, end, label) {	
+                    		$("input[name='startdate']").val(start.format('YYYY-MM-DD HH:MM'));
+                    		$("input[name='enddate']").val(end.format('YYYY-MM-DD HH:MM'));
+
+                  });
+		}
+	}
+
+	$(document).ready(function(e){
+		loadDatePicker();
+
+	    $('.search-panel .dropdown-menu').find('a').click(function(e) {
+			e.preventDefault();
+			var concept = $(this).text();
+			$('.search-panel span#search_concept').text(concept);
+
+			if(concept == 'N° Causa'){
+				$("input[name='searchtype']").val('ncausa');
+				$("input[name='search_field']").val('');
+				$("input[name='search']").removeAttr('pattern');
+				$("input[name='search_field']").removeAttr('placeholder');
+				$("input[name='search_field']").data('daterangepicker').remove();
+			}
+			else{
+				$("input[name='searchtype']").val('fechaingreso');
+				$("input[name='search_field']").val('');
+				$("input[name='search']").attr('pattern', '[0-9]{1,2}/[0-9]{1,2}/[0-9]{4}');
+				$("input[name='search_field']").attr('placeholder', "dd-mm-aaaa - dd-mm-aaaa");
+				loadDatePicker();
+			}
+		});
+
+		$("form[name='filtro_estado']").submit(function(event){
+			event.preventDefault();
+			$.ajax({
+				url: '{% url "panel_causas" %}',
+				data: $(this).serialize(),
+				success: function(data){
+					$("div#panel_causas").html(data);
+				}
+			});
+		});
+
+		$("input[name='estado']").click(function(){
+			$("form[name='filtro_estado']").submit();
+		});
+
+		$("button[name='buscar']").click(function(event){
+			event.preventDefault();
+			$("input[name='search']").val($("input[name='search_field']").val())
+
+			$("form[name='filtro_estado']").submit();
+		});
+
+
+		$("a[id='incompletas']").click(function(event){
+			event.preventDefault();
+			$("input[name='estado']").val('incompleta');
+			$("input[name='page']").val('1');
+
+			$("form[name='filtro_estado']").submit();
+		});
+
+		$("a[id='pendientes']").click(function(event){
+			event.preventDefault();
+			$("input[name='estado']").val('pendiente');
+			$("input[name='page']").val('1');
+
+			$("form[name='filtro_estado']").submit();			
+		});
+
+		$("a[id='en ruta']").click(function(event){
+			event.preventDefault();
+			$("input[name='estado']").val('en ruta');
+			$("input[name='page']").val('1');
+
+			$("form[name='filtro_estado']").submit();			
+		});
+
+		$("a[id='diligenciadas']").click(function(event){
+			event.preventDefault();
+			$("input[name='estado']").val('diligenciada');
+			$("input[name='page']").val('1');
+
+			$("form[name='filtro_estado']").submit();			
+		});
+
+		$("a[id='todas']").click(function(event){
+			event.preventDefault();
+			$("input[name='estado']").val('');
+			$("input[name='page']").val('1');
+			$("form[name='filtro_estado']").submit();
+		});
+
+		$("a[id='dias']").click(function(event) {
+			event.preventDefault();
+			var actual = $("input[name='sort']").val();
+			if (actual == 'diaspendiente'){
+				$("input[name='sort']").val('-diaspendiente');
+			}
+			else{
+				$("input[name='sort']").val('diaspendiente');
+			}
+			$("form[name='filtro_estado']").submit();
+		});
+
+		$("a[id='fecha']").click(function(event) {
+			event.preventDefault();
+			var actual = $("input[name='sort']").val();
+			if(actual == 'fechaingreso'){
+				$("input[name='sort']").val('-fechaingreso');	
+			}
+			else{
+				$("input[name='sort']").val('fechaingreso');
+			}
+
+			$("form[name='filtro_estado']").submit();
+		});
+		$("a[id='ncausa']").click(function(event) {
+			event.preventDefault();
+			var actual = $("input[name='sort']").val();
+			if(actual == 'ncausa'){
+				$("input[name='sort']").val('-ncausa');
+			}
+			else{
+				$("input[name='sort']").val('ncausa');
+			}
+			$("form[name='filtro_estado']").submit();
+		});
+		$("a[id='estado']").click(function(event) {
+			event.preventDefault();
+			var actual = $("input[name='sort']").val();
+			if(actual == 'estado'){
+				$("input[name='sort']").val('-estado');
+			}
+			else{
+				$("input[name='sort']").val('estado');
+			}
+			$("form[name='filtro_estado']").submit();
+		});
+		$("a[id='tipodiligencia']").click(function(event) {
+			event.preventDefault();
+			var actual = $("input[name='sort']").val();
+			if(actual == 'tipodiligencia'){
+				$("input[name='sort']").val('-tipodiligencia');
+			}
+			else{
+				$("input[name='sort']").val('tipodiligencia');
+			}
+			$("form[name='filtro_estado']").submit();
+		});
+	});
+</script>

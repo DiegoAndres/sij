@@ -1,0 +1,41 @@
+	<select name="region" id="region">
+		<option value="0">Seleccione una regi&oacute;n</option>
+		{% for region in region_list %}
+			<option value="{{region.id}}">{{region.nombreregion}}</option>
+		{%endfor%}
+	</select>
+	<select name="provincia" id="provincia" disabled="true">
+		<option>Seleccione una provincia</option>
+	</select>
+<script>
+	$.(document).ready(
+		function(){
+			$("select#region").change(function(){
+				if ($(this).val() == 0) {
+					$("select#provincia").html("<option>Seleccione una provincia</option>");
+					$("select#provincia").attr('disabled',true);
+				}
+				else{
+					var url = "/region/" + $(this).val() + "/_provincias";
+					var region = $(this).val();
+					$.getJSON(url,function(provincias){
+						var options  = '<option value="0">Seleccione una provincia</option>';
+						for (var i = 0; i < provincias.length; i++){
+							options += '<option value="'+provincias[i].pk+'">'+provincias[i].fields['nombreprovincia']+'</option>';
+						}
+						$("select#provincia").html(options);
+						$("select#provincia option:first").attr('selected', 'selected');
+						$("select#provincia").attr('disabled', false);
+					});
+				}
+			});
+
+			$("select#provincia").change(function(event){
+				if ($(this).val() == -1){
+					return;
+				}
+				alert("cambio de valor en la provincia!");
+			});
+
+		})
+</script>

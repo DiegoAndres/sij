@@ -1,0 +1,31 @@
+{%extends 'base_app.html' %}
+{%load bootstrap3%}
+{% bootstrap_javascript jquery=1 %}
+{%block title%}Receptor | SIJ{%endblock%}
+{%block titulo%}Mis causas{%endblock%}
+{%block content%}
+<div class="row">
+	{% if user.usuario.tipo == 1%}
+		{% if user.usuario.receptor.numero_tribunales == 0%}
+			<div class="panel panel-warning" style="margin-bottom: 0px;">
+				<div class="panel-heading">
+					<p class="text-justify">
+						<b>Alerta</b>. Aún no tiene tribunales asociados a su cuenta. Para registrarlos haga click <a href="{% url 'listado_tribunales_receptor' %}">aqu&iacute;</a>.
+						Posteriormente los podr&aacute; modificar desde el men&uacute; de configuraci&oacute;n, secci&oacute;n 'Mis Datos'.
+					</p>
+				</div>
+			</div>
+		{%endif%}
+	{%endif%}
+	<div id="panel_causas"></div>
+</div>
+{%endblock%}
+{%block scripts%}
+<script>
+	$(document).ready(function() {
+
+		url = '/causas/panel/';
+		$('div#panel_causas').load(url);
+	});
+</script>
+{%endblock%}

@@ -1,0 +1,117 @@
+{% extends 'base_app.html' %}
+{%load bootstrap3%}
+{%block title%} Tribunales Receptor | SIJ{%endblock%}
+{%block titulo%} Mis tribunales{%endblock%}
+{%block content%}
+<div class="row">
+	<div class="col-xs-12">
+		<p class="help-block">
+			Por favor, registre los tribunales donde trabaja.
+		</p>
+		<div class="row">
+			{% if mensaje %}
+				{% if error == 1%}
+				<div class="alert alert-danger">
+					{{mensaje}}
+				</div>
+				{% else%}
+				<div class="alert alert-success">
+					{{mensaje}}
+				</div>
+				{%endif%}
+			{%endif%}
+			<div class="col-md-5 col-xs-12">
+				<form action="" class="form-horizontal" role="form" method="POST">
+					{% csrf_token %}
+					<div class="form-group form-group-lg">
+						<div class="col-sm-9 col-xs-12">{{form.jurisdiccion}}</div>
+					</div>
+					<div class="form-group form-group-lg">
+						<div class="col-sm-9 col-xs-12">{{form.tribunal}}</div>
+					</div>
+					<button type="submit" class="btn btn-action btn-primary pull-right">Agregar</button>
+				</form>
+			</div>
+			<div class="col-md-7 col-xs-12">
+				<br>
+				<div class="panel panel-default">
+					<div class="panel-heading">Tribunales</div>
+					<div class="table-responsive">
+						<table class="table" id="div_table_tribunales">
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{%endblock%}
+{%block scripts%}
+<script>
+	$(document).ready(function(){
+
+		var sinop = "<option value='-1' selected disabled>Jurisdicción</option>";
+		var options_j = $("select#id_jurisdiccion").html();
+		options = sinop + options_j;
+		$("select#id_jurisdiccion").html(options);
+
+		$("select#id_jurisdiccion").focus(function() {
+   			$(this).find("option").eq(0).remove();
+		});
+
+
+		var sinop = "<option value='-1' selected disabled>Tribunal</option>";
+		var options_t = $("select#id_tribunal").html();
+		options = sinop + options_t;
+		$("select#id_tribunal").html(options);
+
+		$("select#id_tribunal").focus(function() {
+			if($("select#id_jurisdiccion").val()){
+   				$(this).find("option").eq(0).remove();
+			}
+		});
+
+		// if($("select#id_jurisdiccion").val() == 0){
+		// 	var sinop  = "<option value='0'>Seleccione una jurisdicci&oacute;n</option>";
+		// 	var options = $("select#id_jurisdiccion").html();
+		// 	options = sinop + options;
+		// 	$("select#id_jurisdiccion").html(options);
+			
+		// 	sinop  = "<option value='0'>Seleccione un tribunal</option>";
+		// 	$("select#id_tribunal").html(sinop);
+		// 	$("select#id_tribunal").attr('disabled',true);	
+		// }
+		// else{
+		// 	var url = "/jurisdiccion/" + $("select#id_jurisdiccion").val() + "/tribunales/";
+		// 	$("select#id_tribunal").load(url);
+		// 	$("select#id_tribunal option:first").attr('selected', 'selected');
+		// 	$("select#id_tribunal").attr('disabled',false);
+		// }
+
+		var username = "{{username}}"
+		var url = "/receptor/tribunales/tabla";
+		$("#div_table_tribunales").load(url);
+
+		$("select#id_jurisdiccion").change(function(event){
+			if ($(this).val() == 0){
+				$("select#id_tribunal").attr('disabled',true);
+				return;
+			}
+			else{
+				var url = "/jurisdiccion/" + $(this).val() + "/tribunales/";
+				$("select#id_tribunal").load(url);
+				$("select#id_tribunal option:first").attr('selected', 'selected');
+				$("select#id_tribunal").attr('disabled',false);
+				
+			}
+		});
+
+		$("form").submit(function(event){
+			var username = "{{user.username}}";
+			var url = "/receptor/"+username+"/tribunales/";
+			$("#div_table_tribunales").load(url);
+		});
+
+	});
+</script>
+{%endblock%}

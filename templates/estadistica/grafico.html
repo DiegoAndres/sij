@@ -1,0 +1,42 @@
+
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script>
+  google.load("visualization", "1", {packages:["corechart"]});
+      google.setOnLoadCallback(drawChart);
+      {%if datos %}
+        function drawChart() {
+          {%if tipo == "Region"%}
+              var data = google.visualization.arrayToDataTable([
+                ['','Nacional', 'Local'],
+                ['Pendientes',{{datos.datosRegion.TCPR}}, {{datos.datosRegion.CPR}}],
+                ['Resueltas',{{datos.datosRegion.TCRR}}, {{datos.datosRegion.CRR}}],
+                ['Atrasadas',{{datos.datosRegion.TCAR}}, {{datos.datosRegion.CAR}}]   
+              ]);
+          {%endif%}
+          {%if tipo == "Provincia"%}
+              var data = google.visualization.arrayToDataTable([
+                ['','Nacional', 'Local'],
+                ['Pendientes',{{datos.datosProvincia.TCPP}}, {{datos.datosProvincia.CPP}}],
+                ['Resueltas',{{datos.datosProvincia.TCRP}}, {{datos.datosProvincia.CRP}}],
+                ['Atrasadas',{{datos.datosProvincia.TCAP}}, {{datos.datosProvincia.CAP}}]   
+              ]);
+          {%endif%}
+          {%if tipo == "Comuna"%}
+              var data = google.visualization.arrayToDataTable([
+                ['','Nacional', 'Local'],
+                ['Pendientes',{{datos.datosComuna.TCPC}}, {{datos.datosComuna.CPC}}],
+                ['Resueltas',{{datos.datosComuna.TCRC}}, {{datos.datosComuna.CRC}}],
+                ['Atrasadas',{{datos.datosComuna.TCAC}}, {{datos.datosComuna.CAC}}]   
+              ]);
+          {%endif%}
+
+            var options = {    
+              hAxis: {title: '{{nombre}}', titleTextStyle: {color: 'red'}}
+            };
+
+            var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+              chart.draw(data, options);
+            }
+    {%endif%}
+</script>
+<div id="chart_div" class="panel-body" style="max-height: 500px;"></div>

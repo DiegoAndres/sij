@@ -1,0 +1,247 @@
+{% extends 'base_ancha.html' %}
+{%load bootstrap3%}
+{% load googlecharts %}
+{% block title%}Juez | SIJ{%endblock%}
+{%block scripts%}
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script>
+	function tribunal(){
+		var url = "/jurisdiccion/{{form.jurisdiccion.value}}/tribunales/";
+		$("select#id_tribunal").load(url);
+		setTimeout(function(){
+			{% if form.tribunal.value %}
+			$("select#id_tribunal").val({{form.tribunal.value}});
+			{%endif%}
+		},500);
+	}
+
+	function loadDatePicker(){
+		$('#datepicker').daterangepicker(
+    		{ 
+			    format: 'DD-MM-YYYY',
+			    minDate: '01-04-2014',
+			    showDropdowns: true,
+			    locale: {
+			    	applyLabel: 'Guardar',
+                    cancelLabel: 'Limpiar',
+                    fromLabel: 'Desde',
+                    toLabel: 'Hasta',
+                    customRangeLabel: 'Personalizado',
+                    daysOfWeek: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi','Sa'],
+                    monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+                    firstDay: 1
+                	},
+			    opens: 'right',
+			    ranges: {
+           			'Ayer': [moment().subtract('days', 1), moment().subtract('days', 1)],
+           			'Últimos 7 días': [moment().subtract('days', 6), moment()],
+           			'Últimos 30 días': [moment().subtract('days', 29), moment()],
+			    },
+			}
+        	, function(start, end, label) {	
+        		$("input[name='startdate']").val(start.format('YYYY-MM-DD HH:MM'));
+        		$("input[name='enddate']").val(end.format('YYYY-MM-DD HH:MM'));
+
+          });	
+	}
+
+	$(document).ready(function(){
+		// TODO: acá falta filtrar las causas que corresponden a los filtros D:
+		var url = '/causas/tabla/';
+		$("#tabla_causas").load(url);
+
+		loadDatePicker();
+
+		var sinop  = "<option value='0'>Seleccione una jurisdicci&oacute;n</option>";
+		var options = $("select#id_jurisdiccion").html();
+		options = sinop + options;
+		$("select#id_jurisdiccion").html(options);		
+		tribunal();
+		
+
+		$(window).resize(function() {
+    		if(this.resizeTO) clearTimeout(this.resizeTO);
+    		this.resizeTO = setTimeout(function() {
+        		$(this).trigger('resizeEnd');
+    		}, 500);
+		});
+
+		$(window).on('resizeEnd', function() {
+    		drawChart();
+		});
+
+
+		$("form[name='filtro_grafico']").submit(function(event) {
+			$("div#chart_div").load('/spinner/');
+			return true;
+		});
+		
+		$("select#id_jurisdiccion").change(function(event){
+			if ($(this).val() == 0){
+				$("select#id_tribunal").attr('disabled', true);
+				return;
+			}
+			else{
+				var url = "/jurisdiccion/" + $(this).val() + "/tribunales/";
+				$("select#id_tribunal").load(url);
+				$("select#id_tribunal option:first").attr('selected', 'selected');
+				$("select#id_tribunal").attr('disabled',false);
+			}
+		});
+
+		$("select#id_tribunalOrigen").change(function(event){
+			var url = "/nuevacausa/"+$(this).val()+"/";
+			$("#div_table_receptores").load(url);
+		});
+
+		{% if tipo == "Jurisdiccion" %}
+			var url = "/juez/receptores/jurisdiccion/{{jurisdiccion.id}}";
+			$("#div_table_receptores").load(url);
+		{%endif%}
+		{% if tipo == "Tribunal" %}
+			var url = "/juez/receptores/tribunal/{{tribunal.id}}";
+			$("#div_table_receptores").load(url);
+		{%endif%}
+	});
+
+
+	google.load("visualization", "1", {packages:["corechart"]});
+    google.setOnLoadCallback(drawChart);
+     {%if datos %}
+        function drawChart() {
+          {%if tipo == "Jurisdiccion"%}
+              var data = google.visualization.arrayToDataTable([
+                ['','Nacional', 'Local'],
+                ['Pendientes',{{nacional.CPN}}, {{datos.CPJ}}],
+                ['Atrasadas',{{nacional.CAN}}, {{datos.CAJ}}],
+                ['Diligenciadas',{{nacional.CRN}}, {{datos.CRJ}}],
+                ['Días promedio',{{nacional.TPN|stringformat:"f"}}, {{datos.TPJ|stringformat:"f"}}],
+              	['En ruta',{{nacional.CEN }}, {{datos.CEJ }}],
+              	['Diarias promedio',{{nacional.DDN|stringformat:"f" }}, {{datos.DDJ|stringformat:"f" }}],
+              ]);
+          {%endif%}
+          {%if tipo == "Tribunal"%}
+              var data = google.visualization.arrayToDataTable([
+                ['','Nacional', 'Local'],
+                ['Pendientes',{{nacional.CPN }}, {{datos.CPT }}],
+                ['Atrasadas',{{nacional.CAN }}, {{datos.CAT }}],
+                ['Diligenciadas',{{nacional.CRN }}, {{datos.CRT }}],
+                ['Días promedio',{{nacional.TPN| stringformat:"f"}},{{datos.TPT| stringformat:"f"}}],  
+                ['En ruta',{{nacional.CEN }}, {{datos.CET }}],
+                ['Diarias promedio',{{nacional.DDN|stringformat:"f" }}, {{datos.DDT|stringformat:"f" }}],
+              ]);
+          {%endif%}
+         
+	    var options = {
+	      {%if tipo == "Jurisdiccion"%}
+	      	hAxis: {title: '{{jurisdiccion.nombrejurisdiccion}}',showTextEvery:1, titleTextStyle: {color: 'red'}}
+	      {%endif%}
+	      {%if tipo == "Tribunal"%}
+	      	hAxis: {title: '{{tribunal.nombretribunal}}',showTextEvery:1, titleTextStyle: {color: 'red'}}
+	      {%endif%}
+	    };
+        var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+        chart.draw(data, options);
+      }
+	{%endif%}
+
+</script>   
+{%endblock%}
+{% block content %}
+	<div class="row">
+		<div class="col-md-4 col-sm-5">
+			<div class="panel panel-primary">
+				<div class="panel-heading">
+					<h4 class="panel-title">
+						<a data-toggle="collapse" href="#collapseFiltros">Filtros</a>
+					</h4>
+				</div>
+				<div id="collapseFiltros" class="panel-collapse collapse in">
+					<div class="panel-body">
+						{% if mensaje %}
+							<div class="alert alert-warning">{{mensaje}}</div>
+						{%endif%}
+						<form action="" method="GET"role="form" name="filtro_grafico" class="form-vertical">
+							<div class="panel-body">
+								<div class="form-group">
+									<label for="ncausa" class="col-sm-3 control-label">Jurisdicci&oacute;n</label>
+									<div class="col-sm-12">
+										{{ form.jurisdiccion }}
+									</div>
+								</div>
+								<div class="form-group">
+									<label for="tribunalOrigen" class="col-sm-6 control-label">Tribunal judicial</label>
+									<div class="col-sm-12">
+										{{ form.tribunal }}
+									</div>
+								</div>
+								<div class="form-group">
+									<label for="date" class="control-label col-sm-6">Rango de fecha</label>
+									<div class="col-sm-12">
+										{{form.datefield}}
+									</div>
+								</div>
+								{{form.startdate}}
+								{{form.enddate}}
+								<div class="form-group">
+									<div class="col-sm-12">
+										<br>
+										<button type="submit" class="btn btn-action btn-primary pull-right">Filtrar</button>
+									</div>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-8 col-sm-7">
+			<div class="panel panel-primary">
+				<div class="panel-heading">
+					<h4 class="panel-title">
+						<a data-toggle="collapse" href="#collapseGrafico">Comparaci&oacute;n de causas con promedios nacionales</a>
+					</h4>
+				</div>
+				<div id="collapseGrafico" class="panel-collapse collapse in">
+					<div id="chart_div" class="panel-body" style="max-height: 500px;"></div>
+				</div>
+			</div>
+
+			<div class="panel-group" id="accordion">
+			  <div class="panel panel-primary">
+			    <div class="panel-heading">
+					{%if datos %}
+		      			{%if tipo == "Jurisdiccion"%}
+		      				<h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion" href="#tabla_receptores">Listado receptores <span class="hidden-xs hidden-sm">{{jurisdiccion.nombrejurisdiccion}}</span></a></h4>
+		      			{%endif%}
+		      			{%if tipo == "Tribunal"%}
+		      				<h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion" href="#tabla_receptores">Listado receptores <span class="hidden-xs hidden-sm">{{tribunal.nombretribunal}}</span></a></h4>
+		      			{%endif%}
+		      		{%else%}
+						<h4 class="panel-title">
+							<a data-toggle="collapse" data-parent="#accordion" href="#tabla_receptores">Listado receptores</a>
+						</h4>
+	                {%endif%}
+			    </div>
+			    <div id="tabla_receptores" class="panel-collapse collapse in">
+			    	<div class="table-responsive">
+						<table class="table table-hover table-striped table-responsive" id="div_table_receptores"></table>
+			    	</div>
+			    </div>
+			  </div>
+			  <div class="panel panel-primary">
+			    <div class="panel-heading">
+			      <h4 class="panel-title">
+			        <a data-toggle="collapse" data-parent="#accordion" href="#tabla_causas">
+			          Listado de Causas</span>
+			        </a>
+			      </h4>
+			    </div>
+			    <div id="tabla_causas" class="panel-collapse collapse table-responsive">
+			    </div>
+			  </div>
+			</div>
+		</div>
+	</div>
+</div>
+{%endblock%}

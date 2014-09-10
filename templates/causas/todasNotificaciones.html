@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{%load bootstrap3%}
+{% block title%}Abogado | SIJ{%endblock%}
+{% block content %}
+
+
+
+<div class="panel panel-primary">
+<div class="panel-heading">
+<h4>Listado de Notificaiones</h4>
+</div>	
+	<ul class="list-group">
+		{% for row in notificaciones %}
+			<li class="list-group-item">
+				<a data-toggle="modal" href='#modal-id' onclick="javascript:detalleCausa('{{row.causa.ncausa}}','{{row.causa.id}}');">{{row.detallenotificacion}}<br><p class="text-right"><small>{{row.fechanotificacion.date}}</small></p></a>
+			</li>
+		{%empty%}
+			<li class="list-group-item">
+				<a href="#">No hay nuevas notificaciones<br><p class="text-right"><small></small></p></a>
+			</li>
+
+		{%endfor%}
+	</ul>
+</div>
+
+{% if notificaciones.paginator.num_pages > 1 %}
+	<ul class="pagination pull-right">
+		{% if notificaciones.number > 1%}
+			<li><a href="/notificaciones/page/1/">&laquo;</a></li>
+			<li>
+				<a href="../{{notificaciones.previous_page_number}}"><</a>
+			</li>
+		{%endif%}
+		{% if notificaciones.number < notificaciones.paginator.num_pages %}
+		    <li><a href="../{{notificaciones.next_page_number}}">></a></li>
+			<li><a href="../{{notificaciones.paginator.num_pages}}/">&raquo;</a></li>
+		{%endif%}
+</ul>
+{%endif%}
+<div class="modal fade" id="modal-id">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title" id="titulo_causa"></h4>
+					</div>
+					<div class="modal-body" id="detalle_causa">
+					</div>
+					<div class="modal-footer" id="opciones_causa">
+					</div>
+				</div><!-- /.modal-content -->
+			</div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
+{%endblock%}
+
+{%block scripts%}
+	<script>
+	function detalleCausa(ncausa,idcausa){
+			$("#titulo_causa").html('Causa N° '+ncausa);
+			$("#detalle_causa").html('');
+
+			url = '/causa/'+idcausa+'/detalle/';
+			$("#detalle_causa").load(url);
+
+		
+		}
+	</script>
+{%endblock%}

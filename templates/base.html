@@ -1,0 +1,126 @@
+{% load bootstrap3 %}
+{% bootstrap_css %}
+{% bootstrap_javascript jquery=1 %}
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" class="visible-xs">
+	<link rel="shortcut icon" type="image/x-icon" href="/media/images/favicon/favicon.ico">
+	<link href='http://fonts.googleapis.com/css?family=Roboto:400&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+	<title>{%block title%}{%endblock%}</title>
+	{%block css%}
+		<link rel="stylesheet" type="text/css" href="/media/css/style.css">
+		<link rel="stylesheet" type="text/css" href="/media/css/footer.css">
+		<link rel="stylesheet" type="text/css" media="all" href="/media/css/daterangepicker-bs3.css" />
+	{%endblock%}
+</head>
+<body>
+	{% if user.is_authenticated %}
+	<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+		<!-- Brand and toggle get grouped for better mobile display -->
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+				<span class="sr-only">Ver Men&uacute;</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand" href="{% url 'redirect_usuario' %}">
+				<div class="row">
+					<div class="col-sm-12 col-xs-12 col-md-12 col-lg-12">
+						<img src="/media/images/logo-SIJ_HZ.png" alt="" height="60px;">
+					</div>
+				</div>
+			</a>
+		</div>
+	
+		<!-- Collect the nav links, forms, and other content for toggling -->
+		<div class="collapse navbar-collapse navbar-ex1-collapse">
+			<ul class="nav navbar-nav navbar-right">
+				<li><a id="nombre" href="#">Bienvenido  {%if user.usuario.tipo == 0 %}abogado{%endif%}{%if user.usuario.tipo == 1%}receptor{%endif%}{% if user.usuario.tipo == 2%}juez{%endif%}: <b>{{user.username}}</b></a></li>
+				{% if user.usuario.tipo != 2 %}
+				<li class="dropdown">
+					<a href="#" class="dropdown-toggle" id="campana" data-toggle="dropdown">
+					</a>
+					<ul class="dropdown-menu" id="dropnotificaciones" role='menu'>
+					</ul>
+				</li>
+				{% endif %}
+				<li class="dropdown" style="margin-right: 10px;">
+					<a href="#" class="dropdown-toggle hidden-xs" data-toggle="dropdown"><span class="glyphicon glyphicon-cog hidden-xs"></span><span class="text-center visible-xs">Configuraci&oacute;n</span></a>
+					<ul class="dropdown-menu hidden-xs" role='menu'>
+						{% if user.usuario.tipo == 1 %}
+							<li><a href="{% url 'listado_tribunales_receptor' %}">Mis tribunales</a></li>
+						{%endif%}
+						<li><a href="{% url 'editar_datos' %}">Editar mis datos</a></li>
+						<li><a href="{% url 'password_change_form' %}">Cambiar clave</a></li>
+						<li class="divider"></li>
+						<li><a href="{% url 'vista_logout' %}">Cerrar sesi&oacute;n</a></li>
+					</ul>
+				</li>
+				{% if user.usuario.tipo == 1 %}
+					<li class="hidden-sm hidden-md hidden-lg"><a class="text-center" href="{% url 'listado_tribunales_receptor' %}">Mis tribunales</a></li>
+				{%endif%}
+				<li class="hidden-sm hidden-md hidden-lg"><a class="text-center" href="{% url 'editar_datos' %}">Editar mis datos</a></li>
+				<li class="hidden-sm hidden-md hidden-lg"><a class="text-center" href="{% url 'password_change_form' %}">Cambiar clave</a></li>
+				<li class="divider hidden-sm hidden-md hidden-lg"></li>
+				<li class="hidden-sm hidden-md hidden-lg"><a class="text-center" href="{% url 'vista_logout' %}">Cerrar sesi&oacute;n</a></li>
+			</ul>
+		</div><!-- /.navbar-collapse -->
+	</nav>
+	{% else%}
+	<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+		<div class="navbar-header">
+			<a class="navbar-brand" href="{% url 'redirect_usuario' %}">
+				<div class="row">
+					<div class="col-sm-12 col-xs-12 col-md-12 col-lg-12">
+						<img src="/media/images/logo-SIJ_HZ.png" alt="" height="60px;">
+					</div>
+				</div>
+			</a>
+		</div>
+	</nav>
+	{%endif%}
+	<div class="container">
+		{% block content %}
+		{% endblock%}
+		<div class="row">
+			<div class="col-md-10 col-md-offset-1 col-sm-10 col-sm-offset-1 col-xs-12">
+			</div>			
+		</div>
+	</div>
+
+	<div id="footer">
+		<div class="container">
+			<div class="row text-muted">
+				
+			</div>
+			<div class="row text-muted">
+				<div class="text-left">
+					<b>	
+    				SIJ 2014
+					</b>
+    			</div>
+    		</div>
+		</div>
+	</div>
+	<script type="text/javascript" src="/media/js/moment.js"></script>
+	<script type="text/javascript" src="/media/js/daterangepicker.js"></script>
+	<script type="text/javascript" src="/media/js/jquery.popconfirm.js"></script>
+	<script>
+		$(document).ready(function(){
+			$("#campana").load("{% url 'vista_icono_notificaciones' %}")
+			$("#campana").click(function(){
+				var url = "{% url 'vista_notificaciones' %}";
+				$("ul#dropnotificaciones").load(url);
+				var url2 = "{% url 'vista_notificaciones_leidas' %}";
+				$(this).load(url2);
+			});
+		});
+	</script>
+	{%block scripts%}
+	{%endblock%}
+</body>
+</html>

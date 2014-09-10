@@ -1,0 +1,161 @@
+<thead>
+	<tr>
+		<th class="col-lg-2">Receptor</th>
+		<th class="col-lg-1">Causas pendientes</th>
+		<th class="col-lg-1">Causas atrasadas</th>
+		<th class="col-lg-1">Causas diligenciadas</th>
+		<th class="col-lg-1">Días promedio</th>
+		<th class="col-lg-1">Causas en ruta</th>
+		<th class="col-lg-1">Diligencias diarias promedio</th>
+		<th class="col-lg-1"></th>
+	</tr>
+</thead>
+<tbody>
+	{% for row in receptores %}
+	<tr>
+		<td id="usuario{{row.usuario.id}}">{{ row.usuario }}</td>
+		<td><span class="celda_causas_pendientes">{{ row.causaspendientes }}</span></td>
+		<td><span class="celda_causas_atrasadas">{{ row.causasatrasadas }}</span></td>
+		<td><span class="celda_causas_resueltas">{{ row.causasresueltas }}</span></td>
+		<td><span class="celda_tiempo_primedio">{{ row.tiempopromedio|floatformat:"-2"}}</span></td>
+		<td><span class="celda_causas_en_ruta">{{row.causasenruta}}</span></td>
+		<td><span class="celda_diligencias_diarias_promedio">{{row.diligenciasdiariaspromedio}}</span></td>
+		{%if user.usuario.tipo == 0 %}
+			<th><button type="button" class="btn btn-xs btn-default asignar" value="{{row.usuario.id}}">Asignar</button>
+			</th>
+		{%endif%}
+		{%if user.usuario.tipo == 2 %}
+			<td class="text-center hidden-xs hidden-sm" id="opciones">
+				<a data-toggle="modal" href='#modal-id2' onclick="javascript:detalleReceptor('{{row.id}}','{{row.usuario}}');">
+					<span class="glyphicon glyphicon-plus" style="cursor: pointer;"></span>
+				</a>
+			</td>
+		{%endif%}
+	
+	</tr>
+	{%empty%}
+	<tr><td><h5>No existen receptores asociados.</h5></td></tr>
+	
+	{%endfor%}
+</tbody>
+	<div class="modal fade" id="modal-id2">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title" id="titulo_receptor"></h4>
+					</div>
+					<div class="modal-body" id="detalle_receptor">
+						
+
+			<form action="" method="POST" class="form-horizontal" role="form">
+					<div class="form-group">
+						<label for="tribunal" class="control-label col-sm-4"></label>
+						<div class="col-sm-8">
+							<input type="text" name="tribunal" id="tribunal" class="form-control" value="{{form.tribunal}}" required="required">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="ncausa" class="control-label col-sm-4">N&uacute;mero de causa</label>
+						<div class="col-sm-8">
+							<input type="text" name="ncausa" id="ncausa" class="form-control" value="{{form.ncausa}}" required="required">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="receptor" class="control-label col-sm-4">Receptor Asignado</label>
+						<div class="col-sm-8">
+							<input type="text" name="receptor" id="receptor" class="form-control" value="{{form.receptor}}" required="required">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="fechaingreso" class="control-label col-sm-4">Fecha de Ingreso</label>
+						<div class="col-sm-8">
+							<input type="text" name="fechaingreso" id="fechaingreso" class="form-control" value="{{form.fechaingreso}}" required="required">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="direccion" class="contro-label col-sm-4">Direcci&oacute;n Causa</label>
+						<div class="col-sm-8">
+							<input type="text" name="direccion" id="direccion" class="form-control" value="{{form.direccion}}" required="required">
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-10 col-sm-offset-2">
+							<button type="submit" class="btn btn-primary">Submit</button>
+						</div>
+					</div>
+			</form>
+		</div>
+		<div class="modal-footer">
+			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			<button type="button" class="btn btn-primary">Save changes</button>
+		</div>
+
+
+					
+				</div><!-- /.modal-content -->
+			</div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
+<script>
+		function detalleReceptor(id,receptor){
+			$("#titulo_receptor").html(receptor);
+			//$("#detalle_causa").html('');
+
+			//url = '/causa/'+ncausa+'/detalle/';
+			//$("#detalle_causa").load(url);
+
+			
+		}
+		$(document).ready(function(){
+
+		$('.celda_causas_pendientes').tooltip({
+			title: "Solicitudes aún no aceptadas por el receptor."
+		});
+
+		$(".celda_causas_atrasadas").tooltip({
+			title: 'Causas con más de 7 días en ruta.'
+		});
+
+		$(".celda_causas_resueltas").tooltip({
+			title: 'Iniciadas y terminadas dentro del rango de fecha.'
+		});
+
+		$(".celda_tiempo_primedio").tooltip({
+			title: 'Días promedio en diligenciar una causa.'
+		});
+
+		$(".celda_causas_en_ruta").tooltip({
+			title: 'Causas aceptadas sin diligenciar.'
+		});
+
+		$(".celda_diligencias_diarias_promedio").tooltip({
+			title: 'Promedio de diligencias por día.'
+		});
+
+		$(".asignar").click(function(event){
+		
+				$("#id_receptor").val($(this).val());
+				$("#id_receptorNuevo").val($(this).val());
+				$("#receptores").hide();
+				$("#resumen").show();
+				$("li#3").attr("class","active");
+				$("li#2").removeAttr("class");
+				
+				//Actualizar datos de Resumen
+				$("#lncausa").html($("#id_ncausa").val());
+				$("#ltribunal").html($("select#id_tribunalOrigen option:selected").text());
+				$("#ldiligencia").html($("select#id_tipoDiligencia option:selected").text());
+				$("#ldireccion").html($("#id_direccion").val()+", "+$("select#id_comuna option:selected").text()+", "+$("select#id_provincia option:selected").text()+", "+$("select#id_region option:selected").text());
+				if ($("#id_observacion").val() == ""){
+					$("#lobservacion").html("Sin observaciones");
+				}else{
+					$("#lobservacion").html($("#id_observacion").val());
+				}
+				$("#lreceptor").html($("#usuario"+$(this).val()).text());
+			
+
+		});
+	
+
+	});
+</script>

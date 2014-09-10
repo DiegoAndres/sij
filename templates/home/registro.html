@@ -1,0 +1,188 @@
+{% extends 'base_nonav.html' %}
+{%load bootstrap3%}
+{% bootstrap_javascript jquery=1 %}
+{%block title%}Registro | SIJ{%endblock%}
+{%block content%}
+<div class="row">
+	<div class="col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 col-xs-10 col-xs-offset-1">
+		<img src="/media/images/logo-SIJ.png" alt="" style="width: 70%; margin-left:15%; margin-bottom: 30px;" >
+		<div class="row">
+			{# <h3 class="text-center">Registro</h3> #}
+			<form action="." class="form-horizontal" method="POST" role="form">
+				{% csrf_token %}
+				<div class="row">
+					{% if form.errors %}
+					    <p class="help-block">
+					    {% if form.errors.items|length >= 1 %} Por favor, corrija los siguientes errores.{% endif %}
+					    </p>
+					{% endif %}
+					{{mensaje}}
+					<div class="form-group form-group-lg">
+						{# <label for="rol" class="control-label col-xs-2">Perfil</label> #}
+						<div class="col-xs-12">
+							{{form.rol}}
+						</div>
+						<div class="col-sm-7 col-sm-offset-3">
+							<small>
+								{{form.rol.errors}}
+							</small>
+						</div>
+					</div>
+					<!--<div class="form-group">
+						<label for="rut" class="control-label col-sm-5">Rut</label>
+						<div class="col-sm-7">
+							{{form.rut}}
+							<p class="help-block" style="font-size: 15px;">
+								Ej: '1234567-8'
+							</p>
+							<small>{{form.rut.errors}}</small>
+						</div>
+					</div>-->
+					<!--<div class="form-group">
+						<label for="nombre" class="control-label col-sm-5">Nombre</label>
+						<div class="col-sm-7">{{form.nombre}}</div>
+					</div>
+					<div class="form-group">
+						<label for="apellido" class="control-label col-sm-5">Apellido</label>
+						<div class="col-sm-7">{{form.apellido}}</div>
+					</div>-->
+					<div class="form-group form-group-lg">
+						{# <label for="email" class="control-label col-sm-5">Correo</label> #}
+						<div class="col-sm-7">{{form.email}}</div>
+						<div class="col-sm-7 col-sm-offset-3">
+							<small>{{form.email.errors}}</small>
+						</div>
+					</div>
+					<div class="form-group form-group-lg">
+						{# <label for="username" class="control-label col-sm-5">Nombre de Usuario</label> #}
+						<div class="col-sm-7">{{form.username}}</div>
+						<div class="col-sm-7 col-sm-offset-3">
+							<small>{{form.username.errors}}</small>
+						</div>
+					</div>
+					<div class="form-group form-group-lg">
+						{# <label for="password1" class="control-label col-sm-5">Contrase&ntilde;a</label> #}
+						<div class="col-sm-7">{{form.password1}}</div>
+						<div class="col-sm-7 col-sm-offset-3">
+							<small>{{form.password1.errors}}</small>
+						</div>
+					</div>
+					<div class="form-group form-group-lg">
+						{# <label for="password2" class="control-label col-sm-5">Repetir Contrase&ntilde;a</label> #}
+						<div class="col-sm-7">{{form.password2}}</div>
+						<div class="col-sm-7 col-sm-offset-3">
+							<small>{{form.password2.errors}}</small>
+						</div>
+					</div>
+					
+					<!--<div class="col-md-6" style="padding-top: 4px;">
+						<div class="form-group">
+							<label for="region" class="control-label col-sm-5">Regi&oacute;n</label>
+							<div class="col-sm-7">{{form.region}}</div>
+						</div>
+						<div class="form-group">
+							<label for="provincia" class="control-label col-sm-5">Provincia</label>
+							<div class="col-sm-7">{{form.provincia}}</div>
+						</div>
+						<div class="form-group">
+							<label for="comuna" class="control-label col-sm-5">Comuna</label>
+							<div class="col-sm-7">{{form.comuna}}</div>
+						</div>
+						<div class="form-group">
+							<label for="direccion" class="control-label col-sm-5">Direcci&oacute;n</label>
+							<div class="col-sm-7">{{form.direccion}}</div>
+						</div>
+						<div class="form-group">
+							<label for="telefono" class="control-label col-sm-5">Tel&eacute;fono</label>
+							<div class="col-sm-7">{{form.telefono}}</div>
+						</div>
+					</div>-->
+					<div class="form-group form-group-lg">
+						<div class="col-xs-12">
+							<button class="btn btn-action btn-primary btn-lg btn-block">Registrar</button>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+{%endblock%}
+{%block scripts%}
+<script>
+	$(document).ready(function(){
+		var sinop = "<option value='-1' selected disabled>Perfil</option>";
+		var options_rol = $("select#id_rol").html();
+		options = sinop + options_rol;
+		$("select#id_rol").html(options);
+
+		$("select#id_rol").focus(function() {
+   			$(this).find("option").eq(0).remove();
+		});
+
+		// var sinop  = "<option value='0'>Seleccione una regi&oacute;n</option>";
+		// var options = $("select#id_region").html();
+		// options = sinop + options;
+		// $("select#id_region").html(options);
+
+		// sinop  = "<option value='0'>Seleccione una provincia</option>";
+		// $("select#id_provincia").html(sinop);
+		// $("select#id_provincia").attr('disabled',true);
+
+		// sinop  = "<option value='0'>Seleccione una comuna</option>";
+		// $("select#id_comuna").html(sinop);
+		// $("select#id_comuna").attr('disabled',true);
+
+		// sinop  = "<option value='0'>Seleccione un tribunal</option>";
+		// $("select#id_tribunal").html(sinop);
+		// $("select#id_tribunal").attr('disabled',true);		
+
+		// $("select#id_region").change(function(event){
+		// 	if ($(this).val() == 0){
+		// 		$("select#id_provincia").attr('disabled',true);
+		// 		$("select#id_comuna").attr('disabled',true);
+		// 		return;
+		// 	}
+		// 	else{
+		// 		var url = "/region/" + $(this).val() + "/provincias/";
+		// 		$("select#id_provincia").load(url);
+		// 		$("select#id_provincia option:first").attr('selected', 'selected');
+		// 		$("select#id_provincia").attr('disabled',false);
+		// 		setTimeout(function(){
+		// 			url = "/provincia/" + $("select#id_region option:selected").val() + "1/comunas/";
+		// 			$("select#id_comuna").load(url);
+		// 			$("select#id_comuna").attr('disabled',false);
+		// 			setTimeout(function(){
+		// 				url = "/comuna/" + $("select#id_region option:selected").val() + "101/tribunales/";
+		// 				$("select#id_tribunal").load(url);
+		// 				$("select#id_tribunal").attr('disabled', false);
+		// 			},0);
+		// 		},0);
+		// 	}
+		// });
+
+		// $("select#id_provincia").change(function(event) {
+		// 	var url = "/provincia/" + $(this).val() + "/comunas/";
+		// 	$("select#id_comuna").load(url);
+		// 	$("select#id_comuna").attr('disabled',false);
+		// });
+
+		// $("select#id_comuna").change(function(event){
+		// 	var url = "/comuna/" + $(this).val() + "/tribunales/";
+		// 	$("select#id_tribunal").load(url);
+		// 	$("select#id_tribunal").attr('disabled', false);
+		// });
+
+		// $("input[name='rol']").change(function(event) {			
+		// 	if ($("input[name='rol']:checked").val() == '1'){
+		// 		$("#tribunal-group").show();
+		// 		$("select#id_tribunal").attr('required','required')
+		// 	}
+		// 	else{
+		// 		$("#tribunal-group").hide();
+		// 		$("select#id_tribunal").removeAttr('required');
+		// 	}
+		// });
+	});
+</script>
+{%endblock%}

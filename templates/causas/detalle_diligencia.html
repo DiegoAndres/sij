@@ -1,0 +1,156 @@
+<h4>Detalle</h4>
+<div class="row">
+	<div class="col-xs-12 col-md-12 col-sm-12 col-lg-12 form-horizontal">
+		<div class="form-group">
+			<label for="" class="col-md-4 col-sm-4 col-xs-6">Objetivo diligencia</label>
+			<div class="col-md-8 col-sm-8 col-xs-6">
+				{{causa.tipodiligencia.detallediligencia}}
+			</div>
+		</div>	
+		<div class="form-group">
+			<label for="" class="col-md-4 col-sm-4 col-xs-6">Resultado diligencia</label>
+			<div class="col-md-8 col-sm-8 col-xs-6">
+				{{causa.tiporesultadodiligencia.detallediligencia}}
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="" class="col-md-4 col-sm-4 col-xs-6">Comentario</label>
+			<div class="col-md-8 col-sm-8 col-xs-6">
+				{{resultado.comentario}}
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="" class="col-md-4 col-sm-4 col-xs-6">Fecha diligencia</label>
+			<div class="col-md-8 col-sm-8 col-xs-6">
+				{{resultado.fechadiligencia}}
+			</div>
+		</div>
+	</div>
+</div>
+<h4>Fotos</h4>
+{%if fotos %}
+	<div class='row'>
+	    <div class='col-md-12'>
+			<div class="carousel slide media-carousel" id="media">
+				<div class="carousel-inner">
+					<div class="item active">
+						<div class="row">
+							<div class="col-md-3">
+								{% if fotos.0.foto %}
+									<a class="thumbnail" href="#"><img alt="" src="{{fotos.0.foto.url}}"></a>
+								{%endif%}
+							</div>
+							<div class="col-md-3">
+								{% if fotos.1.foto %}
+									<a class="thumbnail" href="#"><img alt="" src="{{fotos.1.foto.url}}"></a>
+								{%endif%}
+							</div>
+							<div class="col-md-3">
+								{% if fotos.2.foto %}
+									<a class="thumbnail" href="#"><img alt="" src="{{fotos.2.foto.url}}"></a>
+								{%endif%}
+							</div>
+							<div class="col-md-3">
+								{% if fotos.3.foto %}
+									<a class="thumbnail" href="#"><img alt="" src="{{fotos.3.foto.url}}"></a>
+								{%endif%}
+							</div>
+						</div>
+					</div>
+					{% if fotos|length > 4%}
+						<div class="item">
+							<div class="row">
+								<div class="col-md-3">
+									{% if fotos.4.foto %}
+										<a class="thumbnail" href="#"><img alt="" src="{{fotos.4.foto.url}}"></a>
+									{%endif%}
+								</div>
+								<div class="col-md-3">
+									{% if fotos.5.foto %}
+										<a class="thumbnail" href="#"><img alt="" src="{{fotos.5.foto.url}}"></a>
+									{%endif%}
+								</div>
+								<div class="col-md-3">
+									{% if fotos.6.foto %}
+										<a class="thumbnail" href="#"><img alt="" src="{{fotos.6.foto.url}}"></a>
+									{%endif%}
+								</div>
+								<div class="col-md-3">
+									{% if fotos.7.foto %}
+										<a class="thumbnail" href="#"><img alt="" src="{{fotos.7.foto.url}}"></a>
+									{%endif%}
+								</div>
+							</div>
+						</div>
+					{%endif%}
+					{% if fotos|length > 8%}
+						<div class="item">
+							<div class="row">
+								<div class="col-md-3">
+									{% if fotos.8.foto %}
+										<a class="thumbnail" href="#"><img alt="" src="{{fotos.8.foto.url}}"></a>
+									{%endif%}
+								</div>
+								<div class="col-md-3">
+									{% if fotos.9.foto %}
+										<a class="thumbnail" href="#"><img alt="" src="{{fotos.9.foto.url}}"></a>
+									{%endif%}
+								</div>
+								<div class="col-md-3">
+									{% if fotos.10.foto %}
+										<a class="thumbnail" href="#"><img alt="" src="{{fotos.10.foto.url}}"></a>
+									{%endif%}
+								</div>
+								<div class="col-md-3">
+									{% if fotos.11.foto %}
+										<a class="thumbnail" href="#"><img alt="" src="{{fotos.11.foto.url}}"></a>
+									{%endif%}
+								</div>
+							</div>
+						</div>
+					{%endif%}
+					{% if fotos|length > 12%}
+						<div class="item">
+							<div class="row">
+								<div class="col-md-3">
+									{% if fotos.12.foto %}
+										<a class="thumbnail" href="#"><img alt="" src="{{fotos.12.foto.url}}"></a>
+									{%endif%}
+								</div>
+								<div class="col-md-3">
+									{% if fotos.13.foto %}
+										<a class="thumbnail" href="#"><img alt="" src="{{fotos.13.foto.url}}"></a>
+									{%endif%}
+								</div>
+								<div class="col-md-3">
+									{% if fotos.14.foto %}
+										<a class="thumbnail" href="#"><img alt="" src="{{fotos.14.foto.url}}"></a>
+									{%endif%}
+								</div>
+								<div class="col-md-3">
+								</div>
+							</div>
+						</div>
+					{%endif%}
+
+				</div>
+				<a data-slide="prev" href="#media" class="img-circle left carousel-control">‹</a>
+				<a data-slide="next" href="#media" class="img-circle right carousel-control">›</a>
+			</div>                          
+	    </div>
+	</div>
+	<div class="row">
+		<div id="preview" class="col-md-6 col-lg-6 col-md-offset-3 col-lg-offset-3"></div>
+	</div>
+{%else%}
+	<p class="text-justify">No se registraron fotos para la causa.</p>
+{%endif%}
+
+<script>
+	$(document).ready(function() {
+		$(".thumbnail").click(function(event){
+			event.preventDefault();
+			$("#preview").html('<img src="'+this.firstChild.getAttribute('src')+'" class="img-thumbnail"/>');
+		})
+	});
+</script>

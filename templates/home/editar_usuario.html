@@ -1,0 +1,117 @@
+{% extends 'base_app.html' %}
+{%load bootstrap3%}
+{% bootstrap_javascript jquery=1 %}
+{%block title%} Mis Datos | SIJ{%endblock%}
+{%block titulo%} Mis datos{%endblock%}
+{%block content%}
+<div class="row">
+	<div class="col-md-8 col-md-offset-2 col-xs-12">
+		<br>
+		<form class="form-horizontal" action="" method="post" role="form">
+			{% csrf_token %}
+			{% if error == 1 %}
+			<div class="alert alert-danger">
+				{{mensaje}}
+			</div>
+			{%elif error = 0 %}
+			<div class="alert alert-success">
+				{{mensaje}}
+			</div>
+			{%endif%}
+			{% if form.errors %}
+			    <p class="help-block">
+			    {% if form.errors.items|length == 1 %}Por favor, corrija el error.{% else %}Por favor, corrija los siguientes errores.{% endif %}
+			    </p>
+			{% endif %}
+			<div class="form-group form-group-lg">
+				{# <label for="email" class="control-label col-sm-5">Correo</label> #}
+				<div class="col-sm-7 col-xs-12">{{form.email}}</div>
+				<div class="col-sm-7 col-xs-12 col-sm-offset-3">
+					<small>{{form.email.errors}}</small>
+				</div>
+			</div>
+			<div class="form-group form-group-lg">
+				{# <label for="region" class="control-label col-sm-5">Regi&oacute;n</label> #}
+				<div class="col-sm-7 col-xs-12">{{form.region}}</div>
+			</div>
+			<div class="form-group form-group-lg">
+				{# <label for="provincia" class="control-label col-sm-5">Provincia</label> #}
+				<div class="col-sm-7 col-xs-12">{{form.provincia}}</div>
+			</div>
+			<div class="form-group form-group-lg">
+				{# <label for="comuna" class="control-label col-sm-5">Comuna</label> #}
+				<div class="col-sm-7 col-xs-12">{{form.comuna}}</div>
+			</div>
+			<div class="form-group form-group-lg">
+				{# <label for="direccion" class="control-label col-sm-5">Direcci&oacute;n</label> #}
+				<div class="col-sm-7 col-xs-12">{{form.direccion}}</div>
+			</div>
+			<div class="form-group form-group-lg">
+				{# <label for="telefono" class="control-label col-sm-5">Tel&eacute;fono</label> #}
+				<div class="col-sm-7 col-xs-12">{{form.telefono}}</div>
+			</div>
+			<div class="form-group form-group-lg">
+				<div class="col-xs-12">
+					<input type="submit" value="Guardar mis datos" class="btn btn-action btn-primary btn-block" />
+				</div>
+			</div>
+		</form>
+		{% if user.usuario.tipo == 1%}
+			<br>
+			<hr>
+			<a href="{% url 'listado_tribunales_receptor' %}" class="btn btn-action btn-primary btn-block">Mis Tribunales</a>
+		{%endif%}
+	</div>
+</div>
+{%endblock%}
+{%block scripts%}
+<script>
+	function provincia(callback){
+		var url = "/region/{{form.region.value}}/provincias/";
+		$("select#id_provincia").load(url);
+		setTimeout(function(){callback()},500);
+	}
+
+	function comuna(){
+		var url = "/provincia/{{form.provincia.value}}/comunas/";
+		setTimeout(function(){
+			$("select#id_provincia").val({{form.provincia.value}});
+		},500);
+		$("select#id_comuna").load(url);
+	}
+
+	$(document).ready(function(){
+		provincia(function(){
+			comuna();
+			setTimeout(function(){
+				$("select#id_comuna").val({{form.comuna.value}});
+			},500);
+		});
+		
+		$("select#id_region").change(function(event){
+			if ($(this).val() == 0){
+				$("select#id_provincia").attr('disabled',true);
+				$("select#id_comuna").attr('disabled',true);
+				return;
+			}
+			else{
+				var url = "/region/" + $(this).val() + "/provincias/";
+				$("select#id_provincia").load(url);
+				$("select#id_provincia option:first").attr('selected', 'selected');
+				$("select#id_provincia").attr('disabled',false);
+				setTimeout(function(){
+					url = "/provincia/" + $("select#id_region option:selected").val() + "1/comunas/";
+					$("select#id_comuna").load(url);
+					$("select#id_comuna").attr('disabled',false);
+				},0);
+			}
+		});
+
+		$("select#id_provincia").change(function(event) {
+			var url = "/provincia/" + $(this).val() + "/comunas/";
+			$("select#id_comuna").load(url);
+			$("select#id_comuna").attr('disabled',false);
+		});
+	});
+</script>
+{%endblock%}

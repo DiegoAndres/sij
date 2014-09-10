@@ -1,0 +1,12 @@
+	{% for row in notificacion %}
+		<li>
+			<a href="#">{{row.detallenotificacion}}<br><p class="text-right text-muted"><small>{{row.fechanotificacion.date}}</small></p></a>
+		</li>
+		<li class="divider"></li>
+		{%empty%}
+			<li>
+				<a href="#">No hay nuevas notificaciones<br><p class="text-right text-muted"><small></small></p></a>
+			</li>
+			<li class="divider"></li>
+		{%endfor%}
+		<li><a href="../notificaciones/page/1/"><div class="text-center"><b><small>Ver Todas</small></b></div></a></li>

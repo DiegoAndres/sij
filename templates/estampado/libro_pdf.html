@@ -1,0 +1,98 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<style type="text/css">
+	@page {
+		size: letter;
+		margin: 2.5cm;
+	}
+	
+	html {
+	font-family: Verdana;
+	font-size: 14pt;
+	}
+</style>
+</head>    
+<body>
+	<table>
+		<tr>
+			<td><b>Rol</b></td>
+			<td>{{causa.ncausa}}</td>
+		</tr>
+		<tr>
+			<td><b>Caratulado</b></td>
+			<td>{{resultado.demandado}}, {{resultado.demandante}}</td>
+		</tr>
+		<tr>
+			<td><b>Abogado</b></td>
+			<td>{{causa.abogado.nombre}}</td>
+		</tr>
+		<tr>
+			<td><b>Coordenadas GPS</b></td>
+			<td>{{resultado.gpslat}}, {{resultado.gpslon}}</td>
+		</tr>
+	</table>
+
+    <p style="text-align: justify;"> En {{causa.comuna.nombrecomuna}}, a {{resultado.fechadiligencia}} horas, en el domicilio señalado en autos ubicado en {{causa.direccion}}, {{causa.comuna.nombrecomuna}}, notifique personalmente al demandado de autos Sr(a).{{resultado.demandado}}. Del contenido de la demanda Ejecutiva, que rola de fojas {{resultado.fojas}}, como también del mandamiento de ejecución y adjunto cuaderno de apremio. <br /> Derechos: {{resultado.derechos}}.</p>
+	
+	<h4>Mapas</h4>
+	<img src="http://maps.googleapis.com/maps/api/staticmap?center={{resultado.gpslat|stringformat:"f"}},{{resultado.gpslon|stringformat:"f"}}&zoom=15&size=300x300&maptype=roadmap&sensor=false&markers=color:red%7Alabel:S%7C{{resultado.gpslat|stringformat:"f"}},{{resultado.gpslon|stringformat:"f"}}">&nbsp;&nbsp;
+	<img src="http://maps.googleapis.com/maps/api/staticmap?center={{resultado.gpslat|stringformat:"f"}},{{resultado.gpslon|stringformat:"f"}}&zoom=15&size=300x300&maptype=satellite&sensor=false&markers=color:red%7Alabel:S%7C{{resultado.gpslat|stringformat:"f"}},{{resultado.gpslon|stringformat:"f"}}">
+<br>
+<br>
+<br>
+<br>
+	<h4>Imágenes</h4>
+	{%if fotos%}
+	<img class="pic" src="/media/{{fotos.0.foto}}" alt="" width="400px" />&nbsp;&nbsp;
+	<img class="pic" src="/media/{{fotos.1.foto}}" alt="" width="400px" />
+	{% if fotos.2%}
+	<br /><br />
+	<img class="pic" src="/media/{{fotos.2.foto}}" alt="" width="400px" />&nbsp;&nbsp;
+	<img class="pic" src="/media/{{fotos.3.foto}}" alt="" width="400px" />
+	{%endif%}
+	{% if fotos.4%}
+	<br /><br />
+	<img class="pic" src="/media/{{fotos.4.foto}}" alt="" width="400px" />&nbsp;&nbsp;
+	<img class="pic" src="/media/{{fotos.5.foto}}" alt="" width="400px" />&nbsp;&nbsp;
+	{%endif%}
+	{%if fotos.6%}
+	<br /><br />
+	<img class="pic" src="/media/{{fotos.6.foto}}" alt="" width="400px" />&nbsp;&nbsp;
+	<img class="pic" src="/media/{{fotos.7.foto}}" alt="" width="400px" />&nbsp;&nbsp;
+	{%endif%}
+	{%if fotos.8%}
+	<br /><br />
+	<img class="pic" src="/media/{{fotos.8.foto}}" alt="" width="400px" />&nbsp;&nbsp;
+	<img class="pic" src="/media/{{fotos.9.foto}}" alt="" width="400px" />&nbsp;&nbsp;
+	{%endif%}
+	{%if fotos.10%}
+	<br /><br />
+	<img class="pic" src="/media/{{fotos.10.foto}}" alt="" width="400px" />&nbsp;&nbsp;
+	<img class="pic" src="/media/{{fotos.11.foto}}" alt="" width="400px" />&nbsp;&nbsp;
+	{%endif%}
+	{%if fotos.12%}
+	<br /><br />
+	<img class="pic" src="/media/{{fotos.12.foto}}" alt="" width="400px" />&nbsp;&nbsp;
+	<img class="pic" src="/media/{{fotos.13.foto}}" alt="" width="400px" />&nbsp;&nbsp;
+	{%endif%}
+	{%if fotos.14%}
+	<br /><br />
+	<img class="pic" src="/media/{{fotos.14.foto}}" alt="" width="400px" />&nbsp;&nbsp;
+	<img class="pic" src="/media/{{fotos.15.foto}}" alt="" width="400px" />&nbsp;&nbsp;
+	{%endif%}
+	{%else%}
+
+		Sin fotografías.
+	{%endif%}
+	<div style="padding-left: 450px;">
+		<img src="/media/images/firma.jpg" width="150px"/><br />
+		{{causa.receptor.nombre}} <br />
+		Receptor Judicial
+
+	</div>
+
+   
+</body>
+</html>

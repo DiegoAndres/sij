@@ -1,0 +1,28 @@
+<button id="enviar_formulario" type="button" class="btn btn-action btn-primary">Enviar</button>
+
+<script>
+
+	$(document).ready(function() {
+
+		var options = {
+			url: '/causa/{{idcausa}}/diligenciar/registrar/',
+			success: function(data) {
+				if(data == '0'){
+					alert("La causa se ha diligenciado correctamente.");
+					var url = '/causa/{{idcausa}}/diligenciar/foto/';
+					$("#detalle_causa").load(url);
+					url = '/causa/{{idcausa}}/diligenciar/foto/opciones';
+					$("#opciones_causa").load(url);
+					
+				}
+				else{
+		            // alert("Ha ocurrido un error al diligenciar la causa. Por favor vuelva a intentarlo.");
+		            alert(data);				}
+			}
+		};
+		$("button[id='enviar_formulario']").click(function(event) {
+			event.preventDefault();
+			$("form[name='diligenciar']").ajaxSubmit(options); 
+		});
+	});
+</script>

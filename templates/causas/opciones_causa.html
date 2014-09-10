@@ -1,0 +1,114 @@
+<button type="button" id="cerrar" class="btn btn-action btn-default hidden-xs" data-dismiss="modal">Cerrar</button>
+{% if rechazar%}
+<a type="button" href="javascript:actualizar_causa('rechazar');" id="rechazar-causa" class="btn btn-action btn-danger">Rechazar</a>
+{%endif%}
+{%if aceptar%}
+<a type="button" href="javascript:actualizar_causa('aceptar');" id="aceptar-causa" class="btn btn-action btn-primary">Aceptar</a>
+{%endif%}
+{%if undo_aceptar%}
+<a type="button" href="javascript:actualizar_causa('aceptar/deshacer');" id="deshacer-aceptar-causa" class="btn btn-action btn-warning">Deshacer Aceptaci&oacute;n</a>
+{%if diligenciar%}
+<button type="button" id="diligenciar-causa" class="btn btn-action btn-primary">Diligenciar</button>
+{%endif%}
+{%endif%}
+
+{# abogado #}
+{%if editar%}
+<button type="button" id="editar-causa" class="btn btn-action btn-primary">Editar</button>
+{%endif%}
+{%if reasignar%}
+<button type="button" id="reasignar-causa" class="btn btn-action btn-warning">Reasignar</button>
+{%endif%}
+{%if eliminar%}
+<a type="button" href="javascript:actualizar_causa('eliminar');" id="eliminar-causa" class="btn btn-action btn-danger" >Eliminar</a>
+{%endif%}
+{%if resultados%}
+<button type="button" id="resultados-causa" class="btn btn-action btn-primary">Ver Resultados</button>
+{%endif%}
+
+
+
+<script>
+	function actualizar_causa(act){
+		var url = '/causa/{{causa.id}}/'+act;
+		// TODO: esto debería ser un post.
+		$.get(url, function(data) {
+			if(data == 0){
+				alert("Ha ocurrido un error. Por favor inténtelo nuevamente. Si no se soluciona contacte al administrador.");
+			}
+			else{
+				alert(data);
+				$("button[id='cerrar']").click();
+				$("form[name='filtro_estado']").submit();
+			}
+		});
+	}
+
+	$(document).ready(function() {
+		$("#eliminar-causa").popConfirm({
+			title: "Confirmación",
+			content: "¿Está seguro de eliminar la causa?",
+			placement: "top",
+			yesBtn:   'Si',
+			noBtn:    'No',
+			container: false,
+		});
+
+		$("#aceptar-causa").popConfirm({
+			title: "Confirmación",
+			content: "¿Está seguro de aceptar la causa?",
+			placement: "top",
+			yesBtn:   'Si',
+			noBtn:    'No',
+			container: false,
+		});
+
+		$("#deshacer-aceptar-causa").popConfirm({
+			title: "Confirmación",
+			content: "¿Está seguro de deshacer la aceptación la causa?",
+			placement: "top",
+			yesBtn:   'Si',
+			noBtn:    'No',
+			container: false,
+		});
+
+		$("#rechazar-causa").popConfirm({
+			title: "Confirmación",
+			content: "¿Está seguro de rechazar la causa?",
+			placement: "top",
+			yesBtn:   'Si',
+			noBtn:    'No',
+			container: false,
+		});
+
+		$("button[id='diligenciar-causa']").click(function(e){
+			e.preventDefault();
+			var url = '/causa/{{causa.id}}/diligenciar';
+			$("#detalle_causa").load(url);
+			url = '/causa/{{causa.id}}/diligenciar/opciones';
+			$("#opciones_causa").load(url);
+			setTimeout(function() {
+				initGoogle2();
+			}, 1000);
+		});
+
+		$("button[id='reasignar-causa']").click(function(e){
+			e.preventDefault();
+			var url = '/causa/{{causa.id}}/reasignar';
+			$("#detalle_causa").load(url);
+			
+		});
+
+		$("button[id='editar-causa']").click(function(e){
+			e.preventDefault();
+			alert('editar causa!');
+		});
+
+		$("button[id='resultados-causa']").click(function(event) {
+			event.preventDefault();
+			alert('resultados causa!');
+		});
+
+
+	});
+</script>

@@ -1,0 +1,128 @@
+{%if causa%}
+	<form class="form-horizontal" id="formreasignar" method="POST" role="form">
+		{% csrf_token %}
+		<div class="row">
+		{{error}}		
+			<div class="form-group">
+				<label for="" class="col-md-4 col-sm-4 col-xs-6">Jurisdicci&oacute;n del Tribunal</label>
+				<div class="col-md-8 col-sm-8 col-xs-6">
+					{{form.jurisdiccion}}
+				</div>
+			</div>
+		</div>
+		<div class="row">		
+			<div class="form-group">
+				<label for="" class="col-md-4 col-sm-4 col-xs-6">Tribunal</label>
+				<div class="col-md-8 col-sm-8 col-xs-6">
+					{{form.tribunal}}
+				</div>
+			</div>
+		</div>
+		<br>
+		<br>
+		<div class="row">
+			<div id="receptores" class="panel panel-default">
+				<div class="panel-heading">
+					<h4 id="lreceptores">Lista de Receptores</h4>
+				</div>
+
+				<div class="table-responsive">
+					<table class="table table-striped table-hover" id="div_table_receptores"></table>
+				</div>
+			</div>
+		</div>
+		<div id="resumen">
+			
+				<div class="form-horizontal">
+					<div class="row">
+						<div class="form-group">
+							<div class="col-sm-4">
+								{{form.receptorNuevo}}
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="col-sm-4">
+								{{form.causa}}
+							</div>
+						</div>							
+						<div class="form-group">
+							<label class="col-sm-4 col-lg-4 col-sm-4 col-md-4">Nuevo Receptor</label>
+							<div id="lreceptor" class="col-sm-8"></div>
+						</div>						
+						
+					</div>
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+						<button type="button" class="btn btn-lg btn-primary pull-right" id="confirmar">Confirmar</button>
+					</div>
+				</div>
+			
+		</div>
+	</form>
+
+{%else%}
+	<h3 class="text-center">Error</h3>
+{%endif%}
+<script src="/media/js/jquery.msgbox.min.js"></script>
+<script>
+	$(document).ready(function(){
+		$("#receptores").hide();
+		$("#resumen").hide();
+		$("#id_receptorNuevo").hide();
+		$("#id_causa").val('{{causa}}');
+		$("#id_causa").hide();
+		
+	
+		var sinop = "<option value='0'>Seleccione una jurisdicci&oacute;n</option>";
+		var options = $("select#id_jurisdiccion").html();
+		options = sinop + options;
+		$("select#id_jurisdiccion").html(options);
+
+		sinop  = "<option value='0'>Seleccione un tribunal</option>";
+		$("select#id_tribunal").html(sinop);
+		$("select#id_tribunal").attr('disabled',true);
+
+
+		$("select#id_jurisdiccion").change(function(event){
+			if ($(this).val() == 0){
+				$("select#id_tribunal").attr('disabled',true);
+				return;
+			}
+			else{
+				var url = "/jurisdiccion/" + $(this).val() + "/tribunales/";
+				$("select#id_tribunal").load(url);
+				$("select#id_tribunal option:first").attr('selected', 'selected');
+				$("select#id_tribunal").attr('disabled',false);
+			}
+		});
+
+
+		$("select#id_tribunal").change(function(event){
+			var url = "/nuevacausa/"+$(this).val()+"/";
+			$("#div_table_receptores").load(url);
+			$("#receptores").show();
+			$("#resumen").hide();
+
+		});
+		
+
+		$('#confirmar').click(function(event) {
+			event.preventDefault();
+			$.ajax({
+					url: '/causa/{{causa}}/reasignar/registrar/',
+					type: 'post',
+					data: $('#formreasignar').serialize(),
+					success: function (data) {
+						$.msgbox("<div class='alert alert-success'>Se ha asignado correctamente el receptor</div>");
+						$(".msgbox-ok").click(function(){
+							window.location = '/abogado'
+						});
+
+					},
+					error: function (data){
+						alert('error');
+					}
+				});
+		});
+
+	});
+</script>

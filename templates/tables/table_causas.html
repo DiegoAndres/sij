@@ -1,0 +1,197 @@
+<form action="" method="GET" role="form" name="filtro_sort_pag" class="form-horizontal">
+	{{form.sort}}
+	{{form.page}}
+</form>
+<div class="table-responsive">
+	<table class="table table-hover table-striped">
+		<thead>
+			<tr>
+				<th class="col-sm-2 col-md-2"><a id="dias" href="">Días <span class="hidden-xs">Pendientes</span></a></th>
+				<th class="col-sm-2 col-md-2"><a id="fecha" href="">Fecha Solicitud</a></th>
+				<th class="col-sm-2 col-md-2"><a id="ncausa" href="">N° Causa</a></th>
+				<th class="col-sm-1 col-md-1"><a id="estado" href="">Estado</a></th>
+				<th class="col-sm-2 col-md-2 hidden-xs"><a id="tipodiligencia" href="">Tipo de Diligencia</a></th>
+				<th class="col-sm-3 col-md-3 hidden-xs">Observación</th>
+				<th class="col-sm-1 col-md-2 hidden-xs"></th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for row in causas %}
+			<tr onclick="javascript:mostrarDetalle('{{row.ncausa}}', '{{row.id}}');">
+				{% if row.diaspendiente != None %}
+						{%if row.diaspendiente >= 6 %}
+									<td class = "danger">
+										{{row.diaspendiente}}
+									</td>
+								{%endif%}
+								{%if row.diaspendiente >= 3 and row.diaspendiente < 6  %}
+									<td class = "warning">
+										{{row.diaspendiente}}
+									</td>
+								{%endif%}
+								{%if row.diaspendiente < 3  %}
+									<td class = "success">
+										{{row.diaspendiente}}
+									</td>
+								{%endif%}
+					{%else%}
+						<td>
+							-
+						</td>
+					{%endif%}
+				
+				<td>{{row.fechaingreso.date}}</td>
+				<td>{{row.ncausa}}</td>
+				<td>{{row.estado}}</td>
+				<td class="hidden-xs">{{row.tipodiligencia.detallediligencia}}</td>
+				<td class="hidden-xs">{{row.observacion|default:'Sin observaciones'}}</td>
+				<td class="text-center hidden-xs" id="opciones">
+					<a data-toggle="modal" href='#modal-id' onclick="javascript:detalleCausa('{{row.ncausa}}','{{row.id}}');">
+						<span class="glyphicon glyphicon-plus" style="cursor: pointer;"></span>
+					</a>
+				</td>
+			</tr>
+			{%empty%}
+			<tr>
+				<td class="col-md-3">No existen registros.</td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+			{%endfor%}
+		</tbody>
+	</table>
+</div>
+
+{% if causas.paginator.num_pages > 1%}
+	<ul class="pagination pull-right">
+		<li><a onclick="pagina(1)">&laquo;</a></li>
+
+        {% for p in causas.paginator.page_range%}
+        <li {%if p = causas.number%}class="active"{%endif%}>
+        	<a onclick="pagina({{p}})">{{p}}</a>
+        </li>
+        {%endfor%}
+
+		<li><a onclick="pagina({{causas.paginator.num_pages}})">&raquo;</a></li>
+	</ul>
+{%endif%}
+
+<div class="modal fade" id="modal-id">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title" id="titulo_causa"></h4>
+			</div>
+			<div class="modal-body" id="detalle_causa">
+			</div>
+			<div class="modal-footer" id="opciones_causa">
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+<script type="text/javascript">
+
+	function pagina(pag){
+		$("input[name='page']").val(pag);
+		$("form[name='filtro_sort_pag']").submit();
+	}
+
+	function detalleCausa(ncausa, id){
+		$("#titulo_causa").html('Causa N° '+ncausa);
+		$("#detalle_causa").html('');
+
+		url = '/causa/'+id+'/detalle/';
+		$("#detalle_causa").load(url);
+
+		{% if user.usuario.tipo != 2%}
+			url = '/causa/'+id+'/opciones/receptor';
+			$("#opciones_causa").load(url);
+			$("#opciones_causa").show();
+		{%endif%}
+	}
+
+	function mostrarDetalle(ncausa, id){
+		if ($(window).width() < 768) {
+			detalleCausa(ncausa, id);
+			$('#modal-id').modal('toggle');
+		}	
+	}
+
+	$(document).ready(function(e){
+		$("form[name='filtro_sort_pag']").submit(function(event){
+			event.preventDefault();
+			$.ajax({
+				url: '{% url "tabla_causas" %}',
+				data: $(this).serialize(),
+				success: function(data){
+					$("div#tabla_causas").html(data);
+				}
+			});
+		});
+
+		$("a[id='dias']").click(function(event) {
+			event.preventDefault();
+			var actual = $("input[name='sort']").val();
+			if (actual == 'diaspendiente'){
+				$("input[name='sort']").val('-diaspendiente');
+			}
+			else{
+				$("input[name='sort']").val('diaspendiente');
+			}
+			$("form[name='filtro_sort_pag']").submit();
+		});
+
+		$("a[id='fecha']").click(function(event) {
+			event.preventDefault();
+			var actual = $("input[name='sort']").val();
+			if(actual == 'fechaingreso'){
+				$("input[name='sort']").val('-fechaingreso');	
+			}
+			else{
+				$("input[name='sort']").val('fechaingreso');
+			}
+
+			$("form[name='filtro_sort_pag']").submit();
+		});
+		$("a[id='ncausa']").click(function(event) {
+			event.preventDefault();
+			var actual = $("input[name='sort']").val();
+			if(actual == 'ncausa'){
+				$("input[name='sort']").val('-ncausa');
+			}
+			else{
+				$("input[name='sort']").val('ncausa');
+			}
+			$("form[name='filtro_sort_pag']").submit();
+		});
+		$("a[id='estado']").click(function(event) {
+			event.preventDefault();
+			var actual = $("input[name='sort']").val();
+			if(actual == 'estado'){
+				$("input[name='sort']").val('-estado');
+			}
+			else{
+				$("input[name='sort']").val('estado');
+			}
+			$("form[name='filtro_sort_pag']").submit();
+		});
+		$("a[id='tipodiligencia']").click(function(event) {
+			event.preventDefault();
+			var actual = $("input[name='sort']").val();
+			if(actual == 'tipodiligencia'){
+				$("input[name='sort']").val('-tipodiligencia');
+			}
+			else{
+				$("input[name='sort']").val('tipodiligencia');
+			}
+			$("form[name='filtro_sort_pag']").submit();
+		});
+	});
+</script>

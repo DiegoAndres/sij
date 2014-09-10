@@ -1,0 +1,91 @@
+<div class="row">
+	<div class="col-md-6 hidden-xs">
+		<div id="map-canvas-2" style="height: 50%; width: 100%; padding: 0px; margin-bottom:10px;" />
+	</div>
+	<div class="col-md-6">
+		<form name="diligenciar" method="POST" class="form-horizontal" role="form">
+			{%csrf_token%}
+			<div class="form-group">
+				<label for="objetivodiligencia" class="col-md-4 col-sm-4">Objetivo de diligencia</label>
+				<div class="col-md-8 col-sm-8">
+					{{form.objetivodiligencia}}
+					<!-- TODO: esto tiene que cargarse con el valor que trae la causa -->
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="resultadodiligencia" class="col-md-4 col-sm-4">Resultado de diligencia</label>
+				<div class="col-md-8 col-sm-8">
+					{{form.resultadodiligencia}}
+					<!-- TODO: estas opciones tienen que ser relacionadas con las del objetivo de causa -->
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="demandado" class="col-md-4 col-sm-4">Demandado</label>
+				<div class="col-md-8 col-sm-8">
+					{{form.demandado}}
+					<!-- TODO: estas opciones tienen que ser relacionadas con las del objetivo de causa -->
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="demandante" class="col-md-4 col-sm-4">Demandante</label>
+				<div class="col-md-8 col-sm-8">
+					{{form.demandante}}
+					<!-- TODO: estas opciones tienen que ser relacionadas con las del objetivo de causa -->
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="fojas" class="col-md-4 col-sm-4">Fojas</label>
+				<div class="col-md-8 col-sm-8">
+					{{form.fojas}}
+					<!-- TODO: estas opciones tienen que ser relacionadas con las del objetivo de causa -->
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="derechos" class="col-md-4 col-sm-4">Derechos</label>
+				<div class="col-md-8 col-sm-8">
+					{{form.derechos}}
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="comentario" class="col-md-4 col-sm-4">Comentario</label>
+				<div class="col-md-8 col-sm-8">
+					{{form.comentario}}
+				</div>
+			</div>
+			{{form.lat}}
+			{{form.lon}}
+		</form>
+	</div>
+</div>
+
+<script src="/media/js/jquery.form.js"></script>
+<script>
+	function resultados(){
+		var url = '/diligencia/{{form.objetivodiligencia.value}}/respuesta/';
+		$("select#id_resultadodiligencia").load(url);
+		$("select#id_resultadodiligencia option:first").attr('selected','selected');
+		$("select#id_resultadodiligencia").attr('disabled',false);
+	}
+
+	$(document).ready(function(){
+
+		resultados();
+		// sinop  = "<option value='0'>Seleccione un resultado de diligencia </option>";
+		// $("select#id_resultadodiligencia").html(sinop);
+		// $("select#id_resultadodiligencia").attr('disabled',true);
+
+		$("select#id_objetivodiligencia").change(function(event){
+			if ($(this).val() == 0){
+				$("select#id_resultadodiligencia").attr('disabled',true);
+				return;
+			}
+			else{
+				var url = "/diligencia/" + $(this).val() + "/respuesta/";
+				$("select#id_resultadodiligencia").load(url);
+				$("select#id_resultadodiligencia option:first").attr('selected', 'selected');
+				$("select#id_resultadodiligencia").attr('disabled',false);
+				
+			}
+		});
+	});
+</script>

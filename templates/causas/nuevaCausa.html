@@ -1,0 +1,315 @@
+{% extends 'base.html' %}
+{% load sorting_tags %}
+{% block title %} Nueva Causa | SIJ {%endblock%}
+{% block content %}
+<div class="jumbotron jumbotron-thin">
+	<ul class="nav nav-tabs">
+		<li id="1" class="active"><a href="#" style="cursor:default">Nueva Causa</a></li>
+		<li id="2"><a href="#" style="cursor:default">Asignar Receptor Judicial</a></li>
+		<li id="3"><a href="#" style="cursor:default">Confirmar Causa</a></li>
+	</ul>
+	<br>
+	<form action="." class="form-horizontal" id="formcausa" method="POST">
+		{%if msj%}
+			<alert class="alert-warning">{{msj}}</alert>
+		{%endif%}
+		{% csrf_token %}
+		<div class="row">
+			<div class="col-md-6 col-lg-6">
+				<div class="form-group">
+					<label for="ncausa" class="col-sm-4 col-md-4 col-lg-4 control-label">N° Causa</label>
+					<div class="col-sm-8">
+						{{ form.ncausa }}
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="ncausa" class="col-sm-4 col-md-4 col-lg-4 control-label">Materia</label>
+					<div class="col-sm-8">
+						{{ form.materia }}
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="region" class="col-sm-4 col-md-4 col-lg-4 control-label">Regi&oacute;n</label>
+					<div class="col-sm-8">
+						{{ form.region }}
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="provincia" class="col-sm-4 col-md-4 col-lg-4 control-label">Provincia</label>
+					<div class="col-sm-8">
+						{{ form.provincia }}
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="comuna" class="col-sm-4 col-md-4 col-lg-4 control-label">Comuna</label>
+					<div class="col-sm-8">
+						{{ form.comuna }}
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="direccion" class="col-sm-4 col-md-4 col-lg-4 control-label">Direcci&oacute;n</label>
+					<div class="col-sm-8">
+						{{form.direccion}}
+					</div>
+				</div>
+			</div>
+
+			<div class="col-md-6 col-lg-6">
+				<div class="form-group">
+					<label for="tribunalOrigen" class="col-sm-4 col-md-4 col-lg-4 control-label">Jurisdicci&oacute;n del Tribunal</label>
+					<div class="col-sm-8">
+						{{ form.jurisdiccion }}
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="tribunalOrigen" class="col-sm-4 col-md-4 col-lg-4 control-label">Tribunal de Origen</label>
+					<div class="col-sm-8">
+						{{ form.tribunalOrigen }}
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="tipoDiligencia" class="col-sm-4 col-md-4 col-lg-4 control-label">Tipo de Diligencia</label>
+					<div class="col-sm-8">
+						{{ form.tipoDiligencia }}
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="observacion" class="col-sm-4 col-md-4 col-lg-4 control-label">Observaci&oacute;n</label>
+					<div class="col-sm-8">
+						{{ form.observacion }}
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-4">
+						{{form.receptor}}
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+				<button type="button" class="btn btn-lg btn-primary pull-right" id="next1">Siguiente</button>
+			</div>
+		</div>
+	</form>
+
+	<!-- tab2 -->
+	<div id="receptores" class="panel panel-default">
+		<div class="panel-heading">
+			<h4 id="lreceptores">Lista de Receptores</h4>
+		</div>
+
+		<div class="table-responsive">
+			<table class="table table-striped table-hover" id="div_table_receptores"></table>
+		</div>
+	</div>
+
+	<!-- tab3 -->
+	<div id="resumen" class="panel panel-default">
+		<div class="panel-heading">
+			<h4 id="lcausa">Cofirmar Causa</h4>
+		</div>
+		<div class="panel-body">
+			<div class="form-horizontal">
+				<div class="row">
+					<div class="col-md-6 col-lg-6">
+						<div class="form-group">
+							<label class="col-sm-4 col-lg-4 col-sm-4 col-md-4">N° Causa</label>
+							<div id="lncausa" class="col-sm-8">
+								
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-4 col-lg-4 col-sm-4 col-md-4">Tribunal</label>
+							<div id="ltribunal" class="col-sm-8">
+								
+							</div>
+						</div>
+						
+						<div class="form-group">
+							<label class="col-sm-4 col-lg-4 col-sm-4 col-md-4">Objetivo Diligencia</label>
+							<div id="ldiligencia" class="col-sm-8">
+								
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-4 col-lg-4 col-sm-4 col-md-4">Direcci&oacute;n</label>
+							<div id="ldireccion" class="col-sm-8">
+								
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-4 col-lg-4 col-sm-4 col-md-4">Receptor</label>
+							<div id="lreceptor" class="col-sm-8">
+								
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-6 col-lg-6">
+						<div class="form-group">
+							<label class="col-sm-4 col-lg-4 col-sm-4 col-md-4">Observacion</label>
+							<div id="lobservacion" class="col-sm-8">
+								
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+					<button type="button" class="btn btn-lg btn-primary pull-right" id="confirmar">Confirmar</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endblock %}
+{% block scripts %}
+<script src="/media/js/jquery.msgbox.min.js"></script>
+<script>
+$(document).ready(function(){	
+	$("#receptores").hide();
+	$("#resumen").hide();
+	$("#id_receptor").hide();
+
+
+	var sinop  = "<option value='0'>Seleccione una regi&oacute;n</option>";
+	var options = $("select#id_region").html();
+	options = sinop + options;
+	$("select#id_region").html(options);
+
+	sinop  = "<option value='0'>Seleccione una provincia</option>";
+	$("select#id_provincia").html(sinop);
+	$("select#id_provincia").attr('disabled',true);
+
+	sinop  = "<option value='0'>Seleccione una comuna</option>";
+	$("select#id_comuna").html(sinop);
+	$("select#id_comuna").attr('disabled',true);
+
+	sinop = "<option value='0'>Seleccione una Jurisdicci&oacute;n</option>";
+	options = $("select#id_jurisdiccion").html();
+	options = sinop + options;
+	$("select#id_jurisdiccion").html(options);
+	
+	sinop = "<option value='0'>Seleccione un tribunal</option>";
+	$("select#id_tribunalOrigen").html(sinop);
+	$("select#id_tribunalOrigen").attr('disabled',true);
+
+	sinop = "<option value='0'>Seleccione un tipo de diligencia</option>";
+	options = $("select#id_tipoDiligencia").html();
+	options = sinop + options;
+	$("select#id_tipoDiligencia").html(options);	
+
+
+	$("select#id_region").change(function(event){
+		if ($(this).val() == 0){
+			$("select#id_provincia").attr('disabled',true);
+			$("select#id_comuna").attr('disabled',true);
+			return;
+		}
+		else{
+			var url = "/region/" + $(this).val() + "/provincias/";
+			$("select#id_provincia").load(url);
+			$("select#id_provincia option:first").attr('selected', 'selected');
+			$("select#id_provincia").attr('disabled',false);
+			setTimeout(function(){
+				url = "/provincia/" + $("select#id_region option:selected").val() + "1/comunas/";
+				$("select#id_comuna").load(url);
+				$("select#id_comuna").attr('disabled',false);
+				setTimeout(function(){
+					url = "/comuna/" + $("select#id_region option:selected").val() + "101/tribunales/";
+					$("select#id_tribunal").load(url);
+					$("select#id_tribunal").attr('disabled', false);
+				},0);
+			},0);
+		}
+	});
+
+	$("select#id_provincia").change(function(event) {
+		var url = "/provincia/" + $(this).val() + "/comunas/";
+		$("select#id_comuna").load(url);
+		$("select#id_comuna").attr('disabled',false);
+	});
+
+	$("select#id_comuna").change(function(event){
+		var url = "/comuna/" + $(this).val() + "/tribunales/";
+		$("select#id_tribunal").load(url);
+		$("select#id_tribunal").attr('disabled', false);
+	});
+
+	$("select#id_jurisdiccion").change(function(event){
+		if ($(this).val() == 0){
+			$("select#id_tribunalOrigen").attr('disabled',true);
+			return;
+		}
+		else{
+			var url = "/jurisdiccion/" + $(this).val() + "/tribunales/";
+			$("select#id_tribunalOrigen").load(url);
+			$("select#id_tribunalOrigen option:first").attr('selected', 'selected');
+			$("select#id_tribunalOrigen").attr('disabled',false);
+		}
+	});
+
+	$("select#id_tribunalOrigen").change(function(event){
+		var url = "/nuevacausa/"+$(this).val()+"/";
+		$("#div_table_receptores").load(url);
+	});
+
+	$("li#1").click(function(){
+		$("#formcausa").show();
+		$("#receptores").hide();
+		$("#resumen").hide();
+		$("li#1").attr("class","active");
+		$("li#2").removeAttr("class");
+		$("li#3").removeAttr("class");
+	});
+	$("li#2").click(function(){
+		if($("#id_ncausa").val()=="" || $("#id_region").val()==0 || $("#id_direccion").val()=="" || $("#id_tribunalOrigen").val()==0 || $("#id_tipoDiligencia").val()==0){
+			$.msgbox("<div class='alert alert-warning'>Se deben completar los campos para continuar</div>");
+			
+		}else{
+
+			$("#formcausa").hide();
+			$("#receptores").show();
+			$("#resumen").hide();
+			$("li#2").attr("class","active");
+			$("li#1").removeAttr("class");
+			$("li#3").removeAttr("class");
+		}
+	});
+	$("li#3").click(function(){
+		if($("#id_receptor").val()==""){
+			$.msgbox("<div class='alert alert-warning'>Se debe asignar un receptor</div>");
+		}else{
+
+			$("#formcausa").hide();
+			$("#receptores").hide();
+			$("#resumen").show();
+			$("li#3").attr("class","active");
+			$("li#1").removeAttr("class");
+			$("li#2").removeAttr("class");
+		}
+	});
+
+	$("#next1").click(function(){
+		
+		if($("#id_ncausa").val()=="" || $("#id_region").val()==0 || $("#id_direccion").val()=="" || $("#id_tribunalOrigen").val()==0 || $("#id_tipoDiligencia").val()==0){
+			$.msgbox("<div class='alert alert-warning'>Se deben completar los campos para continuar</div>");
+			
+		}
+		else{
+			$("#formcausa").hide();
+			$("#receptores").show();
+			$("li#2").attr("class","active");
+			$("li#1").removeAttr("class");
+			$("h4#lreceptores").html("Lista de Receptores del Tribunal "+$("select#id_tribunalOrigen option:selected").text());
+		}
+	});
+
+	$("#confirmar").click(function(){
+		$("#id_receptor").removeAttr("disabled");
+		$.msgbox("<div class='alert alert-success'>Se ha creado correctamente la causa</div>", {type: "info"});
+		$("#formcausa").delay(3500).submit();
+	})
+
+});
+</script>
+{% endblock %}

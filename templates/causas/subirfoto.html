@@ -1,0 +1,560 @@
+<h4>Suba fotos de la diligencia.</h4>
+
+{%if fotos %}
+	<div class='row hidden-sm hidden-xs'>
+	    <div class='col-md-12'>
+			<div class="carousel slide media-carousel" id="media">
+				<div class="carousel-inner">
+					<div class="item active">
+						<div class="row">
+							<div class="col-md-3">
+								{% if fotos.0.foto %}
+									<a class="thumbnail" href="#"><img alt="" id="imagen_{{fotos.0.id}}" src="{{fotos.0.foto.url}}"></a>
+									<div style="margin-top: -65px;">
+										<button id="boton_rotar_{{fotos.0.id}}" onclick="rotar_imagen({{fotos.0.id}});" type="button" class="btn btn-default" style="margin-left: 7px; margin-bottom: 5px;">
+											<span class="glyphicon glyphicon-repeat"></span>
+										</button>
+									</div>
+								{%endif%}
+							</div>
+							<div class="col-md-3">
+								{% if fotos.1.foto %}
+									<a class="thumbnail" href="#"><img alt="" id="imagen_{{fotos.1.id}}" src="{{fotos.1.foto.url}}"></a>
+									<div style="margin-top: -65px;">
+										<button id="boton_rotar_{{fotos.1.id}}" onclick="rotar_imagen({{fotos.1.id}});" type="button" class="btn btn-default" style="margin-left: 7px; margin-bottom: 5px;">
+											<span class="glyphicon glyphicon-repeat"></span>
+										</button>
+									</div>
+								{%endif%}
+							</div>
+							<div class="col-md-3">
+								{% if fotos.2.foto %}
+									<a class="thumbnail" href="#"><img alt="" id="imagen_{{fotos.2.id}}" src="{{fotos.2.foto.url}}"></a>
+									<div style="margin-top: -65px;">
+										<button id="boton_rotar_{{fotos.2.id}}" onclick="rotar_imagen({{fotos.2.id}});" type="button" class="btn btn-default" style="margin-left: 7px; margin-bottom: 5px;">
+											<span class="glyphicon glyphicon-repeat"></span>
+										</button>
+									</div>
+								{%endif%}
+							</div>
+							<div class="col-md-3">
+								{% if fotos.3.foto %}
+									<a class="thumbnail" href="#"><img alt="" id="imagen_{{fotos.3.id}}" src="{{fotos.3.foto.url}}"></a>
+									<div style="margin-top: -65px;">
+										<button id="boton_rotar_{{fotos.3.id}}" onclick="rotar_imagen({{fotos.3.id}});" type="button" class="btn btn-default" style="margin-left: 7px; margin-bottom: 5px;">
+											<span class="glyphicon glyphicon-repeat"></span>
+										</button>
+									</div>
+								{%endif%}
+							</div>
+						</div>
+					</div>
+					{% if fotos|length > 4%}
+						<div class="item">
+							<div class="row">
+								<div class="col-md-3">
+									{% if fotos.4.foto %}
+										<a class="thumbnail" href="#"><img alt="" id="imagen_{{fotos.4.id}}" src="{{fotos.4.foto.url}}"></a>
+										<div style="margin-top: -65px;">
+											<button id="boton_rotar_{{fotos.4.id}}" onclick="rotar_imagen({{fotos.4.id}});" type="button" class="btn btn-default" style="margin-left: 7px; margin-bottom: 5px;">
+												<span class="glyphicon glyphicon-repeat"></span>
+											</button>
+										</div>
+									{%endif%}
+								</div>
+								<div class="col-md-3">
+									{% if fotos.5.foto %}
+										<a class="thumbnail" href="#"><img alt="" id="imagen_{{fotos.5.id}}" src="{{fotos.5.foto.url}}"></a>
+										<div style="margin-top: -65px;">
+											<button id="boton_rotar_{{fotos.5.id}}" onclick="rotar_imagen({{fotos.5.id}});" type="button" class="btn btn-default" style="margin-left: 7px; margin-bottom: 5px;">
+												<span class="glyphicon glyphicon-repeat"></span>
+											</button>
+										</div>
+									{%endif%}
+								</div>
+								<div class="col-md-3">
+									{% if fotos.6.foto %}
+										<a class="thumbnail" href="#"><img alt="" id="imagen_{{fotos.6.id}}" src="{{fotos.6.foto.url}}"></a>
+										<div style="margin-top: -65px;">
+											<button id="boton_rotar_{{fotos.6.id}}" onclick="rotar_imagen({{fotos.6.id}});" type="button" class="btn btn-default" style="margin-left: 7px; margin-bottom: 5px;">
+												<span class="glyphicon glyphicon-repeat"></span>
+											</button>
+										</div>
+									{%endif%}
+								</div>
+								<div class="col-md-3">
+									{% if fotos.7.foto %}
+										<a class="thumbnail" href="#"><img alt="" id="imagen_{{fotos.7.id}}" src="{{fotos.7.foto.url}}"></a>
+										<div style="margin-top: -65px;">
+											<button id="boton_rotar_{{fotos.7.id}}" onclick="rotar_imagen({{fotos.7.id}});" type="button" class="btn btn-default" style="margin-left: 7px; margin-bottom: 5px;">
+												<span class="glyphicon glyphicon-repeat"></span>
+											</button>
+										</div>
+									{%endif%}
+								</div>
+							</div>
+						</div>
+					{%endif%}
+					{% if fotos|length > 8%}
+						<div class="item">
+							<div class="row">
+								<div class="col-md-3">
+									{% if fotos.8.foto %}
+										<a class="thumbnail" href="#"><img alt="" id="imagen_{{fotos.8.id}}" src="{{fotos.8.foto.url}}"></a>
+										<div style="margin-top: -65px;">
+											<button id="boton_rotar_{{fotos.8.id}}" onclick="rotar_imagen({{fotos.8.id}});" type="button" class="btn btn-default" style="margin-left: 7px; margin-bottom: 5px;">
+												<span class="glyphicon glyphicon-repeat"></span>
+											</button>
+										</div>
+									{%endif%}
+								</div>
+								<div class="col-md-3">
+									{% if fotos.9.foto %}
+										<a class="thumbnail" href="#"><img alt="" id="imagen_{{fotos.9.id}}" src="{{fotos.9.foto.url}}"></a>
+										<div style="margin-top: -65px;">
+											<button id="boton_rotar_{{fotos.9.id}}" onclick="rotar_imagen({{fotos.9.id}});" type="button" class="btn btn-default" style="margin-left: 7px; margin-bottom: 5px;">
+												<span class="glyphicon glyphicon-repeat"></span>
+											</button>
+										</div>
+									{%endif%}
+								</div>
+								<div class="col-md-3">
+									{% if fotos.10.foto %}
+										<a class="thumbnail" href="#"><img alt="" id="imagen_{{fotos.10.id}}" src="{{fotos.10.foto.url}}"></a>
+										<div style="margin-top: -65px;">
+											<button id="boton_rotar_{{fotos.10.id}}" onclick="rotar_imagen({{fotos.10.id}});" type="button" class="btn btn-default" style="margin-left: 7px; margin-bottom: 5px;">
+												<span class="glyphicon glyphicon-repeat"></span>
+											</button>
+										</div>
+									{%endif%}
+								</div>
+								<div class="col-md-3">
+									{% if fotos.11.foto %}
+										<a class="thumbnail" href="#"><img alt="" id="imagen_{{fotos.11.id}}" src="{{fotos.11.foto.url}}"></a>
+										<div style="margin-top: -65px;">
+											<button id="boton_rotar_{{fotos.11.id}}" onclick="rotar_imagen({{fotos.11.id}});" type="button" class="btn btn-default" style="margin-left: 7px; margin-bottom: 5px;">
+												<span class="glyphicon glyphicon-repeat"></span>
+											</button>
+										</div>
+									{%endif%}
+								</div>
+							</div>
+						</div>
+					{%endif%}
+					{% if fotos|length > 12%}
+						<div class="item">
+							<div class="row">
+								<div class="col-md-3">
+									{% if fotos.12.foto %}
+										<a class="thumbnail" href="#"><img alt="" id="imagen_{{fotos.12.id}}" src="{{fotos.12.foto.url}}"></a>
+										<div style="margin-top: -65px;">
+											<button id="boton_rotar_{{fotos.12.id}}" onclick="rotar_imagen({{fotos.12.id}});" type="button" class="btn btn-default" style="margin-left: 7px; margin-bottom: 5px;">
+												<span class="glyphicon glyphicon-repeat"></span>
+											</button>
+										</div>
+									{%endif%}
+								</div>
+								<div class="col-md-3">
+									{% if fotos.13.foto %}
+										<a class="thumbnail" href="#"><img alt="" id="imagen_{{fotos.13.id}}" src="{{fotos.13.foto.url}}"></a>
+										<div style="margin-top: -65px;">
+											<button id="boton_rotar_{{fotos.13.id}}" onclick="rotar_imagen({{fotos.13.id}});" type="button" class="btn btn-default" style="margin-left: 7px; margin-bottom: 5px;">
+												<span class="glyphicon glyphicon-repeat"></span>
+											</button>
+										</div>
+									{%endif%}
+								</div>
+								<div class="col-md-3">
+									{% if fotos.14.foto %}
+										<a class="thumbnail" href="#"><img alt="" id="imagen_{{fotos.14.id}}" src="{{fotos.14.foto.url}}"></a>
+										<div style="margin-top: -65px;">
+											<button id="boton_rotar_{{fotos.14.id}}" onclick="rotar_imagen({{fotos.14.id}});" type="button" class="btn btn-default" style="margin-left: 7px; margin-bottom: 5px;">
+												<span class="glyphicon glyphicon-repeat"></span>
+											</button>
+										</div>
+									{%endif%}
+								</div>
+								<div class="col-md-3">
+								</div>
+							</div>
+						</div>
+					{%endif%}
+
+				</div>
+				<a data-slide="prev" href="#media" class="img-circle left carousel-control">‹</a>
+				<a data-slide="next" href="#media" class="img-circle right carousel-control">›</a>
+			</div>                          
+	    </div>
+	</div>
+	<div class='row visible-xs visible-sm hidden-md hidden-lg'>
+	    <div class='col-md-12'>
+			<div class="carousel slide media-carousel" id="media_small">
+				<div class="carousel-inner">
+					{% if fotos.0.foto %}
+					<div class="item active">
+						<div class="row">
+							<div class="col-sm-12 col-xs-12">
+								{% if fotos.0.foto %}
+									<a class="thumbnail" href="#"><img alt="" id="imagen_small_{{fotos.0.id}}" src="{{fotos.0.foto.url}}"></a>
+									<div style="margin-top: -65px;">
+										<button id="boton_rotar_small_{{fotos.0.id}}" onclick="rotar_imagen_small({{fotos.0.id}});" type="button" class="btn btn-default" style="margin-left: 7px; margin-bottom: 5px;">
+											<span class="glyphicon glyphicon-repeat"></span>
+										</button>
+									</div>
+								{%endif%}
+							</div>
+						</div>
+					</div>
+					{%endif%}
+					{% if fotos.1.foto %}
+					<div class="item">
+						<div class="row">
+							<div class="col-sm-12 col-xs-12">
+								{% if fotos.1.foto %}
+									<a class="thumbnail" href="#"><img alt="" id="imagen_small_{{fotos.1.id}}" src="{{fotos.1.foto.url}}"></a>
+									<div style="margin-top: -65px;">
+										<button id="boton_rotar_small_{{fotos.1.id}}" onclick="rotar_imagen_small({{fotos.1.id}});" type="button" class="btn btn-default" style="margin-left: 7px; margin-bottom: 5px;">
+											<span class="glyphicon glyphicon-repeat"></span>
+										</button>
+									</div>
+								{%endif%}
+							</div>
+						</div>
+					</div>
+					{%endif%}
+					{% if fotos.2.foto %}
+					<div class="item">
+						<div class="row">
+							<div class="col-sm-12 col-xs-12">
+								{% if fotos.2.foto %}
+									<a class="thumbnail" href="#"><img alt="" id="imagen_small_{{fotos.2.id}}" src="{{fotos.2.foto.url}}"></a>
+									<div style="margin-top: -65px;">
+										<button id="boton_rotar_small_{{fotos.2.id}}" onclick="rotar_imagen_small({{fotos.2.id}});" type="button" class="btn btn-default" style="margin-left: 7px; margin-bottom: 5px;">
+											<span class="glyphicon glyphicon-repeat"></span>
+										</button>
+									</div>
+								{%endif%}
+							</div>
+						</div>
+					</div>
+					{%endif%}
+					{% if fotos.3.foto %}
+					<div class="item">
+						<div class="row">
+							<div class="col-sm-12 col-xs-12">
+								{% if fotos.3.foto %}
+									<a class="thumbnail" href="#"><img alt="" id="imagen_small_{{fotos.3.id}}" src="{{fotos.3.foto.url}}"></a>
+									<div style="margin-top: -65px;">
+										<button id="boton_rotar_small_{{fotos.3.id}}" onclick="rotar_imagen_small({{fotos.3.id}});" type="button" class="btn btn-default" style="margin-left: 7px; margin-bottom: 5px;">
+											<span class="glyphicon glyphicon-repeat"></span>
+										</button>
+									</div>
+								{%endif%}
+							</div>
+						</div>
+					</div>
+					{%endif%}
+					{% if fotos.4.foto %}
+					<div class="item">
+						<div class="row">
+							<div class="col-sm-12 col-xs-12">
+								{% if fotos.4.foto %}
+									<a class="thumbnail" href="#"><img alt="" id="imagen_small_{{fotos.4.id}}" src="{{fotos.4.foto.url}}"></a>
+									<div style="margin-top: -65px;">
+										<button id="boton_rotar_small_{{fotos.4.id}}" onclick="rotar_imagen_small({{fotos.4.id}});" type="button" class="btn btn-default" style="margin-left: 7px; margin-bottom: 5px;">
+											<span class="glyphicon glyphicon-repeat"></span>
+										</button>
+									</div>
+								{%endif%}
+							</div>
+						</div>
+					</div>
+					{%endif%}
+					{% if fotos.5.foto %}
+					<div class="item">
+						<div class="row">
+							<div class="col-sm-12 col-xs-12">
+								{% if fotos.5.foto %}
+									<a class="thumbnail" href="#"><img alt="" id="imagen_small_{{fotos.5.id}}" src="{{fotos.5.foto.url}}"></a>
+									<div style="margin-top: -65px;">
+										<button id="boton_rotar_small_{{fotos.5.id}}" onclick="rotar_imagen_small({{fotos.5.id}});" type="button" class="btn btn-default" style="margin-left: 7px; margin-bottom: 5px;">
+											<span class="glyphicon glyphicon-repeat"></span>
+										</button>
+									</div>
+								{%endif%}
+							</div>
+						</div>
+					</div>
+					{%endif%}
+					{% if fotos.6.foto %}
+					<div class="item">
+						<div class="row">
+							<div class="col-sm-12 col-xs-12">
+								{% if fotos.6.foto %}
+									<a class="thumbnail" href="#"><img alt="" id="imagen_small_{{fotos.6.id}}" src="{{fotos.6.foto.url}}"></a>
+									<div style="margin-top: -65px;">
+										<button id="boton_rotar_small_{{fotos.6.id}}" onclick="rotar_imagen_small({{fotos.6.id}});" type="button" class="btn btn-default" style="margin-left: 7px; margin-bottom: 5px;">
+											<span class="glyphicon glyphicon-repeat"></span>
+										</button>
+									</div>
+								{%endif%}
+							</div>
+						</div>
+					</div>
+					{%endif%}
+					{% if fotos.7.foto %}
+					<div class="item">
+						<div class="row">
+							<div class="col-sm-12 col-xs-12">
+								{% if fotos.7.foto %}
+									<a class="thumbnail" href="#"><img alt="" id="imagen_small_{{fotos.7.id}}" src="{{fotos.7.foto.url}}"></a>
+									<div style="margin-top: -65px;">
+										<button id="boton_rotar_small_{{fotos.7.id}}" onclick="rotar_imagen_small({{fotos.7.id}});" type="button" class="btn btn-default" style="margin-left: 7px; margin-bottom: 5px;">
+											<span class="glyphicon glyphicon-repeat"></span>
+										</button>
+									</div>
+								{%endif%}
+							</div>
+						</div>
+					</div>
+					{%endif%}
+					{% if fotos.8.foto %}
+					<div class="item">
+						<div class="row">
+							<div class="col-sm-12 col-xs-12">
+								{% if fotos.8.foto %}
+									<a class="thumbnail" href="#"><img alt="" id="imagen_small_{{fotos.8.id}}" src="{{fotos.8.foto.url}}"></a>
+									<div style="margin-top: -65px;">
+										<button id="boton_rotar_small_{{fotos.8.id}}" onclick="rotar_imagen_small({{fotos.8.id}});" type="button" class="btn btn-default" style="margin-left: 7px; margin-bottom: 5px;">
+											<span class="glyphicon glyphicon-repeat"></span>
+										</button>
+									</div>
+								{%endif%}
+							</div>
+						</div>
+					</div>
+					{%endif%}
+					{% if fotos.9.foto %}
+					<div class="item">
+						<div class="row">
+							<div class="col-sm-12 col-xs-12">
+								{% if fotos.9.foto %}
+									<a class="thumbnail" href="#"><img alt="" id="imagen_small_{{fotos.9.id}}" src="{{fotos.9.foto.url}}"></a>
+									<div style="margin-top: -65px;">
+										<button id="boton_rotar_small_{{fotos.9.id}}" onclick="rotar_imagen_small({{fotos.9.id}});" type="button" class="btn btn-default" style="margin-left: 7px; margin-bottom: 5px;">
+											<span class="glyphicon glyphicon-repeat"></span>
+										</button>
+									</div>
+								{%endif%}
+							</div>
+						</div>
+					</div>
+					{%endif%}
+					{% if fotos.10.foto %}
+					<div class="item">
+						<div class="row">
+							<div class="col-sm-12 col-xs-12">
+								{% if fotos.10.foto %}
+									<a class="thumbnail" href="#"><img alt="" id="imagen_small_{{fotos.10.id}}" src="{{fotos.10.foto.url}}"></a>
+									<div style="margin-top: -65px;">
+										<button id="boton_rotar_small_{{fotos.10.id}}" onclick="rotar_imagen_small({{fotos.10.id}});" type="button" class="btn btn-default" style="margin-left: 7px; margin-bottom: 5px;">
+											<span class="glyphicon glyphicon-repeat"></span>
+										</button>
+									</div>
+								{%endif%}
+							</div>
+						</div>
+					</div>
+					{%endif%}
+					{% if fotos.11.foto %}
+					<div class="item">
+						<div class="row">
+							<div class="col-sm-12 col-xs-12">
+								{% if fotos.11.foto %}
+									<a class="thumbnail" href="#"><img alt="" id="imagen_small_{{fotos.11.id}}" src="{{fotos.11.foto.url}}"></a>
+									<div style="margin-top: -65px;">
+										<button id="boton_rotar_small_{{fotos.11.id}}" onclick="rotar_imagen_small({{fotos.11.id}});" type="button" class="btn btn-default" style="margin-left: 7px; margin-bottom: 5px;">
+											<span class="glyphicon glyphicon-repeat"></span>
+										</button>
+									</div>
+								{%endif%}
+							</div>
+						</div>
+					</div>
+					{%endif%}
+					{% if fotos.12.foto %}
+					<div class="item">
+						<div class="row">
+							<div class="col-sm-12 col-xs-12">
+								{% if fotos.12.foto %}
+									<a class="thumbnail" href="#"><img alt="" id="imagen_small_{{fotos.12.id}}" src="{{fotos.12.foto.url}}"></a>
+									<div style="margin-top: -65px;">
+										<button id="boton_rotar_small_{{fotos.12.id}}" onclick="rotar_imagen_small({{fotos.12.id}});" type="button" class="btn btn-default" style="margin-left: 7px; margin-bottom: 5px;">
+											<span class="glyphicon glyphicon-repeat"></span>
+										</button>
+									</div>
+								{%endif%}
+							</div>
+						</div>
+					</div>
+					{%endif%}
+					{% if fotos.13.foto %}
+					<div class="item">
+						<div class="row">
+							<div class="col-sm-12 col-xs-12">
+								{% if fotos.13.foto %}
+									<a class="thumbnail" href="#"><img alt="" id="imagen_small_{{fotos.13.id}}" src="{{fotos.13.foto.url}}"></a>
+									<div style="margin-top: -65px;">
+										<button id="boton_rotar_small_{{fotos.13.id}}" onclick="rotar_imagen_small({{fotos.13.id}});" type="button" class="btn btn-default" style="margin-left: 7px; margin-bottom: 5px;">
+											<span class="glyphicon glyphicon-repeat"></span>
+										</button>
+									</div>
+								{%endif%}
+							</div>
+						</div>
+					</div>
+					{%endif%}
+					{% if fotos.14.foto %}
+					<div class="item">
+						<div class="row">
+							<div class="col-sm-12 col-xs-12">
+								{% if fotos.14.foto %}
+									<a class="thumbnail" href="#"><img alt="" id="imagen_small_{{fotos.14.id}}" src="{{fotos.14.foto.url}}"></a>
+									<div style="margin-top: -65px;">
+										<button id="boton_rotar_small_{{fotos.14.id}}" onclick="rotar_imagen_small({{fotos.14.id}});" type="button" class="btn btn-default" style="margin-left: 7px; margin-bottom: 5px;">
+											<span class="glyphicon glyphicon-repeat"></span>
+										</button>
+									</div>
+								{%endif%}
+							</div>
+						</div>
+					</div>
+					{%endif%}
+				</div>
+				<a data-slide="prev" href="#media_small" class="img-circle left carousel-control">‹</a>
+				<a data-slide="next" href="#media_small" class="img-circle right carousel-control">›</a>
+			</div>                          
+	    </div>
+	</div>
+{%endif%}
+
+<div class="row">
+	<div class="col-md-8">
+		<form name="foto_diligencia" method="POST" class="form-horizontal" role="form" enctype="multipart/form-data" data-ajax="false">
+			{%csrf_token%}
+			{% if form.errors %}
+			    <p class="help-block">
+			    {% if form.errors.items|length >= 1 %} Por favor, corrija los siguientes errores.{% endif %}
+			    </p>
+			{% endif %}
+			<div class="form-group">
+				<label for="tipo_diligencia" class="col-md-4 col-sm-4">Foto
+					<p class="help-block">Agregue una foto de la diligencia.</p>
+				</label>
+				<div class="col-md-6 col-sm-6">
+					{{form.foto}}
+				</div>
+				<div>
+					<img id="spinner" src="/media/images/spinner.gif" alt="" width="25px" style="display:none;">
+				</div>
+			</div>
+		</form>
+	</div>
+	<div class="col-md-4">
+		<div id="preview"></div>
+	</div>
+</div>
+<script src="/media/js/jquery.form.js"></script>
+<script>
+	$(function() {
+	    $("#id_foto").on("change", function()
+	    {
+	        var files = !!this.files ? this.files : [];
+	        if (!files.length || !window.FileReader) return; // no file selected, or no FileReader support
+	 
+	        if (/^image/.test( files[0].type)){ // only image file
+	           var options = {
+					url: '/causa/{{idcausa}}/diligenciar/foto/registrar/',
+					success: function(data) {
+						$("#spinner").attr('style', 'display:none;');
+						if(data == '0'){
+							alert("La foto se ha subido correctamente.");
+							var url = '/causa/{{idcausa}}/diligenciar/foto/';
+							$("#detalle_causa").load(url);
+						}
+						else{
+				            alert(data);				
+						}
+					},
+					statusCode: {
+						502: function(){
+							alert("Ha ocurrido un error al subir la foto. Por favor, vuelva a intentarlo. 502");
+						}
+					},
+					error: function (XMLHttpRequest, textStatus, errorThrown) {
+						alert("Ha ocurrido un error al subir la foto. Por favor, vuelva a intentarlo. error");
+		                console.log(XMLHttpRequest);
+		                console.log(textStatus);
+		                console.log(errorThrown);
+	        		},
+	        		timeout: 200000
+				};
+
+			$("#spinner").removeAttr('style');
+	        $("form[name='foto_diligencia']").ajaxSubmit(options);
+	        }
+	    });
+
+
+	});
+
+	function rotar_imagen(imagen){
+		$("#boton_rotar_"+imagen).attr('disabled', 'disabled');
+		$.ajax({
+    		url: '/imagen/'+imagen+'/rotar/',
+    		type: 'POST',
+    		data: {csrfmiddlewaretoken: '{{ csrf_token }}'},
+    		success: function(data){    			
+    			var d = new Date();
+				$("#imagen_"+imagen).attr('src', data+'?'+d.getTime());
+				setTimeout(function() {
+					$("#boton_rotar_"+imagen).removeAttr('disabled');
+				}, 1000);
+    		}
+    	});
+	};
+
+	function rotar_imagen_small(imagen){
+		$("#boton_rotar_small_"+imagen).attr('disabled', 'disabled');
+		$.ajax({
+    		url: '/imagen/'+imagen+'/rotar/',
+    		type: 'POST',
+    		data: {csrfmiddlewaretoken: '{{ csrf_token }}'},
+    		success: function(data){    			
+    			var d = new Date();
+				$("#imagen_small_"+imagen).attr('src', data+'?'+d.getTime());
+				setTimeout(function() {
+					$("#boton_rotar_small_"+imagen).removeAttr('disabled');
+				}, 1000);
+    		}
+    	});
+	};
+
+
+	$(document).ready(function() {
+  		$('#media').carousel({
+	    	interval: 100,
+			wrap: false, 
+	  	});
+
+	  	$('#media_small').carousel({
+	    	interval: 100,
+			wrap: false, 
+	  	});
+
+		$(".carousel-control").click(function(){
+	 		$('#media').carousel('pause');
+	 		$('#media_small').carousel('pause');
+	  	});
+	});
+</script>

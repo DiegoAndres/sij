@@ -1,0 +1,40 @@
+{% extends 'base_nonav.html' %}
+{% load bootstrap3 %}
+{%block title%}Inicio de Sesi&oacute;n | SIJ{%endblock%}
+{%block content%}
+<div class="row">
+	<div class="col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 col-xs-10 col-xs-offset-1">
+		<img src="/media/images/logo-SIJ.png" alt="" style="width: 70%; margin-left:15%; margin-bottom: 50px;" >
+		<div class="row">
+			<form action="." class="form-horizontal" method="POST" role="form">
+				{% csrf_token %}
+				<br>
+				<div class="row">
+					<div class="text-center">
+						<b>{{mensaje}}</b>	
+					</div>
+					<div class="form-group form-group-lg">
+						<div class="col-sm-7 col-xs-12">
+							{{ form.username }}
+						</div>
+					</div>
+					<div class="form-group form-group-lg">
+						<div class="col-sm-7 col-xs-12">
+							{{form.password}}
+						</div>
+					</div>
+					<div class="form-group form-group-lg">
+						<div class="col-sm-7 col-xs-12">
+	            			<button type="submit" class="btn btn-action btn-lg btn-primary btn-block">Iniciar Sesión</button>
+						</div>
+		            	<div class="text-center">
+							<a href="{% url 'vista_recuperar_contrasena' %}">¿Olvidó su contaseña?</a>
+							<a href="{% url 'vista_registro' %}">Registrarse</a>
+		            	</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+{%endblock%}
