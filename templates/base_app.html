@@ -10,22 +10,17 @@
 	<link rel="shortcut icon" type="image/x-icon" href="/media/images/favicon/favicon.ico">
 	<link href='http://fonts.googleapis.com/css?family=Roboto:400&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
 	<title>{%block title%}{%endblock%}</title>
+	<link rel="stylesheet" type="text/css" href="/media/css/style_app.css">
+	<link rel="stylesheet" type="text/css" media="all" href="/media/css/daterangepicker-bs3.css" />
 	{%block css%}
-		<link rel="stylesheet" type="text/css" href="/media/css/style_app.css">
-		<link rel="stylesheet" type="text/css" media="all" href="/media/css/daterangepicker-bs3.css" />
 	{%endblock%}
 </head>
 <body style="padding-top: 50px;">
-	
 	<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
 		<div class="container-fluid">
 			<div class="navbar-header">
 				{% block menu%}
-				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="">
-					<span class="glyphicon glyphicon-filter"></span>
-				</button>
 				{%endblock%}
-			  
 			  	<a class="navbar-brand" href="{% url 'redirect_usuario' %}">
 					<img src="/media/images/logo-SIJ.png" alt="" height="40px;" style="margin-right: 10px;">
 				</a>
@@ -35,11 +30,8 @@
 			<!-- Collect the nav links, forms, and other content for toggling -->
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav navbar-right">
-			    	<li>
-			    		<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".filtros-causas" style="display: block;">
-							<span class="glyphicon glyphicon-filter"></span>
-						</button>
-					</li>
+					{%block menu1%}
+					{%endblock%}
 			  	</ul>
 			</div><!-- /.navbar-collapse -->
 		</div><!-- /.container-fluid -->
