@@ -1,104 +1,103 @@
-<div class="filtros">
-	{{error}}
-	<div class="row">    
-		<div class="hidden-xs hidden-sm col-md-5">
-			<h4>Listado de causas</h4>
-		</div>
-		<div class="col-md-2 col-sm-4 hidden-xs">
-			<div class="pull-right">
-				<div class="btn-group filter-panel">
-				    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-				    	{% if form.estado.value == 'pendiente'%}
-				    		Pendientes
-				    	{%elif form.estado.value == 'en ruta'%}
-				    		En ruta
-				    	{%elif form.estado.value == 'diligenciada'%}
-				    		Diligenciadas
-				    	{%elif form.estado.value == ''%}
-				    		Todas
-				    	{%elif form.estado.value == 'incompleta'%}
-				    		Incompletas
-				    	{%else %}
-				    		Filtro
-				    	{%endif%}
+<div class="filtros-causas collapse">
+	<div class="filtros">
+		{{error}}
+		<div class="row">    
+			<div class="col-md-2 col-sm-4 hidden-xs">
+				<div class="pull-right">
+					<div class="btn-group filter-panel">
+					    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+					    	{% if form.estado.value == 'pendiente'%}
+					    		Pendientes
+					    	{%elif form.estado.value == 'en ruta'%}
+					    		En ruta
+					    	{%elif form.estado.value == 'diligenciada'%}
+					    		Diligenciadas
+					    	{%elif form.estado.value == ''%}
+					    		Todas
+					    	{%elif form.estado.value == 'incompleta'%}
+					    		Incompletas
+					    	{%else %}
+					    		Filtro
+					    	{%endif%}
 
-				    	<span class="caret"></span>
-				    </button>
-				    <ul class="dropdown-menu" role="menu">
-				    	<li><a id="incompletas" href="">Incompletas</a></li>
-				    	<li class="divider"></li>
-				    	<li><a id="pendientes" href="">Pendientes</a></li>
-				    	<li><a id="en ruta" href="">En ruta</a></li>
-				    	<li><a id="diligenciadas" href="">Diligenciadas</a></li>
-				    	<li class="divider"></li>
-				    	<li><a id="todas" href="">Todas</a></li>
-				    </ul>
+					    	<span class="caret"></span>
+					    </button>
+					    <ul class="dropdown-menu" role="menu">
+					    	<li><a id="incompletas" href="">Incompletas</a></li>
+					    	<li class="divider"></li>
+					    	<li><a id="pendientes" href="">Pendientes</a></li>
+					    	<li><a id="en ruta" href="">En ruta</a></li>
+					    	<li><a id="diligenciadas" href="">Diligenciadas</a></li>
+					    	<li class="divider"></li>
+					    	<li><a id="todas" href="">Todas</a></li>
+					    </ul>
+					</div>
 				</div>
 			</div>
-		</div>
-		<div class="col-md-5 col-sm-8">
-			<div class="btn-group">
-				<div class="input-group">
-      				<div class="input-group-btn search-panel">
-        				<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-        					<span id="search_concept">
-        						{% if form.searchtype.value == 'fechaingreso'%}
-        							Fecha
-        						{%else%}
-        							N° Causa
-								{%endif%}
-        					</span> <span class="caret"></span>
-        				</button>	
-						<ul class="dropdown-menu" role="menu">
-							<li><a href="">N° Causa</a></li>
-							<li><a href="">Fecha</a></li>
-						</ul>
-  					</div>
-		            <input type="text" class="form-control datepicker" name="search_field" value="{{form.search.value| default:''}}">
-            		<span class="input-group-btn">
-                		<button name="buscar" class="btn btn-default btn-bg" type="button">Buscar</button>
-            		</span>
+			<div class="col-md-5 col-sm-8 col-xs-7">
+				<div class="btn-group">
+					<div class="input-group">
+	      				<div class="input-group-btn search-panel">
+	        				<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+	        					<span id="search_concept">
+	        						{% if form.searchtype.value == 'fechaingreso'%}
+	        							Fecha
+	        						{%else%}
+	        							N° Causa
+									{%endif%}
+	        					</span> <span class="caret"></span>
+	        				</button>	
+							<ul class="dropdown-menu" role="menu">
+								<li><a href="">N° Causa</a></li>
+								<li><a href="">Fecha</a></li>
+							</ul>
+	  					</div>
+			            <input type="text" class="form-control datepicker" name="search_field" value="{{form.search.value| default:''}}">
+	            		<span class="input-group-btn">
+	                		<button name="buscar" class="btn btn-default btn-bg" type="button">Buscar</button>
+	            		</span>
+					</div>
 				</div>
 			</div>
-		</div>
-		<form action="" method="GET" role="form" name="filtro_estado" class="form-horizontal">
-			{{form.estado}}
-			{{form.sort}}
-			{{form.page}}
-			{{form.searchtype}}
-			{{form.search}}		           
-			{{form.startdate}}
-			{{form.enddate}}
-		</form>
-	</div>
-	<div class="row visible-xs">
-		<div class="col-xs-12">
-			<div class="btn-group filter-panel">
-			    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-			    	{% if form.estado.value == 'pendiente'%}
-			    		Pendientes
-			    	{%elif form.estado.value == 'en ruta'%}
-			    		En ruta
-			    	{%elif form.estado.value == 'diligenciada'%}
-			    		Diligenciadas
-			    	{%elif form.estado.value == ''%}
-			    		Todas
-			    	{%elif form.estado.value == 'incompleta'%}
-			    		Incompletas
-			    	{%else %}
-			    		Filtro
-			    	{%endif%}
-			    	<span class="caret"></span>
-			    </button>
-			    <ul class="dropdown-menu" role="menu">
-			    	<li><a id="incompletas" href="">Incompletas</a></li>
-			    	<li class="divider"></li>
-			    	<li><a id="pendientes" href="">Pendientes</a></li>
-			    	<li><a id="en ruta" href="">En ruta</a></li>
-			    	<li><a id="diligenciadas" href="">Diligenciadas</a></li>
-			    	<li class="divider"></li>
-			    	<li><a id="todas" href="">Todas</a></li>
-			    </ul>
+			<form action="" method="GET" role="form" name="filtro_estado" class="form-horizontal">
+				{{form.estado}}
+				{{form.sort}}
+				{{form.page}}
+				{{form.searchtype}}
+				{{form.search}}		           
+				{{form.startdate}}
+				{{form.enddate}}
+			</form>
+			<div class="row visible-xs">
+				<div class="col-xs-3">
+					<div class="btn-group filter-panel">
+					    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+					    	{% if form.estado.value == 'pendiente'%}
+					    		Pendientes
+					    	{%elif form.estado.value == 'en ruta'%}
+					    		En ruta
+					    	{%elif form.estado.value == 'diligenciada'%}
+					    		Diligenciadas
+					    	{%elif form.estado.value == ''%}
+					    		Todas
+					    	{%elif form.estado.value == 'incompleta'%}
+					    		Incompletas
+					    	{%else %}
+					    		Filtro
+					    	{%endif%}
+					    	<span class="caret"></span>
+					    </button>
+					    <ul class="dropdown-menu" role="menu">
+					    	<li><a id="incompletas" href="">Incompletas</a></li>
+					    	<li class="divider"></li>
+					    	<li><a id="pendientes" href="">Pendientes</a></li>
+					    	<li><a id="en ruta" href="">En ruta</a></li>
+					    	<li><a id="diligenciadas" href="">Diligenciadas</a></li>
+					    	<li class="divider"></li>
+					    	<li><a id="todas" href="">Todas</a></li>
+					    </ul>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>

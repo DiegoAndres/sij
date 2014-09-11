@@ -56,10 +56,6 @@ a:hover{
 	color: rgb(0,0,0);
 }
 
-.navbar-fixed-top .navbar-collapse, .navbar-static-top .navbar-collapse, .navbar-fixed-bottom .navbar-collapse {    
-    padding-top: 10px;
-}
-
 /* agregando cosas para enchular el style */
 
 /*.nav-tabs {
@@ -202,6 +198,10 @@ h3, .h3 {
     border-color: rgb(0, 156, 146);*/
 }
 
+form{
+  margin-bottom: 0px;
+}
+
 .form-control:focus {
     border-color: rgb(60, 160, 160);
     outline: 0px none;
@@ -321,6 +321,11 @@ div > #id_rol{
 
 .circle-warning{
     background-color: #f0ad4e;
+}
+
+.container-fluid .row{
+  margin-left: 0px;
+  margin-right: 0px;
 }
 
 .container .jumbotron-thin {    
