@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django import forms
 from django.conf import settings
 from sij.apps.causas.models import Causa,Region,Tribunal, Diligencia, ResultadoDiligencia, Jurisdiccion
@@ -21,17 +22,17 @@ CHOICES_ESTADOS = (('pendiente','Pendientes'),
 					('','Todas'))
 
 class nuevaCausaForm(forms.Form):
-	ncausa = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'required': 'required'}))
-	materia = forms.CharField(widget=forms.Select(choices=CHOICES_MATERIA, attrs={'class':'form-control', 'required': 'required'}))
-	region 		= forms.CharField(widget=forms.Select(choices=CHOICES_REGION, attrs={'class':'form-control', 'required': 'required'}))
-	provincia 	= forms.CharField(widget=forms.Select(attrs={'class':'form-control', 'required': 'required'}))
-	comuna 		= forms.CharField(widget=forms.Select(attrs={'class':'form-control', 'required': 'required'}))
-	direccion 		= forms.CharField(widget=forms.TextInput(attrs={'class' : 'form-control', 'required': 'required'}))
-	jurisdiccion 	= forms.CharField(widget=forms.Select(choices=CHOICES_JURISDICCION, attrs={'class':'form-control', 'required': 'required'}))
-	tribunalOrigen 	= forms.CharField(widget=forms.Select(attrs={'class':'form-control', 'required': 'required'}))
-	tipoDiligencia  = forms.CharField(widget=forms.Select(choices=CHOICES_DILIGENCIA,attrs={'class':'form-control', 'required': 'required'}))
-	observacion = forms.CharField(widget=forms.Textarea(attrs={'class' : 'form-control','style':'height: 30%;'}),required=False)
-	receptor = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'required': 'required', 'Disabled': True}))
+	ncausa = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control input-lg', 'required': 'required', 'placeholder': 'N° de causa'}))
+	materia = forms.CharField(widget=forms.Select(choices=CHOICES_MATERIA, attrs={'class':'form-control input-lg', 'required': 'required'}))
+	region 		= forms.CharField(widget=forms.Select(choices=CHOICES_REGION, attrs={'class':'form-control input-lg', 'required': 'required'}))
+	provincia 	= forms.CharField(widget=forms.Select(attrs={'class':'form-control input-lg', 'required': 'required'}))
+	comuna 		= forms.CharField(widget=forms.Select(attrs={'class':'form-control input-lg', 'required': 'required'}))
+	direccion 		= forms.CharField(widget=forms.TextInput(attrs={'class' : 'form-control input-lg', 'required': 'required', 'placeholder': 'Dirección'}))
+	jurisdiccion 	= forms.CharField(widget=forms.Select(choices=CHOICES_JURISDICCION, attrs={'class':'form-control input-lg', 'required': 'required'}))
+	tribunalOrigen 	= forms.CharField(widget=forms.Select(attrs={'class':'form-control input-lg', 'required': 'required'}))
+	tipoDiligencia  = forms.CharField(widget=forms.Select(choices=CHOICES_DILIGENCIA,attrs={'class':'form-control input-lg', 'required': 'required'}))
+	observacion = forms.CharField(widget=forms.Textarea(attrs={'class' : 'form-control input-lg','style':'height: 30%;', 'placeholder': 'Observación'}),required=False)
+	receptor = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control input-lg', 'required': 'required', 'Disabled': True}))
 
 class receptorForm(forms.Form):
 	idr = forms.IntegerField(widget=forms.TextInput(attrs={'class' : 'form-control', 'required': 'required'}))

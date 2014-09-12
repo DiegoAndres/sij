@@ -1,71 +1,55 @@
-{% extends 'base.html' %}
+{% extends 'base_app.html' %}
 {%load bootstrap3%}
 {% block title%}Abogado | SIJ{%endblock%}
-{% block content %}
-	
+{%block titulo%}Mis Causas{%endblock%}
+{%block menu%}
+	<a class="navbar-toggle collapsed" data-toggle="collapse" data-target=".filtros-causas">
+		<span class="glyphicon glyphicon-filter"></span>
+	</a>
+	<a class="navbar-toggle collapsed" href="{% url 'vista_nueva_causa' %}">
+		<span class="glyphicon glyphicon-plus"></span>
+	</a>
+{%endblock%}
+{%block menu1%}
+	<li>
+		<a class="navbar-toggle collapsed" data-toggle="collapse" data-target=".filtros-causas" style="display: block;">
+			<span class="glyphicon glyphicon-filter"></span>
+		</a>
+	</li>
+	<li>
+		<a class="navbar-toggle collapsed" href="{% url 'vista_nueva_causa' %}" style="display: block;">
+			<span class="glyphicon glyphicon-plus"></span>
+		</a>
+	</li>
+{%endblock%}
+{% block content %}	
 	<div class="row">
-		<div class="panel panel-primary">
-			<div class="panel-heading">
+		<div class="filtros-causas collapse">
+			<div class="filtros">
 				<div class="row">
-					<div class="hidden-xs hidden-sm col-md-3 col-lg-3">
-						<h4>Listado de causas</h4>
-					</div>
-					<div class="hidden-xs col-md-1 col-sm-3 col-lg-3">
-	    				<div class="pull-right">
-							<div class="btn-group filter-panel">
-							    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-							    	{% if form.estado.value == 'pendiente'%}
-							    		Pendientes
-							    	{%elif form.estado.value == 'en ruta'%}
-							    		En ruta
-							    	{%elif form.estado.value == 'diligenciada'%}
-							    		Diligenciadas
-							    	{%elif form.estado.value == 'rechazada'%}
-							    		Rechazadas
-							    	{%elif form.estado.value == ''%}
-							    		Todas
-							    	{%elif form.estado.value == 'incompleta'%}
-							    		Incompletas
-							    	{%else %}
-							    		Filtro
-							    	{%endif%}
-							    	<span class="caret"></span>
-							    </button>
-							    <ul class="dropdown-menu" role="menu">
-							    	<li><a id="incompletas" href="">Incompletas</a></li>
-							    	<li class="divider"></li>
-							    	<li><a id="pendientes" href="">Pendientes</a></li>
-							    	<li><a id="en ruta" href="">En ruta</a></li>
-							    	<li><a id="diligenciadas" href="">Diligenciadas</a></li>
-							    	<li><a id="rechazadas" href="">Rechazadas</a></li>
-							    	<li class="divider"></li>
-							    	<li><a id="todas" href="">Todas</a></li>
-							    </ul>
-							</div>
-	    				</div>
-	    			</div>
-					<div class="col-lg-6 col-md-8">
+					<div class="col-xs-12 col-sm-12">
+						{{error}}
 						<div class="btn-group search-group">
 							<div class="input-group">
-			          				<div class="input-group-btn search-panel">
-			            				<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-			            					<span id="search_concept">
-			            						{% if form.searchtype.value == 'fechaingreso'%}
-			            							Fecha
-			            						{%else%}
-			            							N° Causa
-												{%endif%}
-			            					</span> <span class="caret"></span>
-			            				</button>	
-										<ul class="dropdown-menu" role="menu">
-											<li><a href="">N° Causa</a></li>
-											<li><a href="">Fecha</a></li>
-										</ul>
-			      					</div>
-						            <input type="text" class="form-control datepicker" name="search_field" value="{{form.search.value| default:''}}">
-				            		<span class="input-group-btn">
-				                		<button name="buscar" class="btn btn-default btn-bg" type="button">Buscar</button>
-				            		</span>
+		          				<div class="input-group-btn search-panel">
+		            				<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+		            					<span id="search_concept">
+		            						{% if form.searchtype.value == 'fechaingreso'%}
+		            							Fecha
+		            						{%else%}
+		            							N° Causa
+											{%endif%}
+		            					</span> <span class="caret"></span>
+		            				</button>	
+									<ul class="dropdown-menu" role="menu">
+										<li><a href="">N° Causa</a></li>
+										<li><a href="">Fecha</a></li>
+									</ul>
+		      					</div>
+					            <input type="text" class="form-control datepicker" name="search_field" value="{{form.search.value| default:''}}">
+			            		<span class="input-group-btn">
+			                		<button name="buscar" class="btn btn-default btn-bg" type="button">Buscar</button>
+			            		</span>
 							</div>
 		    			</div>
 		    			<a type="button" href="{% url 'vista_nueva_causa' %}" class="hidden-xs btn btn-primary pull-right">		<span class="glyphicon glyphicon-plus"></span> Causa
@@ -81,8 +65,8 @@
 						{{form.enddate}}
 					</form>
 				</div>
-				<div class="row visible-xs">
-	    			<div class="col-xs-12">
+				<div class="row" style="margin-top: 10px;">
+	    			<div class="col-xs-12 col-sm-12">
 	    				<div class="btn-group filter-panel">
 						    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
 						    	{% if form.estado.value == 'pendiente'%}
@@ -114,13 +98,12 @@
 						    	<li><a id="todas" href="">Todas</a></li>
 						    </ul>
 						</div>
-						<a href="{% url 'vista_nueva_causa' %}">
-							<button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> Causa</button>
-						</a>
 	    			</div>
     			</div>
 			</div>
-			<div class="table-responsive">
+		</div>
+		<div class="row">
+			<div> <!-- class="table-responsive" -->
 				<table class="table table-hover table-striped">
 					<thead>
 						<tr>
@@ -181,17 +164,25 @@
 			</div>
 		</div>
 		{% if causas.paginator.num_pages > 1%}
-			<ul class="pagination pull-right">
-				<li><a onclick="pagina(1)">&laquo;</a></li>
+			<div class="text-center" style="position: fixed; top: 87%; left: 25%;">
+				<ul class="pagination pagination-lg">
+					<li><a onclick="pagina(1)">&laquo;</a></li>
 
-		        {% for p in causas.paginator.page_range%}
-		        <li {%if p = causas.number%}class="active"{%endif%}>
-		        	<a onclick="pagina({{p}})">{{p}}</a>
-		        </li>
-		        {%endfor%}
+			        {% if causas.has_previous%}
+					<li><a onclick="pagina({{causas.previous_page_number}});"><</a></li>
+					{%else%}
+						<li class="disabled"><a href=""><</a></li>
+					{%endif%}
 
-				<li><a onclick="pagina({{causas.paginator.num_pages}})">&raquo;</a></li>
-			</ul>
+					{% if causas.has_next%}
+					<li><a onclick="pagina({{causas.next_page_number}});">></a></li>
+					{%else%}
+						<li class="disabled"><a href="">></a></li>
+					{%endif%}
+
+					<li><a onclick="pagina({{causas.paginator.num_pages}})">&raquo;</a></li>
+				</ul>
+			</div>
 		{%endif%}
 
 		<div class="modal fade" id="modal-id">
