@@ -1,40 +1,8 @@
 <div class="filtros-causas collapse">
 	<div class="filtros">
-		{{error}}
 		<div class="row">    
-			<div class="col-md-2 col-sm-4 hidden-xs">
-				<div class="pull-right">
-					<div class="btn-group filter-panel">
-					    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-					    	{% if form.estado.value == 'pendiente'%}
-					    		Pendientes
-					    	{%elif form.estado.value == 'en ruta'%}
-					    		En ruta
-					    	{%elif form.estado.value == 'diligenciada'%}
-					    		Diligenciadas
-					    	{%elif form.estado.value == ''%}
-					    		Todas
-					    	{%elif form.estado.value == 'incompleta'%}
-					    		Incompletas
-					    	{%else %}
-					    		Filtro
-					    	{%endif%}
-
-					    	<span class="caret"></span>
-					    </button>
-					    <ul class="dropdown-menu" role="menu">
-					    	<li><a id="incompletas" href="">Incompletas</a></li>
-					    	<li class="divider"></li>
-					    	<li><a id="pendientes" href="">Pendientes</a></li>
-					    	<li><a id="en ruta" href="">En ruta</a></li>
-					    	<li><a id="diligenciadas" href="">Diligenciadas</a></li>
-					    	<li class="divider"></li>
-					    	<li><a id="todas" href="">Todas</a></li>
-					    </ul>
-					</div>
-				</div>
-			</div>
-			<div class="col-md-5 col-sm-8 col-xs-7">
+			<div class="col-xs-12 col-sm-12">
+				{{error}}
 				<div class="btn-group">
 					<div class="input-group">
 	      				<div class="input-group-btn search-panel">
@@ -59,57 +27,57 @@
 					</div>
 				</div>
 			</div>
-			<form action="" method="GET" role="form" name="filtro_estado" class="form-horizontal">
-				{{form.estado}}
-				{{form.sort}}
-				{{form.page}}
-				{{form.searchtype}}
-				{{form.search}}		           
-				{{form.startdate}}
-				{{form.enddate}}
-			</form>
-			<div class="row visible-xs">
-				<div class="col-xs-3">
-					<div class="btn-group filter-panel">
-					    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-					    	{% if form.estado.value == 'pendiente'%}
-					    		Pendientes
-					    	{%elif form.estado.value == 'en ruta'%}
-					    		En ruta
-					    	{%elif form.estado.value == 'diligenciada'%}
-					    		Diligenciadas
-					    	{%elif form.estado.value == ''%}
-					    		Todas
-					    	{%elif form.estado.value == 'incompleta'%}
-					    		Incompletas
-					    	{%else %}
-					    		Filtro
-					    	{%endif%}
-					    	<span class="caret"></span>
-					    </button>
-					    <ul class="dropdown-menu" role="menu">
-					    	<li><a id="incompletas" href="">Incompletas</a></li>
-					    	<li class="divider"></li>
-					    	<li><a id="pendientes" href="">Pendientes</a></li>
-					    	<li><a id="en ruta" href="">En ruta</a></li>
-					    	<li><a id="diligenciadas" href="">Diligenciadas</a></li>
-					    	<li class="divider"></li>
-					    	<li><a id="todas" href="">Todas</a></li>
-					    </ul>
-					</div>
+		</div>
+		<div class="row" style="margin-top: 10px;">
+			<div class="col-xs-12 col-sm-12">
+				<form action="" method="GET" role="form" name="filtro_estado" class="form-horizontal">
+					{{form.estado}}
+					{{form.sort}}
+					{{form.page}}
+					{{form.searchtype}}
+					{{form.search}}		           
+					{{form.startdate}}
+					{{form.enddate}}
+				</form>
+				<div class="btn-group filter-panel">
+				    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+				    	{% if form.estado.value == 'pendiente'%}
+				    		Pendientes
+				    	{%elif form.estado.value == 'en ruta'%}
+				    		En ruta
+				    	{%elif form.estado.value == 'diligenciada'%}
+				    		Diligenciadas
+				    	{%elif form.estado.value == ''%}
+				    		Todas
+				    	{%elif form.estado.value == 'incompleta'%}
+				    		Incompletas
+				    	{%else %}
+				    		Filtro
+				    	{%endif%}
+				    	<span class="caret"></span>
+				    </button>
+				    <ul class="dropdown-menu" role="menu">
+				    	<li><a id="incompletas" href="">Incompletas</a></li>
+				    	<li class="divider"></li>
+				    	<li><a id="pendientes" href="">Pendientes</a></li>
+				    	<li><a id="en ruta" href="">En ruta</a></li>
+				    	<li><a id="diligenciadas" href="">Diligenciadas</a></li>
+				    	<li class="divider"></li>
+				    	<li><a id="todas" href="">Todas</a></li>
+				    </ul>
 				</div>
 			</div>
 		</div>
 	</div>
 </div>
 
-	<div class="table-responsive">
+	<div > <!-- class="table-responsive" -->
 		<table class="table table-hover table-striped">
 			<thead>
 				<tr>
 					<th class="col-xs-2 col-sm-2 col-md-2"><a id="dias" href="">Días <span class="hidden-xs">Pendientes</span></a></th>
 					<th class="col-xs-2 col-sm-2 col-md-2"><a id="fecha" href="">Solicitud</a></th>
-					<th class="col-xs-2 col-sm-2 col-md-2"><a id="ncausa" href="">N° Causa</a></th>
+					<th class="col-xs-2 col-sm-2 col-md-2"><a id="ncausa" href="">N° C.</a></th>
 					<th class="col-xs-1 col-sm-1 col-md-1"><a id="estado" href="">Estado</a></th>
 					<th class="col-xs-2 col-sm-2 col-md-2 hidden-xs"><a id="tipodiligencia" href="">Tipo de Diligencia</a></th>
 					<th class="col-xs-3 col-sm-3 col-md-3 hidden-xs">Observación</th>
@@ -169,19 +137,27 @@
 </div>
 
 {% if causas.paginator.num_pages > 1%}
-	<ul class="pagination pull-right">
-		<li><a onclick="pagina(1)">&laquo;</a></li>
+	<div class="text-center" style="position: fixed; top: 87%; left: 25%;">
+		<ul class="pagination pagination-lg">
+			<li><a onclick="pagina(1)">&laquo;</a></li>
 
-        {% for p in causas.paginator.page_range%}
-        <li {%if p = causas.number%}class="active"{%endif%}>
-        	<a onclick="pagina({{p}})">{{p}}</a>
-        </li>
-        {%endfor%}
+			{% if causas.has_previous%}
+			<li><a onclick="pagina({{causas.previous_page_number}});"><</a></li>
+			{%else%}
+				<li class="disabled"><a href=""><</a></li>
+			{%endif%}
 
-		<li>
-			<a onclick="pagina({{causas.paginator.num_pages}})">&raquo;</a>
-		</li>
-	</ul>
+			{% if causas.has_next%}
+			<li><a onclick="pagina({{causas.next_page_number}});">></a></li>
+			{%else%}
+				<li class="disabled"><a href="">></a></li>
+			{%endif%}
+			
+			<li>
+				<a onclick="pagina({{causas.paginator.num_pages}})">&raquo;</a>
+			</li>
+		</ul>
+	</div>
 {%endif%}
 
 <div class="modal fade" id="modal-id">

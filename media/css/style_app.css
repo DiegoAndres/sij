@@ -16,7 +16,7 @@ body{
 }
 
 a{
-	color: rgb(0, 170, 160);;
+	color: rgb(0, 170, 160);
 }
 
 a:hover{
@@ -48,7 +48,11 @@ a:hover{
 }
 
 .navbar-default .navbar-nav > li > a {
-    color: rgb(0,0,0);
+    color: rgb(0, 170, 160);
+}
+
+.navbar-default .navbar-nav > li > a:hover {
+    color: rgb(0, 125, 118);
 }
 
 .navbar-default .navbar-nav > li #nombre:hover, .navbar-default .navbar-nav > li #nombre:focus {
@@ -463,8 +467,23 @@ div > #id_rol{
 
 
 .filtros{
-  padding: 10px 15px;
+  padding-top: 10px;
+  padding-bottom: 10px;
   color: rgb(255, 255, 255);
   background-color: rgb(4, 112, 112);
   border-color: rgb(4, 112, 112);
+}
+
+.table > thead > tr > th,
+.table > tbody > tr > th,
+.table > tfoot > tr > th,
+.table > thead > tr > td,
+.table > tbody > tr > td,
+.table > tfoot > tr > td {
+  padding: 8px;
+  line-height: 35px;
+  min-height: 35px;
+  height: 35px;
+  vertical-align: top;
+  border-top: 1px solid #ddd;
 }

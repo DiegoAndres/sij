@@ -102,8 +102,8 @@ class PasswordForm(forms.Form):
 	email 	= forms.CharField(widget=forms.TextInput(attrs={'class' : 'form-control'}))
 
 class EmpleadoForm(forms.Form):
-	jurisdiccion = forms.CharField(widget=forms.Select(choices = CHOICES_JURISDICCION, attrs={'class': 'form-control', 'required':'required'}))
-	tribunal 	= forms.CharField(widget=forms.Select(attrs={'class':'form-control', 'required':'required'}))
+	jurisdiccion = forms.CharField(widget=forms.Select(choices = CHOICES_JURISDICCION, attrs={'class': 'form-control input-lg', 'required':'required'}))
+	tribunal 	= forms.CharField(widget=forms.Select(attrs={'class':'form-control input-lg', 'required':'required'}))
 	
 	def clean_tribunal(self):
 		tribunal = self.cleaned_data['tribunal']

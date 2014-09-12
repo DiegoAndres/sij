@@ -1,18 +1,10 @@
 <div id="tabla">
 	<table class="table table-condensed table-striped">
-		<thead>
-			<tr>
-				<th></th>
-				<th class="col-xs-6">Nombre</th>
-				<th class="col-xs-5">Direcci&oacute;n</th>
-			</tr>
-		</thead>
 		<tbody>
 			{% for  row in tribunales %}
 			<tr id="{{row.id}}">
-				<td><span style="cursor: pointer;" class="glyphicon glyphicon-trash eliminar"></span></td>
+				<td style="vertical-align: middle;"><span style="cursor: pointer" class="glyphicon glyphicon-trash eliminar"></span></td>
 				<td>{{row.nombretribunal}}</td>
-				<td>{{row.direccion}}</td>
 			</tr>
 			{%empty%}
 			<tr><td>No existen tribunales asociados.</td></tr>
