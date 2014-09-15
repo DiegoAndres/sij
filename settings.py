@@ -53,7 +53,7 @@ INSTALLED_APPS = (
     'sij.apps.home',
     'sij.apps.estadistica',
     'sij.apps.estampado',
-    'sorting_bootstrap',
+    #'sorting_bootstrap',
     'bootstrap3',
     'googlecharts',
     # 'debug_toolbar',
