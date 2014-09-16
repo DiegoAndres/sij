@@ -42,6 +42,7 @@ def login_view(request):
 		return render_to_response('home/login.html', ctx, context_instance=RequestContext(request))
 
 
+@csrf_exempt
 def login_check_view(request):
 	if request.user.is_authenticated():
 		return HttpResponse('1')
