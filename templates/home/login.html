@@ -38,3 +38,20 @@
 	</div>
 </div>
 {%endblock%}
+
+{%block scripts%}
+<script>
+	$(document).ready(function() {
+		document.addEventListener("deviceready", onDeviceReady, false);
+	});
+
+	function onDeviceReady(){
+		document.addEventListener("menubutton", onMenuKeyDown, false);
+	}
+
+	function onMenuKeyDown(){
+		alert('menu!');
+	}
+
+</script>
+{%endblock%}
