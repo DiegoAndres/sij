@@ -335,3 +335,9 @@ def editar_datos_view(request):
 
 def spinner_view(request):
 	return render_to_response('spinner.html', context_instance=RequestContext(request))
+
+def password_view(request):
+	if request.user.is_authenticated():
+		return HttpResponseRedirect('cambiar/')
+	else:
+		return HttpResponseRedirect('/')

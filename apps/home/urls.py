@@ -18,5 +18,7 @@ urlpatterns = patterns('sij.apps.home.views',
 
 	url(r'^spinner/$','spinner_view', name='vista_spinner'),
 
+	url(r'^cuentas/contrasena/$', 'password_view', name="vista_password"),
+
 	# url(r'^cosaqueregistrareceptores/$','registrar_receptores_view', name='vista_registrar_receptores'),
 	)
