@@ -20,8 +20,16 @@
 	<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
 		<div class="container-fluid">
 			<div class="navbar-header">
+				<a href="#" class="navbar-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-cog"></span></a>
+				<ul class="dropdown-menu" role="menu" style="position: fixed; top: 50px; left: 55%; right: 10px;">
+					<li><a href="/datos/editar/">Mis Datos</a></li>
+					<li><a href="/cuentas/contrasena/cambiar/">Cambiar Clave</a></li>
+					<li class="divider"></li>
+					<li><a href="/logout/">Cerrar Sesi&oacute;n</a></li>
+				</ul>
 				{% block menu%}
 				{%endblock%}
+			
 			  	<a class="navbar-brand" href="{% url 'redirect_usuario' %}">
 					<img src="/media/images/logo-SIJ.png" alt="" height="40px;" style="margin-right: 10px;">
 				</a>
@@ -33,6 +41,15 @@
 				<ul class="nav navbar-nav navbar-right">
 					{%block menu1%}
 					{%endblock%}
+					<li class="dropdown">
+						<a href="#" class="navbar-toggle" data-toggle="dropdown" style="display: block;"><span class="glyphicon glyphicon-cog"></span></a>
+						<ul class="dropdown-menu" role="menu">
+							<li><a href="#">Mis Datos</a></li>
+							<li><a href="#">Cambiar Clave</a></li>
+							<li class="divider"></li>
+							<li><a href="#">Cerrar Sesi&oacute;n</a></li>
+						</ul>
+					</li>
 			  	</ul>
 			</div><!-- /.navbar-collapse -->
 		</div><!-- /.container-fluid -->
