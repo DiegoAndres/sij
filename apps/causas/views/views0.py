@@ -46,10 +46,10 @@ def abogado_view(request):
 					filter_args['estado'] = estado
 					if estado == 'diligenciada':
 						estados_excluidos.remove('diligenciada')
-						
+
 			else:
 				estados_excluidos.remove('diligenciada')
-				
+
 			causas = Causa.objects.order_by(sort).filter(**filter_args).exclude(estado__in=estados_excluidos)
 
 			paginator = Paginator(causas,6)
@@ -104,7 +104,7 @@ def opciones_abogado_causa_view(request, idcausa):
 			causa = Causa.objects.get(id = idcausa)
 			causa.diaspendiente = causa.diaspendientes()
 			causa.save()
-			
+
 			try: #ya fue diligenciada
 				evento2 = Evento.objects.get(causa = causa, tipoevento = 2)
 				resultados = 1
@@ -118,11 +118,11 @@ def opciones_abogado_causa_view(request, idcausa):
 					ctx = {'causa': causa, 'editar': editar, 'reasignar': reasignar, 'eliminar': eliminar}
 					return render_to_response('causas/opciones_causa.html',ctx, context_instance=RequestContext(request))
 				except:
-					try: 
+					try:
 						evento4 = Evento.objects.get(causa = causa, tipoevento = 4)
 						reasignar = 1
 						ctx = {'causa': causa, 'editar': editar, 'reasignar': reasignar, 'eliminar': eliminar}
-						return render_to_response('causas/opciones_causa.html',ctx, context_instance=RequestContext(request))	
+						return render_to_response('causas/opciones_causa.html',ctx, context_instance=RequestContext(request))
 					except:
 						reasignar = 1
 						editar = 1
@@ -160,7 +160,7 @@ def nueva_causa_view(request):
 				c.fechaingreso = datetime.now()
 				c.estado = "pendiente"
 				c.tiporesultadodiligencia = Diligencia.objects.get(detallediligencia="sin diligenciar")
-				
+
 				c.save()
 
 				#Ingresa datos Evento
@@ -181,21 +181,21 @@ def nueva_causa_view(request):
 				n.save()
 
 				title = 'Notificacion: Causa '+c.ncausa
-				body = "El abogado "+c.abogado.nombre+" le ha asignado diligenciar una nueva causa.(rol "+c.ncausa+"). Para mayor informacion de la causa, debe ingresar al plataforma sij.qwerty.cl"
+				body = "El abogado "+c.abogado.nombre+" le ha asignado diligenciar una nueva causa.(rol "+c.ncausa+"). Para mayor informacion de la causa, debe ingresar al plataforma www.sij.cl/login"
 				email = EmailMessage(title, body, 'no-reply@sij.cl', [c.receptor.user.email])
 				email.send()
 
 				return HttpResponseRedirect('/abogado/')
-				
+
 			else:
 				#mensaje = "formulario invalido"
 				mensaje = form.errors
 
 
 		form = nuevaCausaForm()
-		ctx = {'form': form, 'msj': mensaje}	
+		ctx = {'form': form, 'msj': mensaje}
 		return render_to_response('causas/nuevaCausa.html', ctx, context_instance=RequestContext(request))
-	
+
 	else:
 		return HttpResponseRedirect('/')
 
@@ -224,7 +224,7 @@ def asignar_receptor_view(request,tribunal):
 # OUTPUT: reasignar.html
 def reasignar_causa_view(request,idcausa):
 	if request.user.is_authenticated() and request.user.usuario.tipo == 0:
-							
+
 		form = reasignarForm()
 		ctx ={'form': form, 'causa':idcausa}
 		return render_to_response('causas/reasignar.html',ctx, context_instance=RequestContext(request))
@@ -243,12 +243,12 @@ def registro_reasignar_causa_view(request,idcausa):
 			try:
 				#Causa
 				c = Causa.objects.get(id=idcausa)
-				c.tribunal = Tribunal.objects.get(id = form.data['tribunal']) 
+				c.tribunal = Tribunal.objects.get(id = form.data['tribunal'])
 				c.receptor = Usuario.objects.get(id = form.data['receptorNuevo'])
 				c.diaspendiente = 0
 				c.estado = 'pendiente'
 				c.save()
-				
+
 				#Evento
 				e = Evento()
 				e.usuario = request.user.usuario
@@ -273,7 +273,7 @@ def registro_reasignar_causa_view(request,idcausa):
 
 
 
-# Vista para el icono de las notificaciones 
+# Vista para el icono de las notificaciones
 # INPUT: -
 # CONTEXTO: -
 # OUTPUT: codigo html de notificaciones
@@ -371,7 +371,7 @@ def provincias(request, region):
 # CONTEXTO: opciones de comunas, tipo de la opcion
 # OUTPUT: select_options.html
 def comunas(request,provincia):
-	try:	
+	try:
 		provincia_actual = Provincia.objects.get(id= provincia)
 		comunas = Comuna.objects.all().filter(provincia = provincia_actual).values_list('id','nombrecomuna')
 		ctx = {'opciones': comunas,'tipo': "comuna"}
@@ -386,7 +386,7 @@ def comunas(request,provincia):
 # CONTEXTO: opciones de tribunales, tipo de la opcion
 # OUTPUT: select_options.html
 def tribunales(request,comuna):
-	try:	
+	try:
 		comuna_actual = Comuna.objects.get(id=comuna)
 		tribunales = Tribunal.objects.all().filter(comuna = comuna_actual).values_list('id','nombretribunal')
 		ctx = {'opciones': tribunales, 'tipo': "tribunal"}
@@ -396,7 +396,7 @@ def tribunales(request,comuna):
 
 
 def tribunales_jurisdiccion(request,jurisdiccion):
-	try:	
+	try:
 		jurisdiccion_actual = Jurisdiccion.objects.get(id=jurisdiccion)
 		tribunales = Tribunal.objects.all().filter(jurisdiccion = jurisdiccion_actual).values_list('id','nombretribunal').order_by('nombretribunal')
 		ctx = {'opciones': tribunales, 'tipo': "tribunal"}

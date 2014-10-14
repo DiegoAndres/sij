@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
-from django import forms 
+from django import forms
 from sij.apps.causas.models import Jurisdiccion, Region, Provincia, Comuna, Tribunal
 from sij.apps.home.models import Empleado
 from django.contrib.auth.models import User
 from itertools import cycle
- 
+
 def digito_verificador(rut):
 	reversed_digits = map(int, reversed(str(rut)))
 	factors = cycle(range(2, 8))
@@ -12,7 +12,7 @@ def digito_verificador(rut):
 	return (-s) % 11
 
 class LoginForm(forms.Form):
-	username 	= forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control input-lg', 'required': 'required', 'placeholder': 'Nombre de usuario'}))
+	email 	= forms.CharField(widget=forms.EmailInput(attrs={'class': 'form-control input-lg', 'required': 'required', 'placeholder': 'Correo electronico'}))
 	password 	= forms.CharField(widget=forms.PasswordInput(render_value=False, attrs={'class':'form-control input-lg', 'required':'required', 'placeholder': 'Contraseña'}))
 
 RADIO_ROL=[[0,'Abogado'],[1,'Receptor']]
@@ -27,7 +27,7 @@ CHOICES_JURISDICCION = Jurisdiccion.objects.all().values_list('id', 'nombrejuris
 # 		'duplicate_username': "El nombre de usuario ya existe.",
 # 	}
 
-# 	rol 		= forms.ChoiceField(widget=forms.RadioSelect(attrs={'required':'required'}),choices=RADIO_ROL)	
+# 	rol 		= forms.ChoiceField(widget=forms.RadioSelect(attrs={'required':'required'}),choices=RADIO_ROL)
 # 	rut 		= forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'required':'required', 'pattern':'[0-9]{6,8}[\-][a-zA-Z0-9]{1}'}))
 # 	nombre 		= forms.CharField(widget=forms.TextInput(attrs={'class' : 'form-control', 'required':'required'}))
 # 	apellido 	= forms.CharField(widget=forms.TextInput(attrs={'class':'form-control', 'required':'required'}))
@@ -47,8 +47,9 @@ class RegistrationForm(forms.Form):
 		'duplicate_username': "El nombre de usuario ya existe.",
 	}
 
-	rol 		= forms.ChoiceField(widget=forms.Select(attrs={'class': 'form-control input-lg', 'required':'required'}),choices=RADIO_ROL)	
-	username	= forms.CharField(widget=forms.TextInput(attrs={'class' : 'form-control input-lg', 'required':'required', 'placeholder': 'Nombre de usuario'}))
+	rol 		= forms.ChoiceField(widget=forms.RadioSelect(attrs={'required':'required'}),choices=RADIO_ROL)
+	nombre 		= forms.CharField(widget=forms.TextInput(attrs={'class' : 'form-control input-lg', 'required':'required', 'placeholder': 'Nombres'}))
+	apellido 	= forms.CharField(widget=forms.TextInput(attrs={'class':'form-control input-lg', 'required':'required', 'placeholder': 'Apellidos'}))
 	email 		= forms.CharField(widget=forms.EmailInput(attrs={'class' : 'form-control input-lg', 'required':'required', 'placeholder': 'Correo electrónico'}))
 	password1 	= forms.CharField(widget=forms.PasswordInput(render_value=False,attrs={'class' : 'form-control input-lg', 'required':'required', 'placeholder': 'Contraseña'}))
 	password2 	= forms.CharField(widget=forms.PasswordInput(render_value=False,attrs={'class' : 'form-control input-lg', 'required':'required', 'placeholder': 'Repetir contraseña'}))
@@ -79,7 +80,7 @@ class RegistrationForm(forms.Form):
 			u = User.objects.get(username=username)
 			raise forms.ValidationError('El nombre de usuario ya existe.')
 		except User.DoesNotExist:
-			return username	
+			return username
 
 	def clean_email(self):
 		email = self.cleaned_data['email']
@@ -88,7 +89,7 @@ class RegistrationForm(forms.Form):
 			raise forms.ValidationError('El correo ya existe.')
 		except User.DoesNotExist:
 			return email
-		
+
 	def clean_password2(self):
 		password1 = self.cleaned_data['password1']
 		password2 = self.cleaned_data['password2']
@@ -104,7 +105,7 @@ class PasswordForm(forms.Form):
 class EmpleadoForm(forms.Form):
 	jurisdiccion = forms.CharField(widget=forms.Select(choices = CHOICES_JURISDICCION, attrs={'class': 'form-control input-lg', 'required':'required'}))
 	tribunal 	= forms.CharField(widget=forms.Select(attrs={'class':'form-control input-lg', 'required':'required'}))
-	
+
 	def clean_tribunal(self):
 		tribunal = self.cleaned_data['tribunal']
 		try:

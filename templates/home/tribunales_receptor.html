@@ -51,70 +51,67 @@
 {%endblock%}
 {%block scripts%}
 <script>
-	$(document).ready(function(){
+	var sacar_op_j = function (){
+        $("select#id_jurisdiccion").focus(function() {
+        $(this).find("option").eq(0).remove();
+        sacar_op_j = function(){};
+        });
+    }
 
-		var sinop = "<option value='-1' selected disabled>Jurisdicción</option>";
-		var options_j = $("select#id_jurisdiccion").html();
-		options = sinop + options_j;
-		$("select#id_jurisdiccion").html(options);
+    var sacar_op_t = function(){
+        $("select#id_tribunal").focus(function() {
+            if($("select#id_jurisdiccion").val()){
+                $(this).find("option").eq(0).remove();
+            }
+        sacar_op_t = function(){};
+        });
+    };
 
-		$("select#id_jurisdiccion").focus(function() {
-   			$(this).find("option").eq(0).remove();
-		});
+    $(document).ready(function(){
+
+    var sinop = "<option value='-1' selected disabled>Jurisdicción</option>";
+    var options_j = $("select#id_jurisdiccion").html();
+    options = sinop + options_j;
+    $("select#id_jurisdiccion").html(options);
+
+    sacar_op_j();
 
 
-		var sinop = "<option value='-1' selected disabled>Tribunal</option>";
-		var options_t = $("select#id_tribunal").html();
-		options = sinop + options_t;
-		$("select#id_tribunal").html(options);
+    var sinop = "<option value='-1' selected disabled>Tribunal</option>";
+    var options_t = $("select#id_tribunal").html();
+    options = sinop + options_t;
+    $("select#id_tribunal").html(options);
 
-		$("select#id_tribunal").focus(function() {
-			if($("select#id_jurisdiccion").val()){
-   				$(this).find("option").eq(0).remove();
-			}
-		});
+    sacar_op_t();
 
-		// if($("select#id_jurisdiccion").val() == 0){
-		// 	var sinop  = "<option value='0'>Seleccione una jurisdicci&oacute;n</option>";
-		// 	var options = $("select#id_jurisdiccion").html();
-		// 	options = sinop + options;
-		// 	$("select#id_jurisdiccion").html(options);
-			
-		// 	sinop  = "<option value='0'>Seleccione un tribunal</option>";
-		// 	$("select#id_tribunal").html(sinop);
-		// 	$("select#id_tribunal").attr('disabled',true);	
-		// }
-		// else{
-		// 	var url = "/jurisdiccion/" + $("select#id_jurisdiccion").val() + "/tribunales/";
-		// 	$("select#id_tribunal").load(url);
-		// 	$("select#id_tribunal option:first").attr('selected', 'selected');
-		// 	$("select#id_tribunal").attr('disabled',false);
-		// }
+    var username = "{{username}}"
+    var url = "/receptor/tribunales/tabla";
+    $("#div_table_tribunales").load(url);
 
-		var username = "{{username}}"
-		var url = "/receptor/tribunales/tabla";
-		$("#div_table_tribunales").load(url);
+    $("select#id_jurisdiccion").change(function(event){
+        if ($(this).val() == 0){
+            $("select#id_tribunal").attr('disabled',true);
+            return;
+        }
+        else{
+            var url = "/jurisdiccion/" + $(this).val() + "/tribunales/";
+            $("select#id_tribunal").load(url);
+            var options_t = $("select#id_tribunal").html();
+            var sinop1 = "<option value='-2'>Todos</option>";
+            options_t = sinop1 + options_t;
+            $("select#id_tribunal").html(options_t);
+            $("select#id_tribunal option:first").attr('selected', 'selected');
+            $("select#id_tribunal").attr('disabled',false);
 
-		$("select#id_jurisdiccion").change(function(event){
-			if ($(this).val() == 0){
-				$("select#id_tribunal").attr('disabled',true);
-				return;
-			}
-			else{
-				var url = "/jurisdiccion/" + $(this).val() + "/tribunales/";
-				$("select#id_tribunal").load(url);
-				$("select#id_tribunal option:first").attr('selected', 'selected');
-				$("select#id_tribunal").attr('disabled',false);
-				
-			}
-		});
+        }
+    });
 
-		$("form").submit(function(event){
-			var username = "{{user.username}}";
-			var url = "/receptor/"+username+"/tribunales/";
-			$("#div_table_tribunales").load(url);
-		});
+    $("form").submit(function(event){
+        var username = "{{user.username}}";
+        var url = "/receptor/"+username+"/tribunales/";
+        $("#div_table_tribunales").load(url);
+    });
 
-	});
+    });
 </script>
 {%endblock%}

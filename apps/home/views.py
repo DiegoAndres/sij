@@ -22,9 +22,9 @@ def login_view(request):
 		if request.method == "POST":
 			form = LoginForm(request.POST)
 			if form.is_valid():
-				username = form.cleaned_data['username']
+				email = form.cleaned_data['email']
 				password = form.cleaned_data['password']
-				usuario = authenticate(username=username, password=password)
+				usuario = authenticate(username=email, password=password)
 				if usuario is not None:
 					if usuario.is_active:
 						login(request, usuario)
@@ -68,7 +68,7 @@ def redireccion(request):
 		return HttpResponseRedirect('/')
 
 def logout_view(request):
-	logout(request)	
+	logout(request)
 	return HttpResponseRedirect('/')
 
 def registro_view(request):
@@ -82,9 +82,9 @@ def registro_view(request):
 				# registro
 				rol = form.cleaned_data['rol']
 				# rut = form.cleaned_data['rut']
-				# nombre = form.cleaned_data['nombre']
-				# apellido = form.cleaned_data['apellido']
-				username = form.cleaned_data['username']
+				nombre = form.cleaned_data['nombre']
+				apellido = form.cleaned_data['apellido']
+				# username = form.cleaned_data['username']
 				email = form.cleaned_data['email']
 				password1 = form.cleaned_data['password1']
 				password2 = form.cleaned_data['password2']
@@ -94,11 +94,11 @@ def registro_view(request):
 
 				if rol == '0': #abogado
 					try:
-						new_user = User.objects.create_user(username=username, email=email, password=password1)
-						# new_user.first_name = nombre
-						# new_user.last_name = apellido
+						new_user = User.objects.create_user(username=email, email=email, password=password1)
+						new_user.first_name = nombre
+						new_user.last_name = apellido
 						new_user.save()
-						
+
 						new_abogado = Usuario()
 						new_abogado.user = new_user
 						# new_abogado.rut = rut
@@ -111,18 +111,17 @@ def registro_view(request):
 						new_abogado.save()
 
 						# login
-						new_user = authenticate(username=username, password=password1)
+						new_user = authenticate(username=email, password=password1)
 						login(request, new_user)
 						return HttpResponseRedirect('/registro/exito')
 					except: #en caso de que no se pueda registrar el usuario completo
-						User.objects.get(username = username).delete()
+						User.objects.get(email = email).delete()
 						mensaje = "Ha ocurrido un error al registrar al nuevo usuario."
 				if rol == '1': #receptor
 					try:
-						new_user = User.objects.create_user(username=username, email=email, password=password1)
-						# new_user.first_name = nombre
-						# new_user.last_name = apellido
-						#new_user.is_active = False
+						new_user = User.objects.create_user(username=email, email=email, password=password1)
+						new_user.first_name = nombre
+						new_user.last_name = apellido
 						new_user.save()
 
 						new_receptor = Usuario()
@@ -140,12 +139,12 @@ def registro_view(request):
 						receptor_detalle.save()
 
 						# login
-						new_user = authenticate(username=username, password=password1)
+						new_user = authenticate(username=email, password=password1)
 						login(request, new_user)
 						return HttpResponseRedirect('/registro/exito')
 					except:
-						Usuario.objects.get(user__username = username).delete()
-						User.objects.get(username=username).delete()
+						Usuario.objects.get(user__username = email).delete()
+						User.objects.get(username=email).delete()
 						mensaje = "Ha ocurrido un error al registrar al nuevo receptor."
 				# if rol == '2': #juez
 				# 	try:
@@ -158,7 +157,7 @@ def registro_view(request):
 				# 		new_juez = Usuario()
 				# 		new_juez.user = new_user
 				# 		new_juez.rut = rut
-				# 		new_juez.tipo = int(rol)						
+				# 		new_juez.tipo = int(rol)
 				# 		cmna = Comuna.objects.get(id=int(comuna))
 				# 		new_juez.comuna = cmna
 				# 		new_juez.direccion = direccion
@@ -191,7 +190,7 @@ def registro_pendiente_view(request):
 	if request.user.is_authenticated():
 		return HttpResponseRedirect('/')
 	else:
-		return render_to_response('home/registro_pendiente.html', context_instance=RequestContext(request))	
+		return render_to_response('home/registro_pendiente.html', context_instance=RequestContext(request))
 
 # def registro_receptor_view(request,username):
 # 	mensaje=""
@@ -213,7 +212,7 @@ def registro_pendiente_view(request):
 # 					mensaje = "El tribunal ya ha sido agregado."
 # 					ctx = {'form': form,'mensaje': mensaje, 'error': 1, 'username': username}
 # 					return render_to_response('home/registro_receptor.html', ctx, context_instance=RequestContext(request))
-# 				except:						
+# 				except:
 # 					e = Empleado(receptor = receptor, tribunal = t)
 # 					e.save()
 # 					# mensaje = "registro!"
@@ -256,7 +255,7 @@ def listado_tribunales_receptor_view(request):
 						mensaje = "El tribunal ya ha sido agregado."
 						ctx = {'form': form,'mensaje': mensaje, 'error': 1}
 						return render_to_response('home/tribunales_receptor.html', ctx, context_instance=RequestContext(request))
-					except:						
+					except:
 						e = Empleado(receptor = receptor, tribunal = t)
 						e.save()
 						# mensaje = "registro!
@@ -265,7 +264,7 @@ def listado_tribunales_receptor_view(request):
 				except:
 					mensaje = "Debe seleccionar un tribunal."
 					ctx = {'form': form, 'mensaje': mensaje, 'error': 1}
-					return render_to_response('home/tribunales_receptor.html', ctx, context_instance=RequestContext(request))					
+					return render_to_response('home/tribunales_receptor.html', ctx, context_instance=RequestContext(request))
 			else:
 				mensaje = "Debe seleccionar un tribunal."
 				ctx = {'form': form,'mensaje': mensaje, 'error':1}
