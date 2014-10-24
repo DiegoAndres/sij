@@ -7,9 +7,10 @@ from django.utils import timezone
 from datetime import datetime
 import json
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from sij.apps.causas.forms import filtroEstadoForm, filtroSortPagForm, diligenciarCausaForm, fotoDiligenciarCausaForm
+from sij.apps.causas.forms import pagoDiligenciaForm, filtroEstadoForm, filtroSortPagForm, diligenciarCausaForm, fotoDiligenciarCausaForm
 from sij.apps.causas.models import Causa, Region, Provincia, Comuna, Tribunal, Diligencia, ResultadoDiligencia, FotoDiligencia
 from sij.apps.home.models import Receptor, Usuario, Empleado, Evento, Notificacion
+from django.core.mail import EmailMessage
 
 import os
 import string
@@ -41,7 +42,7 @@ def tabla_causas_view(request):
 		c.diaspendiente = c.diaspendientes()
 		c.save()
 
-	if request.GET: 
+	if request.GET:
 		sort = request.GET['sort']
 	else:
 		sort = '-diaspendiente'
@@ -98,10 +99,10 @@ def panel_causas_view(request):
 				filter_args['estado'] = estado
 				if estado == 'diligenciada':
 					estados_excluidos.remove('diligenciada')
-					
+
 		else:
 			estados_excluidos.remove('diligenciada')
-			
+
 		causas = Causa.objects.order_by(sort).filter(**filter_args).exclude(estado__in=estados_excluidos)
 
 		paginator = Paginator(causas,6)
@@ -146,11 +147,12 @@ def receptor_view(request):
 
 def detalle_causa_view(request, idcausa):
 	if request.user.is_authenticated():
+		form = pagoDiligenciaForm()
 		try:
 			causa = Causa.objects.get(id = idcausa)
 			causa.diaspendiente = causa.diaspendientes()
 			causa.save()
-			ctx = {'causa': causa}
+			ctx = {'causa': causa, 'form':form}
 			return render_to_response('causas/detalle.html',ctx, context_instance=RequestContext(request))
 		except:
 			ctx = {'error': 'No existe la causa.'}
@@ -183,7 +185,7 @@ def opciones_receptor_causa_view(request,idcausa):
 			causa = Causa.objects.get(id = idcausa)
 			causa.diaspendiente = causa.diaspendientes()
 			causa.save()
-			
+
 			try: #ya fue diligenciada
 				evento2 = Evento.objects.get(causa = causa, tipoevento = 2)
 				ctx = {'causa': causa, 'aceptar': aceptar, 'rechazar': rechazar, 'diligenciar': diligenciar, 'undo_aceptar': undo_aceptar}
@@ -200,47 +202,155 @@ def opciones_receptor_causa_view(request,idcausa):
 					ctx = {'causa': causa, 'aceptar': aceptar,'rechazar': rechazar, 'diligenciar': diligenciar, 'undo_aceptar': undo_aceptar}
 					return render_to_response('causas/opciones_causa.html',ctx, context_instance=RequestContext(request))
 				except:
-					aceptar = 1
-					rechazar = 1
-					ctx = {'causa': causa, 'aceptar': aceptar,'rechazar': rechazar, 'diligenciar': diligenciar, 'undo_aceptar': undo_aceptar}
-					return render_to_response('causas/opciones_causa.html',ctx, context_instance=RequestContext(request))
+					try:
+						evento3 = Evento.objects.get(causa = causa, tipoevento = 7)
+						rechazar = 1
+						ctx = {'causa': causa, 'aceptar': aceptar,'rechazar': rechazar, 'diligenciar': diligenciar, 'undo_aceptar': undo_aceptar}
+						return render_to_response('causas/opciones_causa.html',ctx, context_instance=RequestContext(request))
+					except:
+						aceptar = 1
+						rechazar = 1
+						ctx = {'causa': causa, 'aceptar': aceptar,'rechazar': rechazar, 'diligenciar': diligenciar, 'undo_aceptar': undo_aceptar}
+						return render_to_response('causas/opciones_causa.html',ctx, context_instance=RequestContext(request))
 		except:
 			ctx = {'error': 'No existe la causa.', 'causa': causa.ncausa}
 			return render_to_response('causas/opciones_causa.html',ctx, context_instance=RequestContext(request))
 	else:
 		return HttpResponseRedirect('/')
 
-def aceptar_causa_view(request,idcausa):
-	if request.user.is_authenticated() and request.user.usuario.tipo == 1:
-		try:
-			causa = Causa.objects.get(id = idcausa)
-			causa.estado = 'en ruta' 
+def aceptar_causa_view(request):
+	if request.user.is_authenticated() and request.POST:
+		form = pagoDiligenciaForm(request.POST)
+		if request.user.usuario.tipo == 1:
+			try:
+				try:
+					causa = Causa.objects.get(id = form.data['idcausa'])
+					causa.estado = 'confirmacion'
+					causa.valor = form.data['valor']
+				except:
+					return HttpResponse('error datos causa')
 
-			pendientes = causa.receptor.receptor.causaspendientes
-			pendientes = pendientes+1
-			receptor = causa.receptor.receptor
-			receptor.causaspendientes = pendientes
+				try:
+					usuario = Usuario.objects.get(user=request.user)
+					usuario.rut = form.data['rut']
+					usuario.cuenta = form.data['cuenta']
+					usuario.banco = form.data['banco']
+				except:
+					return HttpResponse('error datos usuario')
 
-			e = Evento()
-			e.usuario = request.user.usuario
-			e.fechaevento = timezone.now()
-			e.tipoevento = 1
-			e.causa = causa
 
-			n = Notificacion()
-			n.usuario 	= causa.abogado
-			n.fechanotificacion 	= timezone.now()
-			n.causa 				= causa
-			n.detallenotificacion	= 'El receptor '+request.user.usuario.nombre+' ha aceptado la solicitud de causa '+causa.ncausa+'.'
-			n.nueva = True
-			
-			causa.save()
-			receptor.save()
-			e.save()
-			n.save()
-			return HttpResponse('La solicitud ha sido aceptada.')
-		except:
-			return HttpResponse('0')
+				try:
+					e = Evento()
+					e.usuario = request.user.usuario
+					e.fechaevento = timezone.now()
+					e.tipoevento = 7
+					e.causa = causa
+				except:
+					return HttpResponse('error datos evento')
+
+				try:
+					n = Notificacion()
+					n.usuario 	= causa.abogado
+					n.fechanotificacion 	= timezone.now()
+					n.causa 				= causa
+					n.detallenotificacion	= 'El receptor '+request.user.usuario.nombre+' ha solicitado la confirmaci&oacute;n de la solicitud de causa '+causa.ncausa+'.'
+					n.nueva = True
+				except:
+					return HttpResponse('error datos notificacion')
+
+				try:
+					causa.save()
+				except:
+					return HttpResponse('error causa')
+
+				try:
+					usuario.save()
+				except:
+					return HttpResponse('error usuario')
+
+				try:
+					e.save()
+				except:
+					return HttpResponse('error evento')
+
+				try:
+					n.save()
+				except:
+					return HttpResponse('error notificacion')
+
+				title = 'Notificacion: Causa '+c.ncausa
+				body = 'El receptor '+request.user.usuario.nombre+' ha solicitado la confirmaci&oacute;n de la solicitud de causa '+causa.ncausa+'. Para mayor informacion de la causa, debe ingresar al plataforma sij.qwerty.cl'
+				email = EmailMessage(title, body, 'no-reply@sij.cl', [causa.abogado.user.email])
+				email.send()
+
+				return HttpResponse('La solicitud ha sido confirmada.')
+			except:
+				return HttpResponseRedirect('/')
+
+		if request.user.usuario.tipo == 0:
+			try:
+				try:
+					causa = Causa.objects.get(id = form.data['idcausa'])
+					causa.estado = 'en ruta'
+				except:
+					return HttpResponse('error datos causa')
+
+				try:
+					pendientes = causa.receptor.receptor.causaspendientes
+					pendientes = pendientes+1
+					receptor = causa.receptor.receptor
+					receptor.causaspendientes = pendientes
+				except:
+					return HttpResponse('error Datos receptor')
+
+				try:
+					e = Evento()
+					e.usuario = request.user.usuario
+					e.fechaevento = timezone.now()
+					e.tipoevento = 1
+					e.causa = causa
+				except:
+					return HttpResponse('error datos eventos')
+
+				try:
+					n = Notificacion()
+					n.usuario 	= causa.abogado
+					n.fechanotificacion 	= timezone.now()
+					n.causa 				= causa
+					n.detallenotificacion	= 'El abogado '+request.user.usuario.nombre+' ha confirmado el valor de la diligencia de la solicitud de causa '+causa.ncausa+'.'
+					n.nueva = True
+				except:
+					return HttpResponse('error datos notificacion')
+
+				try:
+					causa.save()
+				except:
+					return HttpResponse('error causa')
+
+				try:
+					receptor.save()
+				except:
+					return HttpResponse('error receptor')
+
+				try:
+					e.save()
+				except:
+					return HttpResponse('error evento')
+
+				try:
+					n.save()
+				except:
+					return HttpResponse('error notificacion')
+
+				title = 'Notificacion: Causa '+c.ncausa
+				body = 'El abogado '+request.user.usuario.nombre+' ha confirmado el valor de la diligencia de la solicitud de causa '+causa.ncausa+'. Para mayor informacion de la causa, debe ingresar al plataforma sij.qwerty.cl'
+				email = EmailMessage(title, body, 'no-reply@sij.cl', [causa.receptor.user.email])
+				email.send()
+
+				return HttpResponse('La solicitud ha sido aceptada.')
+
+			except:
+				return HttpResponseRedirect('/')
 	else:
 		return HttpResponseRedirect('/')
 
@@ -303,7 +413,7 @@ def rechazar_causa_view(request,idcausa):
 
 def eliminar_causa_view(request, idcausa):
 	if request.user.is_authenticated() and request.user.usuario.tipo == 0:
-		try: 
+		try:
 			causa = Causa.objects.get(id = idcausa)
 			causa.estado = 'eliminada'
 
@@ -324,7 +434,7 @@ def eliminar_causa_view(request, idcausa):
 			n.save()
 
 			return HttpResponse('La causa ha sido eliminada.')
-		except: 
+		except:
 			return HttpResponse('0')
 	else:
 		return HttpResponseRedirect('/')
@@ -352,7 +462,7 @@ def registrar_diligenciar_causa_view(request, idcausa):
 				causa.estado = 'diligenciada'
 				objetivo = Diligencia.objects.get(id=form.data['objetivodiligencia'])
 				resultado = Diligencia.objects.get(id=form.data['resultadodiligencia'])
-				
+
 
 				if causa.tipodiligencia != objetivo:
 					nn = Notificacion()
@@ -377,13 +487,13 @@ def registrar_diligenciar_causa_view(request, idcausa):
 				n.fechanotificacion = timezone.now()
 				n.causa = causa
 				n.detallenotificacion = 'El receptor '+request.user.usuario.nombre+' ha diligenciado la causa '+causa.ncausa+'.'
-			
+
 				resultado = ResultadoDiligencia()
 				resultado.causa = causa
 				if resultado.comentario:
 					resultado.comentario = form.data['comentario']
 				resultado.fechadiligencia = timezone.now()
-				
+
 				resultado.demandado = form.data['demandado']
 				resultado.demandante = form.data['demandante']
 				resultado.fojas = form.data['fojas']
@@ -399,10 +509,10 @@ def registrar_diligenciar_causa_view(request, idcausa):
 					resultado.gpslat = 0.0
 					resultado.gpslon = 0.0
 
-				# causa.save()
+				causa.save()
 				resultado.save()
-				# e.save()
-				# n.save()
+				e.save()
+				n.save()
 
 				return HttpResponse('0')
 			else:
@@ -441,7 +551,7 @@ def registrar_foto_diligenciar_causa_view(request, idcausa):
 		if n_fotos < max_fotos():
 			nueva_foto = FotoDiligencia()
 			nueva_foto.resultadodiligencia = resultado
-			
+
 			foto = request.FILES['foto']
 
 			rndm = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(20))
@@ -466,7 +576,7 @@ def registrar_foto_diligenciar_causa_view(request, idcausa):
 					return HttpResponse('El archivo supera el máximo permitido (20MB)')
 			else:
 				return HttpResponse('El formato no es permitido. (jpg, jpeg)')
-			
+
 			nueva_foto.save()
 			return HttpResponse('0')
 		else:

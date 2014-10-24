@@ -11,6 +11,8 @@ class Usuario(models.Model):
 	telefono 			= models.CharField(max_length=15, null=True)
 	direccion 			= models.CharField(max_length=200, null=True)
 	comuna 				= models.ForeignKey('causas.Comuna')
+	cuenta 				= models.CharField(max_length=20, null=True)
+	banco				= models.CharField(max_length=30,null=True)
 
 	def __unicode__(self):
 		nombre = self.user.first_name+' '+self.user.last_name
@@ -23,7 +25,7 @@ class Usuario(models.Model):
 	@property
 	def notificaciones(self):
 		return Notificacion.objects.filter(usuario = self).order_by('fechanotificacion')
-	
+
 	@property
 	def notificaciones_nuevas(self):
 		return Notificacion.objects.filter(usuario = self, nueva = True).order_by('fechanotificacion')
@@ -40,7 +42,7 @@ class Usuario(models.Model):
 		else:
 			return False
 
-	
+
 	# def nuevoUsuario():
 	# defgetCausas(fechaInicio, fechaFin):
 	# def getCausasUsuarioComuna(comuna):
@@ -56,7 +58,7 @@ class Receptor(models.Model):
 	causasenruta 		= models.IntegerField(db_column='causasEnRuta', default=0)
 	tiempopromedio 		= models.FloatField(db_column='tiempoPromedio', default=0.0)
 	diligenciasdiariaspromedio = models.FloatField(db_column='diligenciasDiariasPromedio', default=0.0)
-	
+
 
 	def __unicode__(self):
 		nombre = self.usuario.user.first_name+' '+self.usuario.user.last_name
@@ -81,7 +83,7 @@ class Receptor(models.Model):
 	# def actualizarCausaResuelta()
 	# def actualizarTiempoPromedio()
 	# def verDetalleReceptor()
-		
+
 
 class Empleado(models.Model):
 	receptor 			= models.ForeignKey('home.Receptor')
@@ -97,7 +99,7 @@ class Notificacion(models.Model):
 	fechanotificacion 	= models.DateTimeField(db_column='fechaNotificacion')
 	causa 				= models.ForeignKey('causas.Causa')
 	detallenotificacion	= models.CharField(max_length=200)
-	nueva 				= models.BooleanField(default=True)	
+	nueva 				= models.BooleanField(default=True)
 
 	# def enviarCorreo():
 
@@ -105,7 +107,7 @@ class Evento(models.Model):
 	usuario 			= models.ForeignKey('home.Usuario')
 	fechaevento			= models.DateTimeField(db_column='fechaEvento')
 	tipoevento			= models.IntegerField(db_column='tipoEvento')
-	#0 : ingreso, 1: aceptacion, 2: diligencia, 3: edicion, 4: rechazo, 5: eliminado, 6: reasignación
+	#0 : ingreso, 7:confirmacion, 1: aceptacion, 2: diligencia, 3: edicion, 4: rechazo, 5: eliminado, 6: reasignación
 	causa 				= models.ForeignKey('causas.Causa')
 
 	def __unicode__(self):

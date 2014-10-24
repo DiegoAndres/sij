@@ -30,18 +30,24 @@
 
 <script>
 	function actualizar_causa(act){
-		var url = '/causa/{{causa.id}}/'+act;
-		// TODO: esto debería ser un post.
-		$.get(url, function(data) {
-			if(data == 0){
-				alert("Ha ocurrido un error. Por favor inténtelo nuevamente. Si no se soluciona contacte al administrador.");
-			}
-			else{
-				alert(data);
-				$("button[id='cerrar']").click();
-				$("form[name='filtro_estado']").submit();
-			}
-		});
+		if (act == 'aceptar'){
+			$("#id_idcausa").val({{causa.id}});
+			$("#formpago").submit();
+		}else{
+
+			var url = '/causa/{{causa.id}}/'+act;
+			//TODO: esto debería ser un post.
+			$.get(url, function(data) {
+				if(data == 0){
+					alert("Ha ocurrido un error. Por favor inténtelo nuevamente. Si no se soluciona contacte al administrador.");
+				}
+				else{
+					alert(data);
+					$("button[id='cerrar']").click();
+					$("form[name='filtro_estado']").submit();
+				}
+			});
+		}
 	}
 
 	$(document).ready(function() {
@@ -96,7 +102,7 @@
 			e.preventDefault();
 			var url = '/causa/{{causa.id}}/reasignar';
 			$("#detalle_causa").load(url);
-			
+
 		});
 
 		$("button[id='editar-causa']").click(function(e){

@@ -66,10 +66,12 @@ def abogado_view(request):
 			return render_to_response('causas/abogado.html',ctx, context_instance=RequestContext(request))
 
 		else:	# esto se muestra por primera vez. se muestran todas las causas y van ordenadas por dias pendiente.
+
 			causas = Causa.objects.filter(**filter_args).exclude(estado__in=estados_excluidos)
 			for c in causas:	# la primera vez se calculan los dias pendientes para cada causa y se actualizan
 				c.diaspendiente = c.diaspendientes()
 				c.save()
+
 
 			causas = causas.order_by('-diaspendiente')
 
@@ -99,6 +101,8 @@ def opciones_abogado_causa_view(request, idcausa):
 		reasignar = 0
 		eliminar = 0
 		resultados = 0
+		aceptar= 0
+		rechazar = 0
 
 		try:
 			causa = Causa.objects.get(id = idcausa)
@@ -124,11 +128,18 @@ def opciones_abogado_causa_view(request, idcausa):
 						ctx = {'causa': causa, 'editar': editar, 'reasignar': reasignar, 'eliminar': eliminar}
 						return render_to_response('causas/opciones_causa.html',ctx, context_instance=RequestContext(request))
 					except:
-						reasignar = 1
-						editar = 1
-						eliminar = 1
-						ctx = {'causa': causa, 'editar': editar, 'reasignar': reasignar, 'eliminar': eliminar}
-						return render_to_response('causas/opciones_causa.html',ctx, context_instance=RequestContext(request))
+						try:
+							evento5 = Evento.objects.get(causa = causa, tipoevento = 7)
+							aceptar = 1
+							rechazar = 1
+							ctx = {'causa': causa, 'aceptar': aceptar, 'rechazar': rechazar, 'eliminar': eliminar}
+							return render_to_response('causas/opciones_causa.html',ctx, context_instance=RequestContext(request))
+						except:
+							reasignar = 1
+							editar = 1
+							eliminar = 1
+							ctx = {'causa': causa, 'editar': editar, 'reasignar': reasignar, 'eliminar': eliminar}
+							return render_to_response('causas/opciones_causa.html',ctx, context_instance=RequestContext(request))
 		except:
 			ctx = {'error': 'No existe la causa.', 'causa': idcausa}
 			return render_to_response('causas/opciones_causa.html',ctx, context_instance=RequestContext(request))
@@ -154,6 +165,7 @@ def nueva_causa_view(request):
 				c.receptor = Usuario.objects.get(id=form.cleaned_data['receptor'])
 				c.direccion = form.cleaned_data['direccion']
 				c.comuna = Comuna(id=form.cleaned_data['comuna'])
+				##error con opcion todos
 				c.tribunal = Tribunal.objects.get(id=form.cleaned_data['tribunalOrigen'])
 				c.tipodiligencia = Diligencia.objects.get(id=form.cleaned_data['tipoDiligencia'])
 				c.observacion = form.cleaned_data['observacion']
@@ -181,7 +193,7 @@ def nueva_causa_view(request):
 				n.save()
 
 				title = 'Notificacion: Causa '+c.ncausa
-				body = "El abogado "+c.abogado.nombre+" le ha asignado diligenciar una nueva causa.(rol "+c.ncausa+"). Para mayor informacion de la causa, debe ingresar al plataforma www.sij.cl/login"
+				body = "El abogado "+c.abogado.nombre+" le ha asignado diligenciar una nueva causa.(rol "+c.ncausa+"). Para mayor informacion de la causa, debe ingresar al plataforma sij.qwerty.cl"
 				email = EmailMessage(title, body, 'no-reply@sij.cl', [c.receptor.user.email])
 				email.send()
 
@@ -204,15 +216,39 @@ def nueva_causa_view(request):
 # INPUT: id tribunal
 # CONTEXTO: receptores_activos
 # OUTPUT: table_receptores.html
-def asignar_receptor_view(request,tribunal):
-	tribunal_actual = Tribunal.objects.get(id = tribunal)
-	receptores = tribunal_actual.empleados.all()
-
+def asignar_receptor_view(request,jurisdiccion,tribunal):
 	receptores_activos = set()
 
-	for r in receptores:
-		if r.usuario.user.is_active == True:
-			receptores_activos.add(r)
+	if jurisdiccion == '-100':
+		receptores = Receptor.objects.all()
+
+		for r in receptores:
+			if r.usuario.user.is_active == True:
+				receptores_activos.add(r)
+	else:
+
+		try:
+			tribunal_actual = Tribunal.objects.get(id = tribunal)
+			receptores = tribunal_actual.empleados.all()
+
+
+			for r in receptores:
+				if r.usuario.user.is_active == True:
+					receptores_activos.add(r)
+
+			# ctx = {'receptores':receptores_activos}
+			# return render_to_response('tables/table_receptores.html',ctx, context_instance=RequestContext(request))
+
+		except:
+			tribunales = Tribunal.objects.filter(jurisdiccion=jurisdiccion)
+
+			for t in tribunales:
+				receptores = t.empleados.all()
+
+
+				for r in receptores:
+					if r.usuario.user.is_active == True:
+						receptores_activos.add(r)
 
 	ctx = {'receptores':receptores_activos}
 	return render_to_response('tables/table_receptores.html',ctx, context_instance=RequestContext(request))

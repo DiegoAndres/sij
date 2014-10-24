@@ -108,11 +108,13 @@ class EmpleadoForm(forms.Form):
 
 	def clean_tribunal(self):
 		tribunal = self.cleaned_data['tribunal']
-		try:
-			t = Tribunal.objects.get(id=tribunal)
-			return tribunal
-		except:
-			raise forms.ValidationError('Debe seleccionar un tribunal.')
+		return tribunal
+		# try:
+		# 	if tribunal != -100:
+		# 		t = Tribunal.objects.get(id=tribunal)
+		# 	return tribunal
+		# except:
+		# 	raise forms.ValidationError('Debe seleccionar un tribunal.')
 
 class EditarDatosForm(forms.Form):
 	email 	= forms.CharField(widget=forms.TextInput(attrs={'class' : 'form-control input-lg', 'placeholder': 'Correo electrónico'}))

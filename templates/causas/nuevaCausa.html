@@ -133,7 +133,7 @@
 {% block scripts %}
 <script src="/media/js/jquery.msgbox.min.js"></script>
 <script>
-$(document).ready(function(){	
+$(document).ready(function(){
 	$("#receptores").hide();
 	$("#resumen").hide();
 	$("#id_receptor").hide();
@@ -165,7 +165,7 @@ $(document).ready(function(){
 	options = $("select#id_jurisdiccion").html();
 	options = sinop + options;
 	$("select#id_jurisdiccion").html(options);
-	
+
 	sinop = "<option value='0'>Seleccione un tribunal</option>";
 	$("select#id_tribunalOrigen").html(sinop);
 	$("select#id_tribunalOrigen").attr('disabled',true);
@@ -173,7 +173,7 @@ $(document).ready(function(){
 	sinop = "<option value='0'>Seleccione un tipo de diligencia</option>";
 	options = $("select#id_tipoDiligencia").html();
 	options = sinop + options;
-	$("select#id_tipoDiligencia").html(options);	
+	$("select#id_tipoDiligencia").html(options);
 
 
 	$("select#id_region").change(function(event){
@@ -218,15 +218,25 @@ $(document).ready(function(){
 			return;
 		}
 		else{
-			var url = "/jurisdiccion/" + $(this).val() + "/tribunales/";
-			$("select#id_tribunalOrigen").load(url);
-			$("select#id_tribunalOrigen option:first").attr('selected', 'selected');
-			$("select#id_tribunalOrigen").attr('disabled',false);
+			if ($(this).val() == -100){
+				$("select#id_tribunalOrigen").empty();
+				$("select#id_tribunalOrigen").append("<option value='-100'>Todos</option>")
+				$("select#id_tribunalOrigen option:first").attr('selected', 'selected');
+				$("select#id_tribunalOrigen").attr('disabled',false);
+				var url = "/nuevacausa/"+$(this).val()+"/-100/";
+				$("#div_table_receptores").load(url);
+			}
+			else{
+				var url = "/jurisdiccion/" + $(this).val() + "/tribunales/";
+				$("select#id_tribunalOrigen").load(url);
+				$("select#id_tribunalOrigen option:first").attr('selected', 'selected');
+				$("select#id_tribunalOrigen").attr('disabled',false);
+			}
 		}
 	});
 
 	$("select#id_tribunalOrigen").change(function(event){
-		var url = "/nuevacausa/"+$(this).val()+"/";
+		var url = "/nuevacausa/"+$("select#id_jurisdiccion").val()+"/"+$(this).val()+"/";
 		$("#div_table_receptores").load(url);
 	});
 
@@ -241,7 +251,7 @@ $(document).ready(function(){
 	$("li#2").click(function(){
 		if($("#id_ncausa").val()=="" || $("#id_region").val()==0 || $("#id_direccion").val()=="" || $("#id_tribunalOrigen").val()==0 || $("#id_tipoDiligencia").val()==0){
 			$.msgbox("<div class='alert alert-warning'>Se deben completar los campos para continuar</div>");
-			
+
 		}else{
 
 			$("#formcausa").hide();
@@ -267,10 +277,10 @@ $(document).ready(function(){
 	});
 
 	$("#next1").click(function(){
-		
+
 		if($("#id_ncausa").val()=="" || $("#id_region").val()==0 || $("#id_direccion").val()=="" || $("#id_tribunalOrigen").val()==0 || $("#id_tipoDiligencia").val()==0){
 			$.msgbox("<div class='alert alert-warning'>Se deben completar los campos para continuar</div>");
-			
+
 		}
 		else{
 			$("#formcausa").hide();

@@ -2,6 +2,7 @@ from django.db import models
 from sij.apps.home.models import Evento
 from django.utils import timezone
 from datetime import datetime
+from django.http import HttpResponseRedirect, HttpResponse
 
 def tiempo_atraso():
 	return 7
@@ -21,23 +22,25 @@ class Causa(models.Model):
 	tiporesultadodiligencia	= models.ForeignKey('causas.Diligencia', related_name='resultado_diligencia')
 	diaspendiente			= models.IntegerField(db_column='diasPendiente', null=True)
 	atrasada				= models.BooleanField(default=False)
+	valor                   = models.IntegerField(null=True)
 
 	def __unicode__(self):
 		datos = "numero: %s, estado: %s"%(self.ncausa, self.estado)
 		return datos
- 
+
 	def direccioncompleta(self):
 		return u"%s, %s"%(self.direccion,self.comuna.nombrecomuna)
 
 	def gethistorial(self):
-		historial = Evento.objects.filter(usuario = self.receptor, causa = self)
+		historial = Evento.objects.filter(usuario = self.abogado, causa = self)
 		return historial
 
 	def diaspendientes(self):
-		if self.estado == "pendiente":
+		if self.estado == "pendiente" or self.estado == "confirmacion":
 			return None
 		else:
 			if self.estado == "en ruta":
+
 				e = self.gethistorial().get(tipoevento = 1)
 				diff = timezone.now() - e.fechaevento
 				return int(diff.days)
@@ -57,7 +60,7 @@ class Causa(models.Model):
 	#def diligenciarCausa():
 
 
-class ResultadoDiligencia(models.Model):	
+class ResultadoDiligencia(models.Model):
 	causa 			= models.OneToOneField(Causa,primary_key=True)
 	comentario 		= models.CharField(max_length=500)
 	demandado		= models.CharField(max_length=300, blank = True, null = True)
@@ -112,7 +115,7 @@ class Tribunal(models.Model):
 	def __unicode__(self):
 		return self.nombretribunal
 
-	
+
 
 class Diligencia(models.Model):
 	tipodiligencia 			= models.CharField(db_column='tipoDiligencia', max_length=15)
@@ -140,7 +143,7 @@ class Jurisdiccion(models.Model):
 
 class Region(models.Model):
 	nombreregion 		= models.CharField(db_column='nombreRegion', max_length=80)
-	
+
 	def __unicode__(self):
 		return self.nombreregion
 
@@ -154,6 +157,6 @@ class Provincia(models.Model):
 class Comuna(models.Model):
 	nombrecomuna 		= models.CharField(db_column='nombreComuna', max_length=50)
 	provincia 			= models.ForeignKey('causas.Provincia')
-	
+
 	def __unicode__(self):
 		return self.nombrecomuna

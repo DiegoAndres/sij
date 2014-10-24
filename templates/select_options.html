@@ -1,7 +1,4 @@
 <option value="0">Seleccione {% if tipo == 'tribunal' %}un{%else%}una{%endif%} {{tipo}}</option>
-{%if tipo == 'tribunal' %}
-<option value="-100">Todos</option>
-{%endif%}
 {% for op in opciones %}
 <option value="{{op.0}}">{{op.1}}</option>
 {%empty%}

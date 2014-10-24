@@ -244,27 +244,53 @@ def listado_tribunales_receptor_view(request):
 			form = EmpleadoForm(request.POST)
 			if form.is_valid():
 				tribunal = form.cleaned_data['tribunal']
-				try:
-					t = Tribunal.objects.get(id=tribunal)
 
-					usuario = Usuario.objects.get(user=request.user)
-					receptor = Receptor.objects.get(usuario=usuario)
-
+				if tribunal == '-100':
 					try:
-						e = Empleado.objects.get(receptor = receptor, tribunal=t)
-						mensaje = "El tribunal ya ha sido agregado."
-						ctx = {'form': form,'mensaje': mensaje, 'error': 1}
-						return render_to_response('home/tribunales_receptor.html', ctx, context_instance=RequestContext(request))
-					except:
-						e = Empleado(receptor = receptor, tribunal = t)
-						e.save()
-						# mensaje = "registro!
+						juri = form.cleaned_data['jurisdiccion']
+						t = Tribunal.objects.filter(jurisdiccion=juri)
+
+						usuario = Usuario.objects.get(user=request.user)
+						receptor = Receptor.objects.get(usuario=usuario)
+
+						for aux in t:
+							try:
+								e = Empleado.objects.get(receptor = receptor, tribunal=aux)
+							except:
+								e = Empleado(receptor = receptor, tribunal = aux)
+								e.save()
+
+
 						ctx = {'form': form,'mensaje': mensaje}
 						return render_to_response('home/tribunales_receptor.html', ctx, context_instance=RequestContext(request))
-				except:
-					mensaje = "Debe seleccionar un tribunal."
-					ctx = {'form': form, 'mensaje': mensaje, 'error': 1}
-					return render_to_response('home/tribunales_receptor.html', ctx, context_instance=RequestContext(request))
+					except:
+						mensaje = "Error"
+						ctx = {'form': form,'mensaje': mensaje, 'error': 1}
+						return render_to_response('home/tribunales_receptor.html', ctx, context_instance=RequestContext(request))
+				else:
+
+
+					try:
+						t = Tribunal.objects.get(id=tribunal)
+
+						usuario = Usuario.objects.get(user=request.user)
+						receptor = Receptor.objects.get(usuario=usuario)
+
+						try:
+							e = Empleado.objects.get(receptor = receptor, tribunal=t)
+							mensaje = "El tribunal ya ha sido agregado."
+							ctx = {'form': form,'mensaje': mensaje, 'error': 1}
+							return render_to_response('home/tribunales_receptor.html', ctx, context_instance=RequestContext(request))
+						except:
+							e = Empleado(receptor = receptor, tribunal = t)
+							e.save()
+							# mensaje = "registro!
+							ctx = {'form': form,'mensaje': mensaje}
+							return render_to_response('home/tribunales_receptor.html', ctx, context_instance=RequestContext(request))
+					except:
+						mensaje = "Debe seleccionar un tribunal."
+						ctx = {'form': form, 'mensaje': mensaje, 'error': 1}
+						return render_to_response('home/tribunales_receptor.html', ctx, context_instance=RequestContext(request))
 			else:
 				mensaje = "Debe seleccionar un tribunal."
 				ctx = {'form': form,'mensaje': mensaje, 'error':1}

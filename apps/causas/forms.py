@@ -13,7 +13,6 @@ CHOICES_MATERIA = (('civil','Civil'),
 					('laboral antiguo','Laboral Antiguo'),
 					('otro', 'Otro'))
 CHOICES_JURISDICCION = Jurisdiccion.objects.all().values_list('id','nombrejurisdiccion')
-# CHOICES_TRIBUNAL = Tribunal.objects.all().values_list('id','nombretribunal')
 CHOICES_DILIGENCIA = Diligencia.objects.filter(tipodiligencia='objetivo').values_list('id', 'detallediligencia')
 CHOICES_RESULTADO_DILIGENCIA = Diligencia.objects.filter(tipodiligencia = 'respuesta').exclude(detallediligencia = 'sin diligenciar').values_list('id','detallediligencia')
 CHOICES_ESTADOS = (('pendiente','Pendientes'),
@@ -27,7 +26,7 @@ class nuevaCausaForm(forms.Form):
 	region 		= forms.CharField(widget=forms.Select(choices=CHOICES_REGION, attrs={'class':'form-control input-lg', 'required': 'required'}))
 	provincia 	= forms.CharField(widget=forms.Select(attrs={'class':'form-control input-lg', 'required': 'required'}))
 	comuna 		= forms.CharField(widget=forms.Select(attrs={'class':'form-control input-lg', 'required': 'required'}))
-	direccion 		= forms.CharField(widget=forms.TextInput(attrs={'class' : 'form-control input-lg', 'required': 'required', 'placeholder': 'Dirección'}))
+	direccion 		= forms.CharField(widget=forms.TextInput(attrs={'class' : 'form-control input-lg', 'placeholder': 'Dirección'}))
 	jurisdiccion 	= forms.CharField(widget=forms.Select(choices=CHOICES_JURISDICCION, attrs={'class':'form-control input-lg', 'required': 'required'}))
 	tribunalOrigen 	= forms.CharField(widget=forms.Select(attrs={'class':'form-control input-lg', 'required': 'required'}))
 	tipoDiligencia  = forms.CharField(widget=forms.Select(choices=CHOICES_DILIGENCIA,attrs={'class':'form-control input-lg', 'required': 'required'}))
@@ -43,7 +42,7 @@ class reasignarForm(forms.Form):
 	receptorNuevo 	= forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'required': 'required'}))
 	causa 			= forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'required': 'required'}))
 
-class filtroEstadoForm(forms.Form):	
+class filtroEstadoForm(forms.Form):
 	estado 		= forms.CharField(widget=forms.HiddenInput())
 	sort 		= forms.CharField(widget=forms.HiddenInput())
 	page 		= forms.IntegerField(widget=forms.HiddenInput())
@@ -88,3 +87,10 @@ class fotoDiligenciarCausaForm(forms.Form):
 		# else:
 		# 	raise forms.ValidationError('formato no soportado')
 		return foto
+
+class pagoDiligenciaForm(forms.Form):
+	idcausa = forms.CharField(widget=forms.HiddenInput())
+	valor = forms.IntegerField(widget=forms.TextInput(attrs={'class':'form-control input-lg', 'required': 'required', 'placeholder': 'Valor Diligencia'}))
+	rut = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control input-lg', 'required':'required', 'pattern':'[0-9]{6,8}[\-][a-zA-Z0-9]{1}', 'placeholder': 'Rut'}))
+	cuenta = forms.CharField(widget=forms.TextInput(attrs={'class' : 'form-control input-lg', 'required':'required', 'placeholder': 'N° Cuenta'}))
+	banco = forms.CharField(widget=forms.TextInput(attrs={'class' : 'form-control input-lg', 'required':'required', 'placeholder': 'Banco'}))

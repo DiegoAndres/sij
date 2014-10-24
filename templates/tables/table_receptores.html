@@ -1,29 +1,30 @@
 <thead>
 	<tr>
 		<th class="col-lg-2">Receptor</th>
+		{%if user.usuario.tipo == 0 %}<th class="col-lg-1"></th>{%endif%}
 		<th class="col-lg-1">Causas pendientes</th>
 		<th class="col-lg-1">Causas atrasadas</th>
 		<th class="col-lg-1">Causas diligenciadas</th>
 		<th class="col-lg-1">Días promedio</th>
 		<th class="col-lg-1">Causas en ruta</th>
 		<th class="col-lg-1">Diligencias diarias promedio</th>
-		<th class="col-lg-1"></th>
 	</tr>
 </thead>
 <tbody>
 	{% for row in receptores %}
 	<tr>
 		<td id="usuario{{row.usuario.id}}">{{ row.usuario }}</td>
+		{%if user.usuario.tipo == 0 %}
+			<th><button type="button" class="btn btn-xs btn-default asignar" value="{{row.usuario.id}}">Asignar</button>
+			</th>
+		{%endif%}
 		<td><span class="celda_causas_pendientes">{{ row.causaspendientes }}</span></td>
 		<td><span class="celda_causas_atrasadas">{{ row.causasatrasadas }}</span></td>
 		<td><span class="celda_causas_resueltas">{{ row.causasresueltas }}</span></td>
 		<td><span class="celda_tiempo_primedio">{{ row.tiempopromedio|floatformat:"-2"}}</span></td>
 		<td><span class="celda_causas_en_ruta">{{row.causasenruta}}</span></td>
 		<td><span class="celda_diligencias_diarias_promedio">{{row.diligenciasdiariaspromedio}}</span></td>
-		{%if user.usuario.tipo == 0 %}
-			<th><button type="button" class="btn btn-xs btn-default asignar" value="{{row.usuario.id}}">Asignar</button>
-			</th>
-		{%endif%}
+
 		{%if user.usuario.tipo == 2 %}
 			<td class="text-center hidden-xs hidden-sm" id="opciones">
 				<a data-toggle="modal" href='#modal-id2' onclick="javascript:detalleReceptor('{{row.id}}','{{row.usuario}}');">
@@ -31,11 +32,11 @@
 				</a>
 			</td>
 		{%endif%}
-	
+
 	</tr>
 	{%empty%}
 	<tr><td><h5>No existen receptores asociados.</h5></td></tr>
-	
+
 	{%endfor%}
 </tbody>
 	<div class="modal fade" id="modal-id2">
@@ -46,7 +47,7 @@
 						<h4 class="modal-title" id="titulo_receptor"></h4>
 					</div>
 					<div class="modal-body" id="detalle_receptor">
-						
+
 
 			<form action="" method="POST" class="form-horizontal" role="form">
 					<div class="form-group">
@@ -92,7 +93,7 @@
 		</div>
 
 
-					
+
 				</div><!-- /.modal-content -->
 			</div><!-- /.modal-dialog -->
 		</div><!-- /.modal -->
@@ -104,7 +105,7 @@
 			//url = '/causa/'+ncausa+'/detalle/';
 			//$("#detalle_causa").load(url);
 
-			
+
 		}
 		$(document).ready(function(){
 
@@ -133,14 +134,14 @@
 		});
 
 		$(".asignar").click(function(event){
-		
+
 				$("#id_receptor").val($(this).val());
 				$("#id_receptorNuevo").val($(this).val());
 				$("#receptores").hide();
 				$("#resumen").show();
 				$("li#3").attr("class","active");
 				$("li#2").removeAttr("class");
-				
+
 				//Actualizar datos de Resumen
 				$("#lncausa").html($("#id_ncausa").val());
 				$("#ltribunal").html($("select#id_tribunalOrigen option:selected").text());
@@ -152,10 +153,10 @@
 					$("#lobservacion").html($("#id_observacion").val());
 				}
 				$("#lreceptor").html($("#usuario"+$(this).val()).text());
-			
+
 
 		});
-	
+
 
 	});
 </script>

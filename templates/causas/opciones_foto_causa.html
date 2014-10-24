@@ -6,17 +6,17 @@
 
 <script>
 	function finalizar(){
-		$.ajax({
-			url: '/estampado/{{idcausa}}/pdf',
-			type: 'GET',
-			success: function(data){
-				if (data != '0'){
-					alert("Ha ocurrido un error al enviar el estampado por correo. Por favor, contacte al administrador.");
-				}
-				// alert(data);
-				window.location.reload();
-			}
-		});
+		//$.ajax({
+		// 	url: '/estampado/{{idcausa}}/pdf',
+		// 	type: 'GET',
+		// 	success: function(data){
+		// 		if (data != '0'){
+		// 			alert("Ha ocurrido un error al enviar el estampado por correo. Por favor, contacte al administrador.");
+		// 		}
+		// 		// alert(data);
+		// 		window.location.reload();
+		// 	}
+		// });
 		var url = '/causa/{{idcausa}}/detalle/diligencia';
 		$("#detalle_causa").load(url);
 		$("#opciones_causa").html('<a id="cerrar" href="javascript:$("form[name="filtro_estado"]").submit();" class="btn btn-action btn-default hidden-xs" data-dismiss="modal" type="button">Cerrar</a>');

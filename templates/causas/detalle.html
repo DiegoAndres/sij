@@ -31,10 +31,63 @@
 			<div class="form-group">
 				<label for="" class="col-md-4 col-sm-4 col-xs-6">Observaci&oacute;n</label>
 				<div class="col-md-8 col-sm-8 col-xs-6 text-justify">
-					{{causa.observacion| default:"Sin observaciones"}}					
+					{{causa.observacion| default:"Sin observaciones"}}
 				</div>
 			</div>
-			
+			{%if user.usuario.tipo == 1 and causa.estado == "pendiente"%}
+				<h3>Datos de Pago</h3>
+				<form action="/causa/aceptar/" class="form-horizontal" id="formpago" method="POST">
+					{% csrf_token %}
+					{{form.idcausa}}
+					<div class="form-group">
+						<div class="col-md-8 col-sm-8 col-xs-6 text-justify">
+							{{form.valor}}
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-md-8 col-sm-8 col-xs-6 text-justify">
+							{{form.rut}}
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-md-8 col-sm-8 col-xs-6 text-justify">
+							{{form.cuenta}}
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-md-8 col-sm-8 col-xs-6 text-justify">
+							{{form.banco}}
+						</div>
+					</div>
+				</form>
+			{%endif%}
+			{%if causa.estado == 'confirmacion'%}
+				<h3>Datos de Pago</h3>
+					<form action="/causa/aceptar/" class="form-horizontal" id="formpago" method="POST">
+						{% csrf_token %}
+						{{form.idcausa}}
+					</form>
+					<div class="form-group">
+						<div class="col-md-8 col-sm-8 col-xs-6 text-justify">
+							{{causa.valor}}
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-md-8 col-sm-8 col-xs-6 text-justify">
+							{{causa.receptor.rut}}
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-md-8 col-sm-8 col-xs-6 text-justify">
+							{{causa.receptor.cuenta}}
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-md-8 col-sm-8 col-xs-6 text-justify">
+							{{causa.receptor.banco}}
+						</div>
+					</div>
+			{%endif%}
 			<div class="panel-group" id="accordion">
 			  <div class="panel panel-default">
 			    <div class="panel-heading">
@@ -73,7 +126,7 @@
 					<div class="form-group">
 						<label for="" class="col-md-4 col-sm-4 col-xs-6">Resultado diligencia</label>
 						<div class="col-md-8 col-sm-8 col-xs-6">
-							{{causa.tiporesultadodiligencia.detallediligencia}}			
+							{{causa.tiporesultadodiligencia.detallediligencia}}
 						</div>
 					</div>
 					<div class="form-group">
@@ -131,7 +184,7 @@
 					<div class="form-group">
 						<label for="" class="col-md-4 col-sm-4 col-xs-6">Evento5</label>
 						<div class="col-md-8 col-sm-8 col-xs-6">
-							<!--Datos-->		
+							<!--Datos-->
 						</div>
 					</div>
 					<div class="form-group">
@@ -146,7 +199,7 @@
 			  </div>
 			</div>
 			{%endif%}
-		
+
 		</div>
 	</div>
 
@@ -161,7 +214,7 @@
 		        zoom: 16,
 		        center: myLatLng,
 		        mapTypeId: google.maps.MapTypeId.ROADMAP,
-		        streetViewControl: false, 
+		        streetViewControl: false,
     			zoomControl: true,
     			zoomControlOptions: {
 					style: google.maps.ZoomControlStyle.SMALL
@@ -178,7 +231,7 @@
 		    var mapOptions = {
 		        zoom: 16,
 		        mapTypeId: google.maps.MapTypeId.ROADMAP,
-		        streetViewControl: false, 
+		        streetViewControl: false,
     			zoomControl: true,
     			zoomControlOptions: {
 					style: google.maps.ZoomControlStyle.SMALL
@@ -220,7 +273,7 @@
 
 		}
 
-		
+
 
 		function codeAddress() {
 		    var address1 = '{{causa.direccion}}, {{causa.comuna.nombrecomuna}}, {{causa.comuna.provincia.nombreprovincia}}, {{causa.comuna.provincia.region.nombreregion}}';
