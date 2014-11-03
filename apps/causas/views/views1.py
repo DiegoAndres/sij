@@ -233,11 +233,11 @@ def aceptar_causa_view(request):
 				try:
 					usuario = Usuario.objects.get(user=request.user)
 					usuario.rut = form.data['rut']
-					usuario.cuenta = form.data['cuenta']
 					usuario.banco = form.data['banco']
+					usuario.tipo_cuenta = form.data['tipo_cuenta']
+					usuario.cuenta = form.data['cuenta']
 				except:
 					return HttpResponse('error datos usuario')
-
 
 				try:
 					e = Evento()
@@ -253,34 +253,38 @@ def aceptar_causa_view(request):
 					n.usuario 	= causa.abogado
 					n.fechanotificacion 	= timezone.now()
 					n.causa 				= causa
-					n.detallenotificacion	= 'El receptor '+request.user.usuario.nombre+' ha solicitado la confirmaci&oacute;n de la solicitud de causa '+causa.ncausa+'.'
+					n.detallenotificacion	= 'El receptor '+str(request.user.usuario.nombre)+' ha solicitado la confirmación de la solicitud de causa '+str(causa.ncausa)+'.'
 					n.nueva = True
 				except:
 					return HttpResponse('error datos notificacion')
 
 				try:
 					causa.save()
+					# pass
 				except:
 					return HttpResponse('error causa')
 
 				try:
 					usuario.save()
+					# pass
 				except:
 					return HttpResponse('error usuario')
 
 				try:
 					e.save()
+					# pass
 				except:
 					return HttpResponse('error evento')
 
 				try:
 					n.save()
+					# pass
 				except:
 					return HttpResponse('error notificacion')
 
-				title = 'Notificacion: Causa '+c.ncausa
-				body = 'El receptor '+request.user.usuario.nombre+' ha solicitado la confirmaci&oacute;n de la solicitud de causa '+causa.ncausa+'. Para mayor informacion de la causa, debe ingresar al plataforma sij.qwerty.cl'
-				email = EmailMessage(title, body, 'no-reply@sij.cl', [causa.abogado.user.email])
+				title = "Notificación: Causa " + str(causa.ncausa)
+				body = 'El receptor '+str(request.user.usuario.nombre)+' ha solicitado la confirmación de la solicitud de causa '+str(causa.ncausa)+'. Para mayor informacion de la causa, debe ingresar al plataforma www.sij.cl/login'
+				email = EmailMessage(title, body, 'no-reply@sij.cl', [causa.abogado.user.email])					
 				email.send()
 
 				return HttpResponse('La solicitud ha sido confirmada.')
@@ -317,7 +321,7 @@ def aceptar_causa_view(request):
 					n.usuario 	= causa.abogado
 					n.fechanotificacion 	= timezone.now()
 					n.causa 				= causa
-					n.detallenotificacion	= 'El abogado '+request.user.usuario.nombre+' ha confirmado el valor de la diligencia de la solicitud de causa '+causa.ncausa+'.'
+					n.detallenotificacion	= 'El abogado '+str(request.user.usuario.nombre)+' ha confirmado el valor de la diligencia de la solicitud de causa '+str(causa.ncausa)+'.'
 					n.nueva = True
 				except:
 					return HttpResponse('error datos notificacion')
@@ -342,8 +346,8 @@ def aceptar_causa_view(request):
 				except:
 					return HttpResponse('error notificacion')
 
-				title = 'Notificacion: Causa '+c.ncausa
-				body = 'El abogado '+request.user.usuario.nombre+' ha confirmado el valor de la diligencia de la solicitud de causa '+causa.ncausa+'. Para mayor informacion de la causa, debe ingresar al plataforma sij.qwerty.cl'
+				title = 'Notificacion: Causa '+str(causa.ncausa)
+				body = 'El abogado '+str(request.user.usuario.nombre)+' ha confirmado el valor de la diligencia de la solicitud de causa '+str(causa.ncausa)+'. Para mayor informacion de la causa, debe ingresar al plataforma www.sij.cl/login'
 				email = EmailMessage(title, body, 'no-reply@sij.cl', [causa.receptor.user.email])
 				email.send()
 
@@ -427,11 +431,16 @@ def eliminar_causa_view(request, idcausa):
 			n.usuario = causa.receptor
 			n.fechanotificacion = timezone.now()
 			n.causa = causa
-			n.detallenotificacion = 'El abogado '+request.user.usuario.nombre+' ha eliminado la solicitud de causa '+causa.ncausa+'.'
+			n.detallenotificacion = 'El abogado '+str(request.user.usuario.nombre)+' ha eliminado la solicitud de causa '+str(causa.ncausa)+'.'
 
 			causa.save()
 			e.save()
 			n.save()
+
+			title = 'Notificacion: Causa '+str(causa.ncausa)
+			body = 'El abogado '+str(request.user.usuario.nombre)+' ha eliminado la solicitud de causa '+str(causa.ncausa)+'.'
+			email = EmailMessage(title, body, 'no-reply@sij.cl', [causa.receptor.user.email])
+			email.send()
 
 			return HttpResponse('La causa ha sido eliminada.')
 		except:

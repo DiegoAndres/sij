@@ -144,33 +144,29 @@ $(document).ready(function(){
 	options = sinop + options_materia;
 	$("select#id_materia").html(options);
 
-	$("select#id_materia").focus(function(event) {
-		$(this).find("option").eq(0).remove();
-	});
-
-	var sinop  = "<option value='0'>Seleccione una regi&oacute;n</option>";
+	var sinop  = "<option value='0' selected disabled>Seleccione una regi&oacute;n</option>";
 	var options = $("select#id_region").html();
 	options = sinop + options;
 	$("select#id_region").html(options);
 
-	sinop  = "<option value='0'>Seleccione una provincia</option>";
+	sinop  = "<option value='0' selected>Seleccione una provincia</option>";
 	$("select#id_provincia").html(sinop);
 	$("select#id_provincia").attr('disabled',true);
 
-	sinop  = "<option value='0'>Seleccione una comuna</option>";
+	sinop  = "<option value='0' selected>Seleccione una comuna</option>";
 	$("select#id_comuna").html(sinop);
 	$("select#id_comuna").attr('disabled',true);
 
-	sinop = "<option value='0'>Seleccione una Jurisdicci&oacute;n</option>";
+	sinop = "<option value='0' selected disabled>Seleccione una Jurisdicci&oacute;n</option>";
 	options = $("select#id_jurisdiccion").html();
 	options = sinop + options;
 	$("select#id_jurisdiccion").html(options);
 
-	sinop = "<option value='0'>Seleccione un tribunal</option>";
+	sinop = "<option value='0' selected disabled>Seleccione un tribunal</option>";
 	$("select#id_tribunalOrigen").html(sinop);
 	$("select#id_tribunalOrigen").attr('disabled',true);
 
-	sinop = "<option value='0'>Seleccione un tipo de diligencia</option>";
+	sinop = "<option value='0' selected disabled>Seleccione un tipo de diligencia</option>";
 	options = $("select#id_tipoDiligencia").html();
 	options = sinop + options;
 	$("select#id_tipoDiligencia").html(options);

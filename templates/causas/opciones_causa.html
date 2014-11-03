@@ -26,13 +26,21 @@
 <button type="button" id="resultados-causa" class="btn btn-action btn-primary">Ver Resultados</button>
 {%endif%}
 
-
-
 <script>
 	function actualizar_causa(act){
 		if (act == 'aceptar'){
 			$("#id_idcausa").val({{causa.id}});
-			$("#formpago").submit();
+			$.ajax({
+				url: '/causa/aceptar/',
+				type: 'POST',
+				data: $("#formpago").serialize(),
+				success: function(data){
+					alert(data);
+					$('#modal-id').modal('hide');
+					$("form[name='filtro_estado']").submit();
+				}
+			});
+			
 		}else{
 
 			var url = '/causa/{{causa.id}}/'+act;
@@ -43,7 +51,7 @@
 				}
 				else{
 					alert(data);
-					$("button[id='cerrar']").click();
+					$('#modal-id').modal('hide');
 					$("form[name='filtro_estado']").submit();
 				}
 			});
@@ -107,7 +115,10 @@
 
 		$("button[id='editar-causa']").click(function(e){
 			e.preventDefault();
-			alert('editar causa!');
+			var url = '/causa/{{causa.id}}/editar';
+			$("#detalle_causa").load(url);
+			url = '/causa/{{causa.id}}/editar/opciones';
+			$("#opciones_causa").load(url);
 		});
 
 		$("button[id='resultados-causa']").click(function(event) {
