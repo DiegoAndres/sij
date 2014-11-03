@@ -472,7 +472,6 @@ def registrar_diligenciar_causa_view(request, idcausa):
 				objetivo = Diligencia.objects.get(id=form.data['objetivodiligencia'])
 				resultado = Diligencia.objects.get(id=form.data['resultadodiligencia'])
 
-
 				if causa.tipodiligencia != objetivo:
 					nn = Notificacion()
 					nn.usuario = causa.abogado
@@ -480,7 +479,6 @@ def registrar_diligenciar_causa_view(request, idcausa):
 					nn.causa = causa
 					nn.detallenotificacion = 'El receptor '+request.user.usuario.nombre+' ha cambiado el objetivo de la diligencia correspondiente a la causa '+causa.ncausa+'.'
 					nn.save()
-
 
 				causa.tipodiligencia = objetivo
 				causa.tiporesultadodiligencia = resultado
@@ -495,7 +493,7 @@ def registrar_diligenciar_causa_view(request, idcausa):
 				n.usuario = causa.abogado
 				n.fechanotificacion = timezone.now()
 				n.causa = causa
-				n.detallenotificacion = 'El receptor '+request.user.usuario.nombre+' ha diligenciado la causa '+causa.ncausa+'.'
+				n.detallenotificacion = 'El receptor '+request.user.usuario.nombre+' ha diligenciado la causa '+str(causa.ncausa)+'.'
 
 				resultado = ResultadoDiligencia()
 				resultado.causa = causa
@@ -522,6 +520,11 @@ def registrar_diligenciar_causa_view(request, idcausa):
 				resultado.save()
 				e.save()
 				n.save()
+
+				title = 'Notificacion: Causa '+str(causa.ncausa)
+				body = 'El receptor '+str(request.user.usuario.nombre)+' ha diligenciado la causa '+str(causa.ncausa)+'.'
+				email = EmailMessage(title, body, 'no-reply@sij.cl', [causa.abogado.user.email])
+				email.send()
 
 				return HttpResponse('0')
 			else:
