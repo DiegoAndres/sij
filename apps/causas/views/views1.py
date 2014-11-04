@@ -169,7 +169,7 @@ def detalle_diligencia_causa_view(request, idcausa):
 			ctx = {'causa': causa, 'resultado': resultado, 'fotos': fotos}
 			return render_to_response('causas/detalle_diligencia.html', ctx, context_instance=RequestContext(request))
 		except:
-			ctx = {'error': 'No existe la causa o aún no se ha diligenciado.'}
+			ctx = {'error': 'No existe la causa o aÃºn no se ha diligenciado.'}
 			return render_to_response('causas/detalle_diligencia.html', ctx, context_instance=RequestContext(request))
 	else:
 		return HttpResponseRedirect('/')
@@ -346,8 +346,8 @@ def aceptar_causa_view(request):
 				except:
 					return HttpResponse('error notificacion')
 
-				title = 'Notificacion: Causa '+str(causa.ncausa)
-				body = 'El abogado '+str(request.user.usuario.nombre)+' ha confirmado el valor de la diligencia de la solicitud de causa '+str(causa.ncausa)+'. Para mayor informacion de la causa, debe ingresar al plataforma www.sij.cl/login'
+				title = 'Notificación: Causa '+str(causa.ncausa)
+				body = 'El abogado '+str(request.user.usuario.nombre)+' ha confirmado el valor de la diligencia de la solicitud de causa '+str(causa.ncausa)+'. Para mayor información de la causa, debe ingresar al plataforma www.sij.cl/login'
 				email = EmailMessage(title, body, 'no-reply@sij.cl', [causa.receptor.user.email])
 				email.send()
 
@@ -437,7 +437,7 @@ def eliminar_causa_view(request, idcausa):
 			e.save()
 			n.save()
 
-			title = 'Notificacion: Causa '+str(causa.ncausa)
+			title = 'Notificación: Causa '+str(causa.ncausa)
 			body = 'El abogado '+str(request.user.usuario.nombre)+' ha eliminado la solicitud de causa '+str(causa.ncausa)+'.'
 			email = EmailMessage(title, body, 'no-reply@sij.cl', [causa.receptor.user.email])
 			email.send()
@@ -472,7 +472,6 @@ def registrar_diligenciar_causa_view(request, idcausa):
 				objetivo = Diligencia.objects.get(id=form.data['objetivodiligencia'])
 				resultado = Diligencia.objects.get(id=form.data['resultadodiligencia'])
 
-
 				if causa.tipodiligencia != objetivo:
 					nn = Notificacion()
 					nn.usuario = causa.abogado
@@ -480,7 +479,6 @@ def registrar_diligenciar_causa_view(request, idcausa):
 					nn.causa = causa
 					nn.detallenotificacion = 'El receptor '+request.user.usuario.nombre+' ha cambiado el objetivo de la diligencia correspondiente a la causa '+causa.ncausa+'.'
 					nn.save()
-
 
 				causa.tipodiligencia = objetivo
 				causa.tiporesultadodiligencia = resultado
@@ -495,7 +493,7 @@ def registrar_diligenciar_causa_view(request, idcausa):
 				n.usuario = causa.abogado
 				n.fechanotificacion = timezone.now()
 				n.causa = causa
-				n.detallenotificacion = 'El receptor '+request.user.usuario.nombre+' ha diligenciado la causa '+causa.ncausa+'.'
+				n.detallenotificacion = 'El receptor '+request.user.usuario.nombre+' ha diligenciado la causa '+str(causa.ncausa)+'.'
 
 				resultado = ResultadoDiligencia()
 				resultado.causa = causa
@@ -522,6 +520,11 @@ def registrar_diligenciar_causa_view(request, idcausa):
 				resultado.save()
 				e.save()
 				n.save()
+
+				title = 'Notificación: Causa '+str(causa.ncausa)
+				body = 'El receptor '+str(request.user.usuario.nombre)+' ha diligenciado la causa '+str(causa.ncausa)+'.'
+				email = EmailMessage(title, body, 'no-reply@sij.cl', [causa.abogado.user.email])
+				email.send()
 
 				return HttpResponse('0')
 			else:
@@ -589,7 +592,7 @@ def registrar_foto_diligenciar_causa_view(request, idcausa):
 			nueva_foto.save()
 			return HttpResponse('0')
 		else:
-			return HttpResponse('Ha alcanzado el número máximo de fotos para la causa.')
+			return HttpResponse('Ha alcanzado el nÃºmero máximo de fotos para la causa.')
 	else:
 		return HttpResponseRedirect('/')
 
