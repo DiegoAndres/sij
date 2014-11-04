@@ -149,11 +149,11 @@ $(document).ready(function(){
 	options = sinop + options;
 	$("select#id_region").html(options);
 
-	sinop  = "<option value='0' selected>Seleccione una provincia</option>";
+	sinop  = "<option value='0' selected disabled>Seleccione una provincia</option>";
 	$("select#id_provincia").html(sinop);
 	$("select#id_provincia").attr('disabled',true);
 
-	sinop  = "<option value='0' selected>Seleccione una comuna</option>";
+	sinop  = "<option value='0' selected disabled>Seleccione una comuna</option>";
 	$("select#id_comuna").html(sinop);
 	$("select#id_comuna").attr('disabled',true);
 

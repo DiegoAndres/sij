@@ -97,7 +97,8 @@
 
 
 		$("select#id_tribunal").change(function(event){
-			var url = "/nuevacausa/"+$(this).val()+"/";
+			// var url = "/nuevacausa/"+$(this).val()+"/";
+			var url = "/nuevacausa/"+$("select#id_jurisdiccion").val()+"/"+$(this).val()+"/";
 			$("#div_table_receptores").load(url);
 			$("#receptores").show();
 			$("#resumen").hide();
