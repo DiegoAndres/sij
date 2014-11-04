@@ -2,7 +2,7 @@
 from django.shortcuts import render_to_response, redirect
 from django.template import RequestContext
 from django.http import HttpResponseRedirect, HttpResponse
-from sij.apps.causas.forms import nuevaCausaForm, filtroEstadoForm, receptorForm, reasignarForm, editarForm
+from sij.apps.causas.forms import nuevaCausaForm, filtroEstadoForm, receptorForm, reasignarForm
 from sij.apps.causas.models import Causa, Jurisdiccion, Region, Provincia, Comuna, Tribunal, Diligencia
 from sij.apps.home.models import Receptor, Usuario, Empleado, Evento, Notificacion
 # from django.utils.simplejson import simplejson
@@ -119,7 +119,6 @@ def opciones_abogado_causa_view(request, idcausa):
 					evento1 = Evento.objects.get(causa = causa, tipoevento = 1)
 					# evento1 = historial.order_by('fechaevento').filter(tipoevento = 1)[0]
 					editar = 1
-					eliminar = 1
 					ctx = {'causa': causa, 'editar': editar, 'reasignar': reasignar, 'eliminar': eliminar}
 					return render_to_response('causas/opciones_causa.html',ctx, context_instance=RequestContext(request))
 				except:
@@ -268,49 +267,6 @@ def reasignar_causa_view(request,idcausa):
 	else:
 		return HttpResponseRedirect('/')
 
-def editar_causa_view(request,idcausa):
-	if request.user.is_authenticated() and request.user.usuario.tipo == 0:
-		c = Causa.objects.get(id=idcausa)
-		form = editarForm(initial={'direccion': c.direccion,'observacion':c.observacion})
-		ctx = {'form': form, 'causa': idcausa}
-		return render_to_response('causas/editar.html', ctx, context_instance= RequestContext(request))
-
-def opciones_editar_causa_view(request, idcausa):
-	ctx = {'idcausa': idcausa}
-	return render_to_response('causas/opciones_editar.html',ctx, context_instance=RequestContext(request))
-
-def registrar_editar_causa_view(request,idcausa):
-	if request.user.is_authenticated() and request.user.usuario.tipo == 0:
-		if request.POST and request.is_ajax():
-			form = editarForm(request.POST)
-			if form.is_valid():
-
-				try:
-					c = Causa.objects.get(id=idcausa)
-					c.observacion = form.cleaned_data['observacion']
-					c.direccion = form.cleaned_data['direccion']
-					c.save()
-
-					#Notificacion
-					n = Notificacion()
-					n.usuario = c.receptor
-					n.fechanotificacion = datetime.now()
-					n.causa = c
-					n.detallenotificacion = "El abogado "+c.abogado.nombre+" ha modificado el detalle de la causa "+str(c.ncausa)+"."
-					n.save()
-
-					title = 'Notificacion: Causa '+c.ncausa
-					body = "El abogado "+c.abogado.nombre+" ha modificado el detalle de la causa "+c.ncausa+". Para mayor informacion de la causa, debe ingresar al plataforma www.sij.cl/login"
-					email = EmailMessage(title, body, 'no-reply@sij.cl', [c.receptor.user.email])
-					email.send()
-
-					return HttpResponse(0)
-				except:
-					return HttpResponse('Ha ocurrido un error al editar la causa. Por favor intentelo más tarde.')
-		else:
-			return HttpResponse('Fail. Request no es POST ni AJAX')
-	else:
-		return HttpResponseRedirect('/')
 
 # Vista para el registro en BD de la reasignacion de receptores a una causa
 # INPUT: id causa

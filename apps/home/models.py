@@ -11,9 +11,9 @@ class Usuario(models.Model):
 	telefono 			= models.CharField(max_length=15, null=True)
 	direccion 			= models.CharField(max_length=200, null=True)
 	comuna 				= models.ForeignKey('causas.Comuna')
-	tipo_cuenta			= models.CharField(max_length=30,null=True)
 	cuenta 				= models.CharField(max_length=20, null=True)
 	banco				= models.CharField(max_length=30,null=True)
+	tipo_cuenta			= models.CharField(max_length=30,null=True)
 
 	def __unicode__(self):
 		nombre = self.user.first_name+' '+self.user.last_name

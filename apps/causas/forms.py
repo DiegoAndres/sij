@@ -42,10 +42,6 @@ class reasignarForm(forms.Form):
 	receptorNuevo 	= forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'required': 'required'}))
 	causa 			= forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'required': 'required'}))
 
-class editarForm(forms.Form):
-	direccion = forms.CharField(widget=forms.TextInput(attrs={'class' : 'form-control input-lg', 'placeholder': 'Dirección'}))
-	observacion = forms.CharField(widget=forms.Textarea(attrs={'class' : 'form-control input-lg','style':'height: 30%;', 'placeholder': 'Observación'}),required=False)
-
 class filtroEstadoForm(forms.Form):
 	estado 		= forms.CharField(widget=forms.HiddenInput())
 	sort 		= forms.CharField(widget=forms.HiddenInput())
@@ -96,6 +92,5 @@ class pagoDiligenciaForm(forms.Form):
 	idcausa = forms.CharField(widget=forms.HiddenInput())
 	valor = forms.IntegerField(widget=forms.TextInput(attrs={'class':'form-control input-lg', 'required': 'required', 'placeholder': 'Valor Diligencia'}))
 	rut = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control input-lg', 'required':'required', 'pattern':'[0-9]{6,8}[\-][a-zA-Z0-9]{1}', 'placeholder': 'Rut'}))
-	tipo_cuenta = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control input-lg', 'required':'required', 'placeholder': 'Tipo de Cuenta'}))
 	cuenta = forms.CharField(widget=forms.TextInput(attrs={'class' : 'form-control input-lg', 'required':'required', 'placeholder': 'N° Cuenta'}))
 	banco = forms.CharField(widget=forms.TextInput(attrs={'class' : 'form-control input-lg', 'required':'required', 'placeholder': 'Banco'}))

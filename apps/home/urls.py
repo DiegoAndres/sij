@@ -3,6 +3,7 @@ from django.conf.urls import patterns,url
 urlpatterns = patterns('sij.apps.home.views',
 	url(r'^$','login_view', name='vista_login'),
 	url(r'^logout/$', 'logout_view', name='vista_logout'),
+	url(r'^login_check/$', 'login_check_view', name='vista_login_check'),
 	url(r'^inicio/$', 'redireccion', name='redirect_usuario'),
 	url(r'^registro/$', 'registro_view', name='vista_registro'),
 	url(r'^registro/exito/$', 'registro_exito_view', name='vista_registro_exito'),

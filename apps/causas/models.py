@@ -115,6 +115,11 @@ class Tribunal(models.Model):
 	def __unicode__(self):
 		return self.nombretribunal
 
+	def cantidad_empleados(self):
+	    return 23
+
+	
+
 
 
 class Diligencia(models.Model):
