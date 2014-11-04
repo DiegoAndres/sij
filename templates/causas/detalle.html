@@ -191,32 +191,32 @@
 				{% csrf_token %}
 				{{form.idcausa}}
 				<div class="form-group">
-					<label for="" class="control-label col-md-4 col-sm-4 col-xs-6">Precio</label>
-					<div class="col-md-8 col-sm-8 col-xs-6 text-justify">
+					<label for="" class="col-md-4 col-sm-4 col-xs-6">Precio</label>
+					<div class="col-md-8 col-sm-8 col-xs-6">
 						{{causa.valor}}
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="" class="control-label col-md-4 col-sm-4 col-xs-6">RUT</label>
-					<div class="col-md-8 col-sm-8 col-xs-6 text-justify">
+					<label for="" class="col-md-4 col-sm-4 col-xs-6">RUT</label>
+					<div class="col-md-8 col-sm-8 col-xs-6">
 						{{causa.receptor.rut}}
 					</div>
-				</div>
+				</div>		
 				<div class="form-group">
-					<label for="" class="control-label col-md-4 col-sm-4 col-xs-6">Banco</label>
-					<div class="col-md-8 col-sm-8 col-xs-6 text-justify">
+					<label for="" class="col-md-4 col-sm-4 col-xs-6">Banco</label>
+					<div class="col-md-8 col-sm-8 col-xs-6">
 						{{causa.receptor.banco}}
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="" class="control-label col-md-4 col-sm-4 col-xs-6">Tipo de Cuenta</label>
-					<div class="col-md-8 col-sm-8 col-xs-6 text-justify">
+					<label for="" class="col-md-4 col-sm-4 col-xs-6">Tipo de Cuenta</label>
+					<div class="col-md-8 col-sm-8 col-xs-6">
 						{{causa.receptor.tipo_cuenta}}
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="" class="control-label col-md-4 col-sm-4 col-xs-6">N° de Cuenta</label>
-					<div class="col-md-8 col-sm-8 col-xs-6 text-justify">
+					<label for="" class="col-md-4 col-sm-4 col-xs-6">N° de Cuenta</label>
+					<div class="col-md-8 col-sm-8 col-xs-6">
 						{{causa.receptor.cuenta}}
 					</div>
 				</div>
