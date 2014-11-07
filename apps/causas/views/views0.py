@@ -335,6 +335,7 @@ def registro_reasignar_causa_view(request,idcausa):
 				e.fechaevento = datetime.now()
 				e.tipoevento = 6
 				e.causa = c
+				e.save()
 
 				#Notificacion
 				n = Notificacion()
