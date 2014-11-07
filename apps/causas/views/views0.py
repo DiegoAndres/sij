@@ -194,7 +194,7 @@ def nueva_causa_view(request):
 				n.save()
 
 				title = 'Notificacion: Causa '+c.ncausa
-				body = "El abogado "+c.abogado.nombre+" le ha asignado diligenciar una nueva causa.(rol "+c.ncausa+"). Para mayor informacion de la causa, debe ingresar al plataforma sij.qwerty.cl"
+				body = "El abogado "+c.abogado.nombre+" le ha asignado diligenciar una nueva causa.(rol "+c.ncausa+"). Para mayor informacion de la causa, debe ingresar al plataforma www.sij.cl/login"
 				email = EmailMessage(title, body, 'no-reply@sij.cl', [c.receptor.user.email])
 				email.send()
 
